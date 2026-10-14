@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1F5135" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D1410" media="(prefers-color-scheme: dark)" />
+    <meta name="description" content="Smart Crop Protect: on-device AI crop doctor, weather and irrigation advisor, and district yield and market price forecasts for Indian farmers. Works offline." />
+    <meta property="og:title" content="Smart Crop Protect" />
+    <meta property="og:description" content="AI crop doctor, weather and water advisor, yield and price forecasts. Built on open government and satellite data." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <title>Smart Crop Protect</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        var p = JSON.parse(localStorage.getItem("scp-profile") || "{}").state || {};
+        if (p.theme && p.theme !== "system") document.documentElement.dataset.theme = p.theme;
+        if (p.textScale) document.documentElement.style.fontSize = p.textScale * 100 + "%";
+        if (p.lang) document.documentElement.lang = p.lang;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Smart Crop Protect needs JavaScript to run.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

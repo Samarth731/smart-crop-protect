@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Data: raw downloads and large intermediates are reproducible via the pipeline
+ml/data/raw/
+ml/data/processed/*.parquet
+ml/models/
+
+# Node
+node_modules/
+web/dist/
+web/coverage/
+*.tsbuildinfo
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

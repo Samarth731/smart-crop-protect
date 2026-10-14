@@ -1,0 +1,199 @@
+/*
+ * Smart Crop Protect design tokens.
+ * Warm "monsoon paper" light theme and a deep night-field dark theme.
+ * Chart series colours are validated for colour-vision deficiency (see docs/design.md).
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Type. Anek is an Indian multi-script family, so Latin, Devanagari and Gujarati share
+     one voice; Fraunces gives English headlines an editorial warmth. */
+  --font-sans: "Anek Latin Variable", "Anek Devanagari Variable", "Anek Gujarati Variable", system-ui,
+    -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces Variable", "Anek Devanagari Variable", "Anek Gujarati Variable", Georgia, serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2rem, 1.4rem + 2.4vw, 2.75rem);
+  --text-hero: clamp(2.5rem, 1.6rem + 3.6vw, 3.75rem);
+
+  /* Surfaces & ink */
+  --paper: #f4efe4;
+  --paper-2: #ece5d6;
+  --surface: #fffdf8;
+  --surface-2: #f8f4ea;
+  --surface-3: #f1ebde;
+  --ink: #17241c;
+  --ink-2: #435349;
+  --ink-3: #6b776f;
+  --line: #e4dccb;
+  --line-strong: #cec4ad;
+  --scrim: rgb(14 22 17 / 0.45);
+
+  /* Brand */
+  --brand: #1f5135;
+  --brand-2: #2f7a4b;
+  --brand-ink: #f7f4ec;
+  --brand-wash: #e3eddf;
+  --accent: #e2a23b;
+  --accent-ink: #3b2a07;
+  --accent-wash: #f8ead0;
+  --water: #2f6fb3;
+  --water-wash: #e1ecf7;
+  --heat: #c95a2c;
+  --heat-wash: #f7e3d8;
+
+  /* Status: reserved for meaning, always paired with an icon and a label */
+  --good: #0ca30c;
+  --good-ink: #166b2e;
+  --good-wash: #e2f2e1;
+  --warning: #fab219;
+  --warning-ink: #7a5300;
+  --warning-wash: #fdf1d3;
+  --serious: #ec835a;
+  --serious-ink: #8f3b17;
+  --serious-wash: #fbe6dc;
+  --critical: #d03b3b;
+  --critical-ink: #9e2424;
+  --critical-wash: #f9e0dd;
+
+  /* Charts (validated light set, surface #FFFDF8) */
+  --series-1: #2f7a4b;
+  --series-2: #2f6fb3;
+  --series-3: #d2693c;
+  --series-4: #1e9a8a;
+  --series-5: #8e4b8e;
+  --series-6: #c9940e;
+  --grid: #ebe4d4;
+  --axis: #cec4ad;
+  --muted-mark: #b9b2a2;
+
+  /* Shape & depth */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.7) inset, 0 1px 2px rgb(31 42 34 / 0.06);
+  --shadow-2: 0 1px 2px rgb(31 42 34 / 0.06), 0 10px 30px -14px rgb(31 42 34 / 0.25);
+  --shadow-3: 0 2px 6px rgb(31 42 34 / 0.08), 0 24px 60px -24px rgb(31 42 34 / 0.35);
+  --ring: 0 0 0 3px color-mix(in oklab, var(--brand-2) 35%, transparent);
+
+  /* Layout */
+  --gutter: 16px;
+  --content: 1180px;
+  --nav-h: 72px;
+  --rail-w: 264px;
+  --tap: 48px;
+
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 220ms;
+
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.14 0 0 0 0 0.1 0 0 0 .55 0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.09'/></svg>");
+}
+
+@media (min-width: 720px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0d1410;
+    --paper-2: #111a15;
+    --surface: #15201a;
+    --surface-2: #1a2720;
+    --surface-3: #213128;
+    --ink: #eaf0e6;
+    --ink-2: #b8c4ba;
+    --ink-3: #8b988f;
+    --line: #26352c;
+    --line-strong: #34473c;
+    --scrim: rgb(0 0 0 / 0.6);
+    --brand: #9ad0a2;
+    --brand-2: #6fbf83;
+    --brand-ink: #0d1a12;
+    --brand-wash: #1d3325;
+    --accent: #e9b154;
+    --accent-ink: #2a1d03;
+    --accent-wash: #3a2e17;
+    --water: #6fa6e6;
+    --water-wash: #182a3c;
+    --heat: #ea8a5f;
+    --heat-wash: #3a2219;
+    --good-ink: #63cf6a;
+    --good-wash: #183420;
+    --warning-ink: #f6c453;
+    --warning-wash: #3a2f12;
+    --serious-ink: #f2a07e;
+    --serious-wash: #3b2219;
+    --critical-ink: #f28b85;
+    --critical-wash: #3c1c1c;
+    --series-1: #479b63;
+    --series-2: #5a94d6;
+    --series-3: #d4693b;
+    --series-4: #1f9a89;
+    --series-5: #b66fc9;
+    --series-6: #be8a0e;
+    --grid: #223128;
+    --axis: #34473c;
+    --muted-mark: #4b5d52;
+    --shadow-1: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-2: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 32px -16px rgb(0 0 0 / 0.7);
+    --shadow-3: 0 2px 6px rgb(0 0 0 / 0.4), 0 24px 60px -24px rgb(0 0 0 / 0.8);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0d1410;
+  --paper-2: #111a15;
+  --surface: #15201a;
+  --surface-2: #1a2720;
+  --surface-3: #213128;
+  --ink: #eaf0e6;
+  --ink-2: #b8c4ba;
+  --ink-3: #8b988f;
+  --line: #26352c;
+  --line-strong: #34473c;
+  --scrim: rgb(0 0 0 / 0.6);
+  --brand: #9ad0a2;
+  --brand-2: #6fbf83;
+  --brand-ink: #0d1a12;
+  --brand-wash: #1d3325;
+  --accent: #e9b154;
+  --accent-ink: #2a1d03;
+  --accent-wash: #3a2e17;
+  --water: #6fa6e6;
+  --water-wash: #182a3c;
+  --heat: #ea8a5f;
+  --heat-wash: #3a2219;
+  --good-ink: #63cf6a;
+  --good-wash: #183420;
+  --warning-ink: #f6c453;
+  --warning-wash: #3a2f12;
+  --serious-ink: #f2a07e;
+  --serious-wash: #3b2219;
+  --critical-ink: #f28b85;
+  --critical-wash: #3c1c1c;
+  --series-1: #479b63;
+  --series-2: #5a94d6;
+  --series-3: #d4693b;
+  --series-4: #1f9a89;
+  --series-5: #b66fc9;
+  --series-6: #be8a0e;
+  --grid: #223128;
+  --axis: #34473c;
+  --muted-mark: #4b5d52;
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-2: 0 1px 2px rgb(0 0 0 / 0.35), 0 12px 32px -16px rgb(0 0 0 / 0.7);
+  --shadow-3: 0 2px 6px rgb(0 0 0 / 0.4), 0 24px 60px -24px rgb(0 0 0 / 0.8);
+}

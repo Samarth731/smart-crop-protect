@@ -1,0 +1,347 @@
+{
+ "train_targets_before": "2019-01",
+ "calibration_origins": "2019-01 .. 2021-12",
+ "test_origins": "2022-01 .. 2026-06",
+ "cqr_margins_market": {
+  "1": 0.021056523172019892,
+  "2": 0.04310698458632802,
+  "3": 0.05478699108974657,
+  "4": 0.06406239061938798,
+  "5": 0.07632199907148891,
+  "6": 0.08548301687192886
+ },
+ "cqr_margins_aggregate": {
+  "1": 0.0015961553395402535,
+  "2": 0.007325513074883762,
+  "3": 0.012360203002077534,
+  "4": 0.015906322529113344,
+  "5": 0.019783577396715882,
+  "6": 0.026594501781434302
+ },
+ "aggregate_model_weight": {
+  "1": 0.25,
+  "2": 0.5,
+  "3": 0.65,
+  "4": 0.8500000000000001,
+  "5": 0.9500000000000001,
+  "6": 1.0
+ },
+ "markets": {
+  "h1": {
+   "n": 19291,
+   "mape_model": 0.07307917928091527,
+   "mape_naive": 0.07423176714151816,
+   "mape_seasonal_naive": 0.11216897694180296,
+   "coverage_raw": 0.7138043647296667,
+   "coverage_conformal": 0.8375926597895391,
+   "direction_accuracy": 0.6684943820224719,
+   "skill_vs_naive": 0.01552688161667437
+  },
+  "h2": {
+   "n": 17618,
+   "mape_model": 0.10542220028902374,
+   "mape_naive": 0.12102094805809285,
+   "mape_seasonal_naive": 0.17965327660124256,
+   "coverage_raw": 0.7054149165626065,
+   "coverage_conformal": 0.855602224997162,
+   "direction_accuracy": 0.6777350016041065,
+   "skill_vs_naive": 0.12889295629696562
+  },
+  "h3": {
+   "n": 16510,
+   "mape_model": 0.12211111008850707,
+   "mape_naive": 0.14419306209333282,
+   "mape_seasonal_naive": 0.20267966159517897,
+   "coverage_raw": 0.6800726832222895,
+   "coverage_conformal": 0.8459115687462144,
+   "direction_accuracy": 0.6777653273571315,
+   "skill_vs_naive": 0.1531415706432021
+  },
+  "h4": {
+   "n": 15351,
+   "mape_model": 0.13035848410483172,
+   "mape_naive": 0.15824746576114357,
+   "mape_seasonal_naive": 0.21262812579286255,
+   "coverage_raw": 0.6845808090678132,
+   "coverage_conformal": 0.8493909191583611,
+   "direction_accuracy": 0.6732910035458068,
+   "skill_vs_naive": 0.176236513628642
+  },
+  "h5": {
+   "n": 14279,
+   "mape_model": 0.13776040818473842,
+   "mape_naive": 0.17616541030268318,
+   "mape_seasonal_naive": 0.24228705825814587,
+   "coverage_raw": 0.6907346452832831,
+   "coverage_conformal": 0.865116604804258,
+   "direction_accuracy": 0.6768502581755593,
+   "skill_vs_naive": 0.2180053510615858
+  },
+  "h6": {
+   "n": 13135,
+   "mape_model": 0.1492342790445886,
+   "mape_naive": 0.19939869808135782,
+   "mape_seasonal_naive": 0.2919817554710954,
+   "coverage_raw": 0.6988960791777693,
+   "coverage_conformal": 0.8768176627331556,
+   "direction_accuracy": 0.6714997734481196,
+   "skill_vs_naive": 0.2515784682621215
+  }
+ },
+ "zones": {
+  "h1": {
+   "n": 611,
+   "mape_model": 0.027499354009637506,
+   "mape_naive": 0.03202204519210848,
+   "mape_seasonal_naive": 0.049040261246994586,
+   "coverage_raw": 0.8756137479541735,
+   "coverage_conformal": 0.88379705400982,
+   "direction_accuracy": 0.791907514450867,
+   "skill_vs_naive": 0.1412367996902817
+  },
+  "h2": {
+   "n": 486,
+   "mape_model": 0.03486735899598787,
+   "mape_naive": 0.04455281536348015,
+   "mape_seasonal_naive": 0.07524203645434596,
+   "coverage_raw": 0.897119341563786,
+   "coverage_conformal": 0.9403292181069959,
+   "direction_accuracy": 0.806060606060606,
+   "skill_vs_naive": 0.2173926897430466
+  },
+  "h3": {
+   "n": 611,
+   "mape_model": 0.05495434833623267,
+   "mape_naive": 0.0664256439727346,
+   "mape_seasonal_naive": 0.10196012364574622,
+   "coverage_raw": 0.8608837970540099,
+   "coverage_conformal": 0.9279869067103109,
+   "direction_accuracy": 0.7667844522968198,
+   "skill_vs_naive": 0.17269378135363644
+  },
+  "h4": {
+   "n": 616,
+   "mape_model": 0.07375627879080399,
+   "mape_naive": 0.08756207520974836,
+   "mape_seasonal_naive": 0.13619891513704535,
+   "coverage_raw": 0.827922077922078,
+   "coverage_conformal": 0.8798701298701299,
+   "direction_accuracy": 0.6906906906906907,
+   "skill_vs_naive": 0.15766867546107866
+  },
+  "h5": {
+   "n": 554,
+   "mape_model": 0.0868114450015162,
+   "mape_naive": 0.11146814048660111,
+   "mape_seasonal_naive": 0.16234067638833763,
+   "coverage_raw": 0.7707581227436823,
+   "coverage_conformal": 0.868231046931408,
+   "direction_accuracy": 0.6870967741935484,
+   "skill_vs_naive": 0.22119948693365654
+  },
+  "h6": {
+   "n": 495,
+   "mape_model": 0.09931166822028935,
+   "mape_naive": 0.1295651354512552,
+   "mape_seasonal_naive": 0.18254305806139243,
+   "coverage_raw": 0.7737373737373737,
+   "coverage_conformal": 0.8767676767676768,
+   "direction_accuracy": 0.6872964169381107,
+   "skill_vs_naive": 0.23350006254072697
+  }
+ },
+ "national": {
+  "h1": {
+   "n": 552,
+   "mape_model": 0.023613577550088465,
+   "mape_naive": 0.023813192772976107,
+   "mape_seasonal_naive": 0.035244142396372594,
+   "coverage_raw": 0.7318840579710145,
+   "coverage_conformal": 0.7789855072463768,
+   "direction_accuracy": 0.7706422018348624,
+   "skill_vs_naive": 0.00838254764032198
+  },
+  "h2": {
+   "n": 526,
+   "mape_model": 0.03930488816391902,
+   "mape_naive": 0.03950410136277184,
+   "mape_seasonal_naive": 0.059253100703210305,
+   "coverage_raw": 0.6787072243346007,
+   "coverage_conformal": 0.8193916349809885,
+   "direction_accuracy": 0.7843137254901961,
+   "skill_vs_naive": 0.005042848513966081
+  },
+  "h3": {
+   "n": 535,
+   "mape_model": 0.05494470217806281,
+   "mape_naive": 0.053915471351689385,
+   "mape_seasonal_naive": 0.0800403236924757,
+   "coverage_raw": 0.6429906542056075,
+   "coverage_conformal": 0.811214953271028,
+   "direction_accuracy": 0.7731958762886598,
+   "skill_vs_naive": -0.01908971210990207
+  },
+  "h4": {
+   "n": 522,
+   "mape_model": 0.0691171166254466,
+   "mape_naive": 0.067943483501798,
+   "mape_seasonal_naive": 0.09951171904832662,
+   "coverage_raw": 0.6685823754789272,
+   "coverage_conformal": 0.8160919540229885,
+   "direction_accuracy": 0.7272727272727273,
+   "skill_vs_naive": -0.017273667218101085
+  },
+  "h5": {
+   "n": 509,
+   "mape_model": 0.07893887393976669,
+   "mape_naive": 0.08215589575939157,
+   "mape_seasonal_naive": 0.11688054723530598,
+   "coverage_raw": 0.6660117878192534,
+   "coverage_conformal": 0.8133595284872298,
+   "direction_accuracy": 0.7208333333333333,
+   "skill_vs_naive": 0.039157528378079065
+  },
+  "h6": {
+   "n": 498,
+   "mape_model": 0.08556429144657486,
+   "mape_naive": 0.09502135910968496,
+   "mape_seasonal_naive": 0.13180571340333538,
+   "coverage_raw": 0.6987951807228916,
+   "coverage_conformal": 0.8634538152610441,
+   "direction_accuracy": 0.7137404580152672,
+   "skill_vs_naive": 0.09952570402822403
+  }
+ },
+ "markets_by_crop_h3": {
+  "groundnut": {
+   "n": 977,
+   "mape_model": 0.04365447836377342,
+   "mape_naive": 0.04166843566654014,
+   "mape_seasonal_naive": 0.07212059502781958,
+   "coverage_raw": 0.7952917093142272,
+   "coverage_conformal": 0.9375639713408394,
+   "direction_accuracy": 0.5478547854785478,
+   "skill_vs_naive": -0.047663001153366524
+  },
+  "lentil": {
+   "n": 1350,
+   "mape_model": 0.059877348459068086,
+   "mape_naive": 0.046077859181400393,
+   "mape_seasonal_naive": 0.08849196048107749,
+   "coverage_raw": 0.6977777777777778,
+   "coverage_conformal": 0.9081481481481481,
+   "direction_accuracy": 0.46953405017921146,
+   "skill_vs_naive": -0.29948199683803756
+  },
+  "moong": {
+   "n": 1347,
+   "mape_model": 0.038788622188664704,
+   "mape_naive": 0.038526423561281456,
+   "mape_seasonal_naive": 0.058594740220523356,
+   "coverage_raw": 0.6622123236822569,
+   "coverage_conformal": 0.9205642167780252,
+   "direction_accuracy": 0.6188178528347407,
+   "skill_vs_naive": -0.006805683038971555
+  },
+  "mustard": {
+   "n": 1498,
+   "mape_model": 0.06215927508841715,
+   "mape_naive": 0.06170714260861836,
+   "mape_seasonal_naive": 0.10544720976761031,
+   "coverage_raw": 0.609479305740988,
+   "coverage_conformal": 0.8711615487316422,
+   "direction_accuracy": 0.5831062670299727,
+   "skill_vs_naive": -0.007327068807357895
+  },
+  "onion": {
+   "n": 1783,
+   "mape_model": 0.21632992590170286,
+   "mape_naive": 0.23697180687978459,
+   "mape_seasonal_naive": 0.22599479465533573,
+   "coverage_raw": 0.6584408300616937,
+   "coverage_conformal": 0.7605159842961301,
+   "direction_accuracy": 0.7727272727272727,
+   "skill_vs_naive": 0.08710690630195228
+  },
+  "pigeonpea": {
+   "n": 1463,
+   "mape_model": 0.09257334193622606,
+   "mape_naive": 0.06191242309841227,
+   "mape_seasonal_naive": 0.0859596446380268,
+   "coverage_raw": 0.557758031442242,
+   "coverage_conformal": 0.807928913192071,
+   "direction_accuracy": 0.775023832221163,
+   "skill_vs_naive": -0.4952304772351912
+  },
+  "potato": {
+   "n": 1517,
+   "mape_model": 0.1554235688183163,
+   "mape_naive": 0.24213504022735954,
+   "mape_seasonal_naive": 0.23577998479705772,
+   "coverage_raw": 0.7666446934739618,
+   "coverage_conformal": 0.8424522083058669,
+   "direction_accuracy": 0.8111988513998565,
+   "skill_vs_naive": 0.3581120325568041
+  },
+  "rice": {
+   "n": 947,
+   "mape_model": 0.06526511695446804,
+   "mape_naive": 0.06266261022031624,
+   "mape_seasonal_naive": 0.10210380482061789,
+   "coverage_raw": 0.7328405491024287,
+   "coverage_conformal": 0.8870116156282999,
+   "direction_accuracy": 0.6313432835820896,
+   "skill_vs_naive": -0.04153205117057235
+  },
+  "soybean": {
+   "n": 1079,
+   "mape_model": 0.08675954076643354,
+   "mape_naive": 0.08358419262827099,
+   "mape_seasonal_naive": 0.13090219397410807,
+   "coverage_raw": 0.5180722891566265,
+   "coverage_conformal": 0.7794253938832252,
+   "direction_accuracy": 0.5712574850299401,
+   "skill_vs_naive": -0.03798981647504163
+  },
+  "sugarcane": {
+   "n": 688,
+   "mape_model": 0.029798907972083392,
+   "mape_naive": 0.02972471937752449,
+   "mape_seasonal_naive": 0.04333446089719932,
+   "coverage_raw": 0.8357558139534884,
+   "coverage_conformal": 0.9665697674418605,
+   "direction_accuracy": 0.692090395480226,
+   "skill_vs_naive": -0.002495855170797645
+  },
+  "tomato": {
+   "n": 1868,
+   "mape_model": 0.37821167784864423,
+   "mape_naive": 0.5229159868604544,
+   "mape_seasonal_naive": 0.8619416613113824,
+   "coverage_raw": 0.6140256959314775,
+   "coverage_conformal": 0.6632762312633833,
+   "direction_accuracy": 0.7555679287305123,
+   "skill_vs_naive": 0.2767257315665623
+  },
+  "urad": {
+   "n": 1239,
+   "mape_model": 0.049318922498494,
+   "mape_naive": 0.04481942168431193,
+   "mape_seasonal_naive": 0.07015440132642271,
+   "coverage_raw": 0.8127522195318806,
+   "coverage_conformal": 0.9612590799031477,
+   "direction_accuracy": 0.5584255842558425,
+   "skill_vs_naive": -0.10039176421941698
+  },
+  "wheat": {
+   "n": 754,
+   "mape_model": 0.06200435603732659,
+   "mape_naive": 0.06716798301334118,
+   "mape_seasonal_naive": 0.09053592518468352,
+   "coverage_raw": 0.7546419098143236,
+   "coverage_conformal": 0.9111405835543767,
+   "direction_accuracy": 0.7392795883361921,
+   "skill_vs_naive": 0.07687631434442455
+  }
+ }
+}
