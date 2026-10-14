@@ -1,0 +1,58 @@
+name: Refresh market data
+
+# Daily: live mandi prices (needs the DATA_GOV_IN_API_KEY repository secret).
+# Monthly: re-download WFP prices, retrain and backtest the price forecaster.
+on:
+  schedule:
+    - cron: "30 3 * * *"
+    - cron: "0 4 5 * *"
+  workflow_dispatch:
+    inputs:
+      retrain_prices:
+        description: Retrain the price forecaster now
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      DATA_GOV_IN_API_KEY: ${{ secrets.DATA_GOV_IN_API_KEY }}
+    defaults:
+      run:
+        working-directory: ml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+
+      - name: Live mandi prices (Agmarknet via data.gov.in)
+        if: env.DATA_GOV_IN_API_KEY != ''
+        run: uv run python -m scp_ml.data.mandi
+
+      - name: Retrain price forecaster on the latest WFP data
+        if: github.event.schedule == '0 4 5 * *' || inputs.retrain_prices
+        run: |
+          uv run python -c "from scp_ml.data.download import download, SOURCES; download('wfp_food_prices_ind.csv', SOURCES['wfp_food_prices_ind.csv'], force=True)"
+          uv run python -m scp_ml.train.price_model
+          uv run python -m scp_ml.export.metrics
+
+      - name: Commit and redeploy if data changed
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/public/data ml/reports
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "data: refresh market prices ($(date -u +%Y-%m-%d))"
+            git push
+            gh workflow run deploy.yml --ref main
+          fi

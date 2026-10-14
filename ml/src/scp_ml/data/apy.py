@@ -96,8 +96,9 @@ def build_yield_table() -> pd.DataFrame:
     df["district_code"] = df.district_code.astype(int)
     df["season"] = [canonical_season(c, s) for c, s in zip(df.crop, df.season, strict=True)]
     df = df.dropna(subset=["season"])
-    df = (df.groupby(["district_code", "state_name", "crop", "season", "year"], as_index=False)
-            .agg(area=("area", "sum"), production=("production", "sum"), src=("src", "first")))
+    df = df.groupby(["district_code", "state_name", "crop", "season", "year"], as_index=False).agg(
+        area=("area", "sum"), production=("production", "sum"), src=("src", "first")
+    )
     df = df[(df.area > 0) & (df.production > 0)]
     df["yield_kg_ha"] = df.production * 1000 / df.area
     # States are named slightly differently across years (e.g. "Jammu And Kashmir"); take the
@@ -110,11 +111,17 @@ def build_yield_table() -> pd.DataFrame:
 
 
 def summarise(df: pd.DataFrame) -> pd.DataFrame:
-    return (df.groupby(["crop", "season"])
-              .agg(rows=("yield_kg_ha", "size"), districts=("district_code", "nunique"),
-                   years=("year", lambda y: f"{y.min()}-{y.max()}"),
-                   median_kg_ha=("yield_kg_ha", "median"))
-              .query("rows >= 300").round(0))
+    return (
+        df.groupby(["crop", "season"])
+        .agg(
+            rows=("yield_kg_ha", "size"),
+            districts=("district_code", "nunique"),
+            years=("year", lambda y: f"{y.min()}-{y.max()}"),
+            median_kg_ha=("yield_kg_ha", "median"),
+        )
+        .query("rows >= 300")
+        .round(0)
+    )
 
 
 if __name__ == "__main__":

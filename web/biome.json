@@ -1,12 +1,45 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
-  "formatter": { "indentStyle": "space", "indentWidth": 2, "lineWidth": 110 },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 110
+  },
   "linter": {
     "rules": {
       "recommended": true,
-      "a11y": { "noSvgWithoutTitle": "off" },
-      "style": { "noNonNullAssertion": "off" }
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useSemanticElements": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noDescendingSpecificity": "off"
+      },
+      "complexity": {
+        "noImportantStyles": "off"
+      }
     }
   },
-  "javascript": { "formatter": { "quoteStyle": "double", "semicolons": "always" } }
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "src/components/FieldScene.tsx",
+        "src/components/art.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    }
+  ]
 }

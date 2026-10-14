@@ -23,8 +23,7 @@ def _convert(model, n_features: int, **options) -> onnx.ModelProto:
     return to_onnx(model, sample, target_opset=OPSET, options=options or None)
 
 
-def save_quantile_stack(models: dict, n_features: int, path: Path, names: list[str],
-                        output: str = "quantiles") -> Path:
+def save_quantile_stack(models: dict, n_features: int, path: Path, names: list[str], output: str = "quantiles") -> Path:
     """Fuse several regressors that share one input into a single graph with output [N, k]."""
     graphs = [_convert(m, n_features).graph for m in models.values()]
     nodes, outputs, inits = [], [], []
@@ -41,13 +40,15 @@ def save_quantile_stack(models: dict, n_features: int, path: Path, names: list[s
         outputs.append(f"{name}_{g.output[0].name}")
     nodes.append(helper.make_node("Concat", outputs, [output], axis=1, name="concat"))
     graph = helper.make_graph(
-        nodes, "quantile_stack",
+        nodes,
+        "quantile_stack",
         [helper.make_tensor_value_info("input", onnx.TensorProto.FLOAT, [None, n_features])],
         [helper.make_tensor_value_info(output, onnx.TensorProto.FLOAT, [None, len(names)])],
         initializer=inits,
     )
-    model = helper.make_model(graph, opset_imports=[helper.make_opsetid(d, v) for d, v in OPSET.items()],
-                              producer_name="smart-crop-protect")
+    model = helper.make_model(
+        graph, opset_imports=[helper.make_opsetid(d, v) for d, v in OPSET.items()], producer_name="smart-crop-protect"
+    )
     model.ir_version = 8
     onnx.checker.check_model(model)
     _verify_regressors(model, list(models.values()), n_features)
@@ -75,7 +76,7 @@ def _verify_regressors(onx: onnx.ModelProto, models: list, n_features: int) -> N
     sess = ort.InferenceSession(onx.SerializeToString())
     rng = np.random.default_rng(0)
     X = rng.normal(size=(512, n_features)).astype(np.float32)
-    X[:, n_features // 2:] = rng.integers(0, 2, size=(512, n_features - n_features // 2))
+    X[:, n_features // 2 :] = rng.integers(0, 2, size=(512, n_features - n_features // 2))
     got = sess.run(None, {"input": X})[0]
     want = np.stack([m.predict(X) for m in models], axis=1)
     np.testing.assert_allclose(got, want, atol=1e-4)

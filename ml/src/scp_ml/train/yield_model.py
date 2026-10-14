@@ -18,11 +18,13 @@ from __future__ import annotations
 import json
 import time
 
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 from scp_ml.export.onnx_utils import save_regressor
+from scp_ml.export.trees import save_trees
 from scp_ml.features.yield_features import (
     BASE_FEATURES,
     CLIM_FEATURES,
@@ -36,15 +38,20 @@ from scp_ml.features.yield_features import (
     baseline_table,
     select_anchors,
 )
-from scp_ml.paths import PROCESSED, REPORTS, WEB_MODELS
+from scp_ml.paths import MODELS, PROCESSED, REPORTS, WEB_MODELS
 
 TRAIN_END, CAL_END = 2017, 2019
 MIN_AREA_HA = 200
 MAX_ABS_LOG_RATIO = 1.6  # beyond ~5x change the record is almost always a reporting error
 # Strong regularisation: district yields are noisy (crop-cutting sampling error), and smaller
 # trees with large leaves generalised better to 2020-24 than the 31-leaf configuration.
-PARAMS = {"learning_rate": 0.05, "max_iter": 350, "max_leaf_nodes": 15, "min_samples_leaf": 200,
-          "l2_regularization": 2.0}
+PARAMS = {
+    "learning_rate": 0.05,
+    "max_iter": 350,
+    "max_leaf_nodes": 15,
+    "min_samples_leaf": 200,
+    "l2_regularization": 2.0,
+}
 ALPHA = 0.2  # 80% prediction interval
 MIN_GROUP = 60
 
@@ -58,8 +65,9 @@ def build_dataset(use_cache: bool = True) -> tuple[pd.DataFrame, FeatureSpec]:
     y = y[(y.area >= MIN_AREA_HA) & y.crop.isin(CROPS)]
     years = sorted(y.year.unique())
     base = baseline_table(y, [t for t in years if t >= years[0] + 4])
-    df = base.merge(y[["district_code", "crop", "season", "year", "yield_kg_ha"]],
-                    on=["district_code", "crop", "season", "year"])
+    df = base.merge(
+        y[["district_code", "crop", "season", "year", "yield_kg_ha"]], on=["district_code", "crop", "season", "year"]
+    )
     df["target"] = np.log(df.yield_kg_ha) - df.log_base
     df = df[df.target.abs() <= MAX_ABS_LOG_RATIO]
     cube = WeatherCube.load()
@@ -92,8 +100,11 @@ def conformal_table(df: pd.DataFrame, resid: np.ndarray) -> dict:
     d = pd.DataFrame({"crop": df.crop.to_numpy(), "stage": stage(df.obs_frac).to_numpy(), "r": resid})
     lo_q, hi_q = ALPHA / 2, 1 - ALPHA / 2
     pooled = d.groupby("stage").r.quantile([lo_q, hi_q]).unstack()
-    table: dict = {"alpha": ALPHA, "pooled": {int(s): [float(r[lo_q]), float(r[hi_q])] for s, r in pooled.iterrows()},
-                   "by_crop": {}}
+    table: dict = {
+        "alpha": ALPHA,
+        "pooled": {int(s): [float(r[lo_q]), float(r[hi_q])] for s, r in pooled.iterrows()},
+        "by_crop": {},
+    }
     for (crop, st), g in d.groupby(["crop", "stage"]):
         if len(g) >= MIN_GROUP:
             n = len(g)
@@ -114,19 +125,26 @@ def interval(df: pd.DataFrame, table: dict) -> tuple[np.ndarray, np.ndarray]:
 def evaluate(df: pd.DataFrame, pred: np.ndarray, lo: np.ndarray, hi: np.ndarray) -> dict:
     actual = df.yield_kg_ha.to_numpy()
     lb = df.log_base.to_numpy()
-    preds = {"model": np.exp(lb + pred), "baseline": np.exp(lb),
-             "trend": np.exp(lb + df.base_trend.to_numpy() * 4)}
+    preds = {"model": np.exp(lb + pred), "baseline": np.exp(lb), "trend": np.exp(lb + df.base_trend.to_numpy() * 4)}
     ape = {k: np.abs(v - actual) / actual for k, v in preds.items()}
     t = df.target.to_numpy()
-    out = {"n": int(len(df)),
-           "mdape": {k: float(np.median(v)) for k, v in ape.items()},
-           "mape": {k: float(np.mean(v)) for k, v in ape.items()},
-           "mae_log": {"model": float(np.mean(np.abs(t - pred))), "baseline": float(np.mean(np.abs(t))),
-                       "trend": float(np.mean(np.abs(t - df.base_trend.to_numpy() * 4)))},
-           "r2_log_yield": float(1 - np.sum((np.log(actual) - np.log(preds["model"])) ** 2)
-                                 / np.sum((np.log(actual) - np.log(actual).mean()) ** 2)),
-           "coverage_80": float(np.mean((t >= pred + lo) & (t <= pred + hi))),
-           "interval_width_pct": float(np.median(np.expm1(hi - lo)))}
+    out = {
+        "n": int(len(df)),
+        "mdape": {k: float(np.median(v)) for k, v in ape.items()},
+        "mape": {k: float(np.mean(v)) for k, v in ape.items()},
+        "mae_log": {
+            "model": float(np.mean(np.abs(t - pred))),
+            "baseline": float(np.mean(np.abs(t))),
+            "trend": float(np.mean(np.abs(t - df.base_trend.to_numpy() * 4))),
+        },
+        "r2_log_yield": float(
+            1
+            - np.sum((np.log(actual) - np.log(preds["model"])) ** 2)
+            / np.sum((np.log(actual) - np.log(actual).mean()) ** 2)
+        ),
+        "coverage_80": float(np.mean((t >= pred + lo) & (t <= pred + hi))),
+        "interval_width_pct": float(np.median(np.expm1(hi - lo))),
+    }
     out["skill_vs_baseline"] = 1 - out["mae_log"]["model"] / out["mae_log"]["baseline"]
     out["skill_vs_trend"] = 1 - out["mae_log"]["model"] / out["mae_log"]["trend"]
     return out
@@ -137,10 +155,12 @@ def ablation(df: pd.DataFrame) -> dict:
     f = df[df.obs_frac == 1]
     cats = pd.get_dummies(f[["crop", "season", "state"]]).to_numpy(np.float32)
     district = [c for c in f.columns if c.startswith("d_")]
-    variants = {"no_weather": BASE_FEATURES + CLIM_FEATURES,
-                "district_weather (deployed)": BASE_FEATURES + CLIM_FEATURES + district,
-                "district_and_state_weather": BASE_FEATURES + CLIM_FEATURES + district + STATE_FEATURES,
-                "state_weather_anchors": BASE_FEATURES + CLIM_FEATURES + STATE_FEATURES}
+    variants = {
+        "no_weather": BASE_FEATURES + CLIM_FEATURES,
+        "district_weather (deployed)": BASE_FEATURES + CLIM_FEATURES + district,
+        "district_and_state_weather": BASE_FEATURES + CLIM_FEATURES + district + STATE_FEATURES,
+        "state_weather_anchors": BASE_FEATURES + CLIM_FEATURES + STATE_FEATURES,
+    }
     tr, te = (f.year <= TRAIN_END).to_numpy(), (f.year > CAL_END).to_numpy()
     y = f.target.to_numpy()
     out = {}
@@ -188,9 +208,13 @@ def run() -> dict:
     lo, hi = interval(te, table)
 
     full = (te.obs_frac == 1).to_numpy()
-    report: dict = {"params": PARAMS, "rows": {"train": len(tr), "calibrate": len(cal), "test": len(te)},
-                    "test_full_season": evaluate(te[full], p_te[full], lo[full], hi[full]),
-                    "by_stage": {}, "by_crop": {}}
+    report: dict = {
+        "params": PARAMS,
+        "rows": {"train": len(tr), "calibrate": len(cal), "test": len(te)},
+        "test_full_season": evaluate(te[full], p_te[full], lo[full], hi[full]),
+        "by_stage": {},
+        "by_crop": {},
+    }
     st = stage(te.obs_frac).to_numpy()
     for s in range(4):
         m = st == s
@@ -209,15 +233,33 @@ def run() -> dict:
     # deployment model + intervals from all out-of-sample residuals (2018-2024)
     oos = pd.concat([cal, te])
     deploy_table = conformal_table(oos, oos.target.to_numpy() - np.concatenate([p_cal, p_te]))
-    final = fit(spec.matrix(df), df.target)
+    X_all = spec.matrix(df)
+    final = fit(X_all, df.target)
+    joblib.dump({"model": final, "spec": spec.to_dict()}, MODELS / "yield.joblib")
     WEB_MODELS.mkdir(parents=True, exist_ok=True)
     path = save_regressor(final, len(spec.columns), WEB_MODELS / "yield.onnx")
+    trees = save_trees(
+        final, X_all[np.random.default_rng(0).choice(len(X_all), 400, replace=False)], WEB_MODELS / "yield.trees.json"
+    )
     meta = spec.to_dict()
-    meta.update({"target": "log(yield / baseline)", "intervals": deploy_table, "trained_rows": len(df),
-                 "data_years": [int(df.year.min()), int(df.year.max())]})
+    meta.update(
+        {
+            "target": "log(yield / baseline)",
+            "intervals": deploy_table,
+            "trained_rows": len(df),
+            "data_years": [int(df.year.min()), int(df.year.max())],
+        }
+    )
     (WEB_MODELS / "yield.meta.json").write_text(json.dumps(meta))
-    report.update({"onnx_bytes": path.stat().st_size, "trained_rows": len(df),
-                   "seconds": round(time.time() - t0), "intervals": deploy_table})
+    report.update(
+        {
+            "onnx_bytes": path.stat().st_size,
+            "trees_json_bytes": trees.stat().st_size,
+            "trained_rows": len(df),
+            "seconds": round(time.time() - t0),
+            "intervals": deploy_table,
+        }
+    )
     (REPORTS / "yield_metrics.json").write_text(json.dumps(report, indent=1, default=float))
     print(f"done in {time.time() - t0:.0f}s, onnx {path.stat().st_size / 1e6:.1f} MB")
     return report

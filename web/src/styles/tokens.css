@@ -9,8 +9,9 @@
 
   /* Type. Anek is an Indian multi-script family, so Latin, Devanagari and Gujarati share
      one voice; Fraunces gives English headlines an editorial warmth. */
-  --font-sans: "Anek Latin Variable", "Anek Devanagari Variable", "Anek Gujarati Variable", system-ui,
-    -apple-system, "Segoe UI", sans-serif;
+  --font-sans:
+    "Anek Latin Variable", "Anek Devanagari Variable", "Anek Gujarati Variable", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
   --font-display: "Fraunces Variable", "Anek Devanagari Variable", "Anek Gujarati Variable", Georgia, serif;
 
   --text-xs: 0.75rem;

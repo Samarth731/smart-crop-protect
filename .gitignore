@@ -20,3 +20,10 @@ web/coverage/
 .DS_Store
 .idea/
 .vscode/
+
+
+.claude/
+web/.claude/
+
+# Python build metadata
+*.egg-info/
