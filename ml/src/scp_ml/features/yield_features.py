@@ -4,7 +4,7 @@ The same definitions are re-implemented in TypeScript (web/src/lib/ml/yieldFeatu
 on-device inference; ``scp_ml.export.golden`` writes fixtures that the web test-suite uses
 to prove both implementations produce identical feature vectors and predictions.
 
-Design (see ml/reports/yield_model_card.md for the evidence behind each choice)
+Design (see docs/model-cards.md for the evidence behind each choice)
 ------
 * Target    log(yield / baseline). Baseline = geometric mean of the district's last <=5
             reported yields, lagged two years because DES statistics are published 1-2 years
@@ -50,22 +50,38 @@ def _months(start: tuple[int, int], n: int) -> Window:
 
 
 SEASON_WINDOWS: dict[str, Window] = {
-    "kharif": _months((0, 6), 5),   # Jun-Oct
-    "rabi": _months((0, 11), 5),    # Nov-Mar
-    "summer": _months((1, 3), 4),   # Mar-Jun of the following calendar year
+    "kharif": _months((0, 6), 5),  # Jun-Oct
+    "rabi": _months((0, 11), 5),  # Nov-Mar
+    "summer": _months((1, 3), 4),  # Mar-Jun of the following calendar year
     "annual": _months((0, 6), 12),  # Jun-May
 }
 CROP_WINDOWS: dict[tuple[str, str], Window] = {
-    ("cotton", "kharif"): _months((0, 6), 7),      # Jun-Dec, long season
+    ("cotton", "kharif"): _months((0, 6), 7),  # Jun-Dec, long season
     ("pigeonpea", "kharif"): _months((0, 6), 7),
     ("sugarcane", "kharif"): _months((0, 3), 12),  # planted spring, crushed next winter
-    ("potato", "rabi"): _months((0, 10), 5),       # Oct-Feb
+    ("potato", "rabi"): _months((0, 10), 5),  # Oct-Feb
     ("mustard", "rabi"): _months((0, 10), 5),
     ("chickpea", "rabi"): _months((0, 10), 6),
 }
 
-CROPS = ["rice", "wheat", "maize", "cotton", "groundnut", "soybean", "chickpea", "pigeonpea", "mustard",
-         "bajra", "jowar", "sugarcane", "moong", "urad", "potato", "onion"]
+CROPS = [
+    "rice",
+    "wheat",
+    "maize",
+    "cotton",
+    "groundnut",
+    "soybean",
+    "chickpea",
+    "pigeonpea",
+    "mustard",
+    "bajra",
+    "jowar",
+    "sugarcane",
+    "moong",
+    "urad",
+    "potato",
+    "onion",
+]
 SEASONS = ["kharif", "rabi", "summer", "annual"]
 
 
@@ -121,8 +137,11 @@ NUMERIC_FEATURES = BASE_FEATURES + CLIM_FEATURES + DISTRICT_FEATURES + ["obs_fra
 
 def climate_features(nrm: np.ndarray) -> dict[str, np.ndarray]:
     """Static climate context of the district for the crop window. nrm: [rows, months, var]."""
-    return {"clim_rain_log": np.log1p(nrm[..., R].sum(1)), "clim_tmax": nrm[..., TX].mean(1),
-            "clim_gwet": nrm[..., GW].mean(1)}
+    return {
+        "clim_rain_log": np.log1p(nrm[..., R].sum(1)),
+        "clim_tmax": nrm[..., TX].mean(1),
+        "clim_gwet": nrm[..., GW].mean(1),
+    }
 
 
 @dataclass
@@ -171,8 +190,9 @@ def select_anchors(yields: pd.DataFrame, cube: WeatherCube) -> dict[str, list[in
     return out
 
 
-def state_weather(cube: WeatherCube, anchors: list[int], years: np.ndarray, win: Window,
-                  observed: np.ndarray) -> dict[str, np.ndarray]:
+def state_weather(
+    cube: WeatherCube, anchors: list[int], years: np.ndarray, win: Window, observed: np.ndarray
+) -> dict[str, np.ndarray]:
     """Median over anchor districts of each anchor's own season features. years/observed: [rows]."""
     per_anchor = []
     for code in anchors:
@@ -201,17 +221,43 @@ def baseline_table(yields: pd.DataFrame, target_years: list[int], lag: int = 2) 
             yy, ll, aa = yrs[m], ly[m], area[m]
             last5 = slice(-5, None)
             trend = np.polyfit(yy - yy.mean(), ll, 1)[0] if len(yy) >= 4 else 0.0
-            out.append((code, state, crop, season, t, ll[last5].mean(), float(np.clip(trend, -0.15, 0.15)),
-                        ll[last5].std(), min(len(yy), 10), np.log(aa[last5].mean())))
-    b = pd.DataFrame(out, columns=["district_code", "state", "crop", "season", "year", "log_base",
-                                   "base_trend", "base_cv", "base_n", "log_area"])
+            out.append(
+                (
+                    code,
+                    state,
+                    crop,
+                    season,
+                    t,
+                    ll[last5].mean(),
+                    float(np.clip(trend, -0.15, 0.15)),
+                    ll[last5].std(),
+                    min(len(yy), 10),
+                    np.log(aa[last5].mean()),
+                )
+            )
+    b = pd.DataFrame(
+        out,
+        columns=[
+            "district_code",
+            "state",
+            "crop",
+            "season",
+            "year",
+            "log_base",
+            "base_trend",
+            "base_cv",
+            "base_n",
+            "log_area",
+        ],
+    )
     st = b.groupby(["state", "crop", "season", "year"]).log_base.transform("median")
     b["state_rel"] = st - b.log_base
     return b
 
 
-def assemble(base: pd.DataFrame, cube: WeatherCube, anchors: dict[str, list[int]],
-             cutoffs: str = "full") -> pd.DataFrame:
+def assemble(
+    base: pd.DataFrame, cube: WeatherCube, anchors: dict[str, list[int]], cutoffs: str = "full"
+) -> pd.DataFrame:
     """Attach climate + state-weather features to baseline rows.
 
     cutoffs: "full" (whole season observed) or "all" (one copy per cut-off 0, 1/3, 2/3, full)
@@ -235,8 +281,7 @@ def assemble(base: pd.DataFrame, cube: WeatherCube, anchors: dict[str, list[int]
                 wx = state_weather(cube, anchors[state], yrs, win, np.full(len(yrs), k))
                 parts.append(pd.DataFrame({"state": state, "year": yrs, **wx}))
             st = pd.concat(parts, ignore_index=True)
-            dwx = pd.DataFrame({f"d_{key}": v for key, v in
-                                weather_features(obs, nrm, np.full(len(g), k)).items()})
+            dwx = pd.DataFrame({f"d_{key}": v for key, v in weather_features(obs, nrm, np.full(len(g), k)).items()})
             rows = pd.concat([g, clim, dwx], axis=1).merge(st, on=["state", "year"], how="left")
             rows["obs_frac"] = k / n
             frames.append(rows)
@@ -254,8 +299,12 @@ class FeatureSpec:
 
     @property
     def columns(self) -> list[str]:
-        return (self.numeric + [f"crop={c}" for c in self.crops] + [f"season={s}" for s in self.seasons]
-                + [f"state={s}" for s in self.states])
+        return (
+            self.numeric
+            + [f"crop={c}" for c in self.crops]
+            + [f"season={s}" for s in self.seasons]
+            + [f"state={s}" for s in self.states]
+        )
 
     def matrix(self, df: pd.DataFrame) -> np.ndarray:
         X = np.zeros((len(df), len(self.columns)), dtype=np.float32)
@@ -270,8 +319,13 @@ class FeatureSpec:
         return X
 
     def to_dict(self) -> dict:
-        return {"numeric": self.numeric, "crops": self.crops, "seasons": self.seasons, "states": self.states,
-                "columns": self.columns}
+        return {
+            "numeric": self.numeric,
+            "crops": self.crops,
+            "seasons": self.seasons,
+            "states": self.states,
+            "columns": self.columns,
+        }
 
     def to_json(self) -> str:
         return json.dumps(self.to_dict(), indent=1)

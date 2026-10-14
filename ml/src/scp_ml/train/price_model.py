@@ -58,10 +58,31 @@ HORIZONS = (1, 2, 3, 4, 5, 6)
 QUANTILES = (0.1, 0.5, 0.9)
 CAL_START = pd.Period("2019-01", "M")
 TEST_START = pd.Period("2022-01", "M")
-PARAMS = {"learning_rate": 0.05, "max_iter": 400, "max_leaf_nodes": 31, "min_samples_leaf": 100,
-          "l2_regularization": 1.0}
-FEATURES = ["r1", "r2", "r3", "r6", "r12", "dev12", "vol12", "seas", "seas_n", "nr1", "nr3", "nr12", "ndev12",
-            "h", "m_sin", "m_cos"]
+PARAMS = {
+    "learning_rate": 0.05,
+    "max_iter": 400,
+    "max_leaf_nodes": 31,
+    "min_samples_leaf": 100,
+    "l2_regularization": 1.0,
+}
+FEATURES = [
+    "r1",
+    "r2",
+    "r3",
+    "r6",
+    "r12",
+    "dev12",
+    "vol12",
+    "seas",
+    "seas_n",
+    "nr1",
+    "nr3",
+    "nr12",
+    "ndev12",
+    "h",
+    "m_sin",
+    "m_cos",
+]
 
 
 def load_panel() -> pd.DataFrame:
@@ -70,9 +91,11 @@ def load_panel() -> pd.DataFrame:
     df = df[(df.pricetype == "Retail") & df.commodity.isin(wfp_to_id) & (df.price > 0)]
     df["crop"] = df.commodity.map(wfp_to_id)
     df["month"] = df.date.dt.to_period("M")
-    panel = (df.groupby(["crop", "market", "admin1", "month"], as_index=False)
-               .agg(price=("price", "median"), lat=("latitude", "first"), lon=("longitude", "first"))
-               .sort_values(["crop", "market", "month"]))
+    panel = (
+        df.groupby(["crop", "market", "admin1", "month"], as_index=False)
+        .agg(price=("price", "median"), lat=("latitude", "first"), lon=("longitude", "first"))
+        .sort_values(["crop", "market", "month"])
+    )
     g = panel.groupby(["crop", "market"])
     repeat = (panel.price == g.price.shift(1)) & (panel.month == g.month.shift(1) + 1)
     return panel[~repeat].reset_index(drop=True)
@@ -122,9 +145,18 @@ def _national_features(nat: pd.DataFrame) -> pd.DataFrame:
     for crop, g in nat.groupby("crop"):
         lp = g.set_index("month").lp
         lp = lp.reindex(pd.period_range(lp.index.min(), lp.index.max(), freq="M"))
-        rows.append(pd.DataFrame({"crop": crop, "month": lp.index, "nr1": (lp - lp.shift(1)).to_numpy(),
-                                  "nr3": (lp - lp.shift(3)).to_numpy(), "nr12": (lp - lp.shift(12)).to_numpy(),
-                                  "ndev12": (lp - lp.rolling(12, min_periods=6).mean()).to_numpy()}))
+        rows.append(
+            pd.DataFrame(
+                {
+                    "crop": crop,
+                    "month": lp.index,
+                    "nr1": (lp - lp.shift(1)).to_numpy(),
+                    "nr3": (lp - lp.shift(3)).to_numpy(),
+                    "nr12": (lp - lp.shift(12)).to_numpy(),
+                    "ndev12": (lp - lp.rolling(12, min_periods=6).mean()).to_numpy(),
+                }
+            )
+        )
     return pd.concat(rows, ignore_index=True)
 
 
@@ -159,8 +191,10 @@ def encode(rows: pd.DataFrame) -> np.ndarray:
 
 
 def fit_quantiles(X, y) -> dict:
-    return {q: HistGradientBoostingRegressor(loss="quantile", quantile=q, random_state=0, **PARAMS).fit(X, y)
-            for q in QUANTILES}
+    return {
+        q: HistGradientBoostingRegressor(loss="quantile", quantile=q, random_state=0, **PARAMS).fit(X, y)
+        for q in QUANTILES
+    }
 
 
 def cqr_margins(d: pd.DataFrame, alpha: float = 0.2) -> dict[int, float]:
@@ -229,27 +263,38 @@ def backtest(rows: pd.DataFrame) -> tuple[dict, dict]:
 
     def summary(d: pd.DataFrame) -> dict:
         ape = lambda pred: np.abs(np.expm1(pred - d.target))  # noqa: E731  error on the price level
-        res = {"n": int(len(d)),
-               "mape_model": float(ape(d.q50).mean()), "mape_naive": float(ape(0 * d.q50).mean()),
-               "mape_seasonal_naive": float(ape(d.snaive).mean()),
-               "coverage_raw": float(((d.target >= d.q10) & (d.target <= d.q90)).mean()),
-               "coverage_conformal": float(((d.target >= d.lo) & (d.target <= d.hi)).mean()),
-               "direction_accuracy": float((np.sign(d.q50) == np.sign(d.target))[d.target.abs() > 0.02].mean())}
+        res = {
+            "n": int(len(d)),
+            "mape_model": float(ape(d.q50).mean()),
+            "mape_naive": float(ape(0 * d.q50).mean()),
+            "mape_seasonal_naive": float(ape(d.snaive).mean()),
+            "coverage_raw": float(((d.target >= d.q10) & (d.target <= d.q90)).mean()),
+            "coverage_conformal": float(((d.target >= d.lo) & (d.target <= d.hi)).mean()),
+            "direction_accuracy": float((np.sign(d.q50) == np.sign(d.target))[d.target.abs() > 0.02].mean()),
+        }
         res["skill_vs_naive"] = 1 - res["mape_model"] / res["mape_naive"]
         return res
 
     zones = test.market.str.endswith("Zone")
-    out = {"train_targets_before": str(CAL_START), "calibration_origins": f"{CAL_START} .. {TEST_START - 1}",
-           "test_origins": f"{TEST_START} .. {test.month.max()}", "cqr_margins_market": margins,
-           "cqr_margins_aggregate": agg_margins, "aggregate_model_weight": lam,
-           "markets": {}, "zones": {}, "national": {}}
+    out = {
+        "train_targets_before": str(CAL_START),
+        "calibration_origins": f"{CAL_START} .. {TEST_START - 1}",
+        "test_origins": f"{TEST_START} .. {test.month.max()}",
+        "cqr_margins_market": margins,
+        "cqr_margins_aggregate": agg_margins,
+        "aggregate_model_weight": lam,
+        "markets": {},
+        "zones": {},
+        "national": {},
+    }
     for h in HORIZONS:
         th = test[test.h == h]
         out["markets"][f"h{h}"] = summary(th[th.market != "India"])
         out["zones"][f"h{h}"] = summary(th[zones[test.h == h]])
         out["national"][f"h{h}"] = summary(th[th.market == "India"])
-    out["markets_by_crop_h3"] = {c: summary(g) for c, g in test[(test.h == 3) & (test.market != "India")]
-                                 .groupby("crop")}
+    out["markets_by_crop_h3"] = {
+        c: summary(g) for c, g in test[(test.h == 3) & (test.market != "India")].groupby("crop")
+    }
     return out, {"lam": lam, "margins": agg_margins}
 
 
@@ -271,20 +316,28 @@ def forecast(rows: pd.DataFrame, models: dict, calib: dict, nat: pd.DataFrame, p
             q = apply_shrinkage(_predict(models, o), calib["lam"])
             if market == "India":
                 p0 = float(np.exp(g.lp.loc[origin]))
-                hist = g.lp.loc[origin - 59: origin]
+                hist = g.lp.loc[origin - 59 : origin]
             else:
                 s = panel[(panel.crop == crop) & (panel.market == market)].set_index("month").price
                 p0 = float(s.loc[origin])
-                hist = np.log(s.loc[origin - 35: origin])
+                hist = np.log(s.loc[origin - 35 : origin])
             fc = []
             for r in q.itertuples():
                 m = calib["margins"][int(r.h)]
-                fc.append({"month": str(origin + int(r.h)), "p10": round(p0 * float(np.exp(r.q10 - m)), 2),
-                           "p50": round(p0 * float(np.exp(r.q50)), 2),
-                           "p90": round(p0 * float(np.exp(r.q90 + m)), 2)})
-            series = {"origin": str(origin), "last": round(p0, 2),
-                      "history": [[str(k), round(float(np.exp(v)), 2)] for k, v in hist.items() if pd.notna(v)],
-                      "forecast": fc}
+                fc.append(
+                    {
+                        "month": str(origin + int(r.h)),
+                        "p10": round(p0 * float(np.exp(r.q10 - m)), 2),
+                        "p50": round(p0 * float(np.exp(r.q50)), 2),
+                        "p90": round(p0 * float(np.exp(r.q90 + m)), 2),
+                    }
+                )
+            series = {
+                "origin": str(origin),
+                "last": round(p0, 2),
+                "history": [[str(k), round(float(np.exp(v)), 2)] for k, v in hist.items() if pd.notna(v)],
+                "forecast": fc,
+            }
             if market == "India":
                 entry["national"] = series
             else:
@@ -301,16 +354,30 @@ def run() -> dict:
     print(f"{len(rows):,} rows from {rows.groupby(['crop', 'market']).ngroups} series ({time.time() - t0:.0f}s)")
     bt, calib = backtest(rows)
     for k in ("zones", "markets", "national"):
-        print(k, {h: (round(v["mape_model"], 3), round(v["mape_naive"], 3), round(v["skill_vs_naive"], 3),
-                      round(v["coverage_conformal"], 2)) for h, v in bt[k].items()})
+        print(
+            k,
+            {
+                h: (
+                    round(v["mape_model"], 3),
+                    round(v["mape_naive"], 3),
+                    round(v["skill_vs_naive"], 3),
+                    round(v["coverage_conformal"], 2),
+                )
+                for h, v in bt[k].items()
+            },
+        )
     labelled = rows[rows.target.notna()]
     models = fit_quantiles(encode(labelled), labelled.target)
     fc = forecast(rows, models, calib, nat, panel)
     WEB_DATA.mkdir(parents=True, exist_ok=True)
-    payload = {"generated": datetime.now(UTC).strftime("%Y-%m-%d"), "latest_month": str(panel.month.max()),
-               "source": "WFP VAM / Department of Consumer Affairs Price Monitoring Cell (retail), via HDX",
-               "license": "CC BY-IGO 3.0", "commodities": fc,
-               "backtest": {k: bt[k] for k in ("zones", "national", "test_origins")}}
+    payload = {
+        "generated": datetime.now(UTC).strftime("%Y-%m-%d"),
+        "latest_month": str(panel.month.max()),
+        "source": "WFP VAM / Department of Consumer Affairs Price Monitoring Cell (retail), via HDX",
+        "license": "CC BY-IGO 3.0",
+        "commodities": fc,
+        "backtest": {k: bt[k] for k in ("zones", "national", "test_origins")},
+    }
     (WEB_DATA / "prices.json").write_text(json.dumps(payload, separators=(",", ":"), default=float))
     (REPORTS / "price_metrics.json").write_text(json.dumps(bt, indent=1, default=float))
     print(f"done in {time.time() - t0:.0f}s")

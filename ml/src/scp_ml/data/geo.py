@@ -23,26 +23,75 @@ import pandas as pd
 from scp_ml.paths import PROCESSED, RAW
 
 GEONAMES_COLS = [
-    "geonameid", "name", "asciiname", "alternatenames", "lat", "lon", "fclass", "fcode",
-    "cc", "cc2", "admin1", "admin2", "admin3", "admin4", "population", "elevation", "dem",
-    "tz", "modified",
+    "geonameid",
+    "name",
+    "asciiname",
+    "alternatenames",
+    "lat",
+    "lon",
+    "fclass",
+    "fcode",
+    "cc",
+    "cc2",
+    "admin1",
+    "admin2",
+    "admin3",
+    "admin4",
+    "population",
+    "elevation",
+    "dem",
+    "tz",
+    "modified",
 ]
 
 # GeoNames admin1 code -> state name as written in the APY data.
 ADMIN1_TO_STATE = {
-    "01": "Andaman And Nicobar Islands", "02": "Andhra Pradesh", "03": "Assam", "05": "Chandigarh",
-    "07": "Delhi", "09": "Gujarat", "10": "Haryana", "11": "Himachal Pradesh", "12": "Jammu And Kashmir",
-    "13": "Kerala", "14": "Lakshadweep", "16": "Maharashtra", "17": "Manipur", "18": "Meghalaya",
-    "19": "Karnataka", "20": "Nagaland", "21": "Odisha", "22": "Puducherry", "23": "Punjab",
-    "24": "Rajasthan", "25": "Tamil Nadu", "26": "Tripura", "28": "West Bengal", "29": "Sikkim",
-    "30": "Arunachal Pradesh", "31": "Mizoram", "33": "Goa", "34": "Bihar", "35": "Madhya Pradesh",
-    "36": "Uttar Pradesh", "37": "Chhattisgarh", "38": "Jharkhand", "39": "Uttarakhand", "40": "Telangana",
-    "41": "Ladakh", "52": "The Dadra And Nagar Haveli And Daman And Diu",
+    "01": "Andaman And Nicobar Islands",
+    "02": "Andhra Pradesh",
+    "03": "Assam",
+    "05": "Chandigarh",
+    "07": "Delhi",
+    "09": "Gujarat",
+    "10": "Haryana",
+    "11": "Himachal Pradesh",
+    "12": "Jammu And Kashmir",
+    "13": "Kerala",
+    "14": "Lakshadweep",
+    "16": "Maharashtra",
+    "17": "Manipur",
+    "18": "Meghalaya",
+    "19": "Karnataka",
+    "20": "Nagaland",
+    "21": "Odisha",
+    "22": "Puducherry",
+    "23": "Punjab",
+    "24": "Rajasthan",
+    "25": "Tamil Nadu",
+    "26": "Tripura",
+    "28": "West Bengal",
+    "29": "Sikkim",
+    "30": "Arunachal Pradesh",
+    "31": "Mizoram",
+    "33": "Goa",
+    "34": "Bihar",
+    "35": "Madhya Pradesh",
+    "36": "Uttar Pradesh",
+    "37": "Chhattisgarh",
+    "38": "Jharkhand",
+    "39": "Uttarakhand",
+    "40": "Telangana",
+    "41": "Ladakh",
+    "52": "The Dadra And Nagar Haveli And Daman And Diu",
 }
 
 # States carved out of others: a district may still sit under the parent in GeoNames.
-PARENT_STATE = {"Telangana": "Andhra Pradesh", "Ladakh": "Jammu And Kashmir", "Uttarakhand": "Uttar Pradesh",
-                "Jharkhand": "Bihar", "Chhattisgarh": "Madhya Pradesh"}
+PARENT_STATE = {
+    "Telangana": "Andhra Pradesh",
+    "Ladakh": "Jammu And Kashmir",
+    "Uttarakhand": "Uttar Pradesh",
+    "Jharkhand": "Bihar",
+    "Chhattisgarh": "Madhya Pradesh",
+}
 
 # Hand-checked coordinates (district HQ) for names GeoNames does not carry.
 # Mostly districts created or renamed after 2020.
@@ -76,9 +125,15 @@ def norm(s: str) -> str:
 
 def load_geonames() -> pd.DataFrame:
     with zipfile.ZipFile(RAW / "IN.zip") as z, z.open("IN.txt") as f:
-        g = pd.read_csv(f, sep="\t", names=GEONAMES_COLS, dtype={"admin1": str, "admin2": str},
-                        usecols=["name", "asciiname", "alternatenames", "lat", "lon", "fcode", "admin1",
-                                 "population"], keep_default_na=False, quoting=3)
+        g = pd.read_csv(
+            f,
+            sep="\t",
+            names=GEONAMES_COLS,
+            dtype={"admin1": str, "admin2": str},
+            usecols=["name", "asciiname", "alternatenames", "lat", "lon", "fcode", "admin1", "population"],
+            keep_default_na=False,
+            quoting=3,
+        )
     g = g[g.fcode.isin(["ADM2", "PPLA", "PPLA2", "PPLC", "PPL", "PPLA3"])].copy()
     g["state"] = g.admin1.map(ADMIN1_TO_STATE)
     g["population"] = pd.to_numeric(g.population, errors="coerce").fillna(0)
@@ -96,8 +151,9 @@ def build_index(g: pd.DataFrame) -> dict[tuple[str, str], list[tuple[int, float,
     idx: dict[tuple[str, str], list] = {}
     for row in g.to_dict("records"):
         for k in _keys(row):
-            idx.setdefault((row["state"], k), []).append((rank[row["fcode"]], row["lat"], row["lon"],
-                                                         row["population"]))
+            idx.setdefault((row["state"], k), []).append(
+                (rank[row["fcode"]], row["lat"], row["lon"], row["population"])
+            )
     return idx
 
 
@@ -113,8 +169,10 @@ def districts_from_apy() -> pd.DataFrame:
     both["district_code"] = both.district_code.astype(int)
     # Keep every spelling (used for matching), but name each district by its APY spelling.
     names = both.groupby("district_code").agg(
-        state=("state_name", "first"), name=("district_name", "first"),
-        aliases=("district_name", lambda s: sorted(set(s))))
+        state=("state_name", "first"),
+        name=("district_name", "first"),
+        aliases=("district_name", lambda s: sorted(set(s))),
+    )
     return names.reset_index()
 
 
@@ -149,9 +207,16 @@ def build_gazetteer() -> pd.DataFrame:
                 if m:
                     hit, how = pick(idx[(st, m[0])]), f"fuzzy:{m[0]}"
                     break
-        out.append({"district_code": r["district_code"], "district": r["name"], "state": r["state"],
-                    "lat": round(hit[1], 4) if hit else None, "lon": round(hit[2], 4) if hit else None,
-                    "match": how or "unmatched"})
+        out.append(
+            {
+                "district_code": r["district_code"],
+                "district": r["name"],
+                "state": r["state"],
+                "lat": round(hit[1], 4) if hit else None,
+                "lon": round(hit[2], 4) if hit else None,
+                "match": how or "unmatched",
+            }
+        )
     gz = pd.DataFrame(out)
     # Sanity check: a district should lie within ~450 km of its state's median point.
     med = gz.groupby("state")[["lat", "lon"]].transform("median")

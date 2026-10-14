@@ -1,5 +1,6 @@
+import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import { VitePWA } from "vite-plugin-pwa";
 
 // Served from https://<user>.github.io/smart-crop-protect/ in production.
@@ -7,11 +8,13 @@ const base = process.env.BASE_PATH ?? "/smart-crop-protect/";
 
 export default defineConfig({
   base,
+  define: { __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? "2.0.0") },
+  resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   plugins: [
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["icon.svg", "icons/*.png", "ort/*.wasm"],
+      includeAssets: ["icon.svg", "icons/*.png"],
       manifest: {
         name: "Smart Crop Protect",
         short_name: "Crop Protect",
@@ -37,7 +40,7 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => /\/(models|ort)\//.test(url.pathname),
+            urlPattern: ({ url }) => url.pathname.includes("/models/") || url.pathname.endsWith(".wasm"),
             handler: "CacheFirst",
             options: { cacheName: "models", expiration: { maxEntries: 20 } },
           },

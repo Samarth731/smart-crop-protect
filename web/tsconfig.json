@@ -15,8 +15,7 @@
     "isolatedModules": true,
     "allowImportingTsExtensions": false,
     "types": ["vite/client", "vite-plugin-pwa/client"],
-    "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] }
+    "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src", "vite.config.ts"]
 }

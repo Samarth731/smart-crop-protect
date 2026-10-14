@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import re
 
+import joblib
 import numpy as np
 import onnxruntime as ort
 import pandas as pd
@@ -28,7 +29,7 @@ from scp_ml.features.yield_features import (
     baseline_table,
     window_for,
 )
-from scp_ml.paths import PROCESSED, REPO_ROOT, WEB_DATA, WEB_MODELS
+from scp_ml.paths import MODELS, PROCESSED, REPO_ROOT, WEB_DATA, WEB_MODELS
 from scp_ml.train.yield_model import MIN_AREA_HA
 
 FORECAST_YEAR = 2026  # agricultural year 2026-27: Kharif 2026, Rabi 2026-27, Zaid 2027
@@ -44,8 +45,17 @@ def export_districts() -> pd.DataFrame:
     y = pd.read_parquet(PROCESSED / "yields.parquet")
     state = y.groupby("district_code").state.last()
     gz["state"] = gz.district_code.map(state).fillna(gz.state)
-    rows = [{"c": int(r.district_code), "n": r.district, "s": r.state, "k": slug(r.state),
-             "la": round(float(r.lat), 3), "lo": round(float(r.lon), 3)} for r in gz.itertuples()]
+    rows = [
+        {
+            "c": int(r.district_code),
+            "n": r.district,
+            "s": r.state,
+            "k": slug(r.state),
+            "la": round(float(r.lat), 3),
+            "lo": round(float(r.lon), 3),
+        }
+        for r in gz.itertuples()
+    ]
     WEB_DATA.mkdir(parents=True, exist_ok=True)
     (WEB_DATA / "districts.json").write_text(json.dumps(rows, separators=(",", ":"), ensure_ascii=False))
     return gz
@@ -70,8 +80,10 @@ def export_yield_shards(cube: WeatherCube) -> int:
                 h = hist[(hist.district_code == code) & (hist.crop == r.crop) & (hist.season == r.season)]
                 series[f"{r.crop}|{r.season}"] = {
                     "b": [round(float(getattr(r, f)), 5) for f in BASE_FEATURES],
-                    "h": [[int(a), round(float(b)), round(float(c))] for a, b, c in
-                          zip(h.year, h.yield_kg_ha, h.area, strict=True)],
+                    "h": [
+                        [int(a), round(float(b)), round(float(c))]
+                        for a, b, c in zip(h.year, h.yield_kg_ha, h.area, strict=True)
+                    ],
                 }
             districts[str(code)] = {"normals": np.round(cube.normals[di], 3).tolist(), "series": series}
         payload = {"state": state, "forecastYear": FORECAST_YEAR, "vars": WX_VARS, "districts": districts}
@@ -91,6 +103,7 @@ def export_golden(cube: WeatherCube, n_cases: int = 40) -> None:
     from scp_ml.features.yield_features import climate_features, weather_features
 
     sess = ort.InferenceSession(str(WEB_MODELS / "yield.onnx"))
+    final = joblib.load(MODELS / "yield.joblib")["model"]
     cases = []
     for r in sample.itertuples():
         win = window_for(r.crop, r.season)
@@ -105,16 +118,39 @@ def export_golden(cube: WeatherCube, n_cases: int = 40) -> None:
         row["obs_frac"] = k / len(win)
         frame = pd.DataFrame([{**row, "crop": r.crop, "season": r.season, "state": r.state}])
         X = spec.matrix(frame)
-        pred = float(sess.run(None, {"input": X})[0][0, 0])
-        cases.append({
-            "crop": r.crop, "season": r.season, "state": r.state, "district": int(r.district_code),
-            "year": int(r.year), "observed": k, "base": [row[f] for f in BASE_FEATURES],
-            "normals": np.round(cube.normals[di[0]], 6).tolist(),
-            "obs": [[None if np.isnan(v) else float(v) for v in m] for m in obs[0]],
-            "expected": X[0].tolist(), "prediction": pred,
-        })
+        X64 = _matrix64(spec, frame)
+        pred = float(final.predict(X64)[0])  # float64 reference, what the JSON evaluator reproduces
+        pred_onnx = float(sess.run(None, {"input": X})[0][0, 0])
+        cases.append(
+            {
+                "crop": r.crop,
+                "season": r.season,
+                "state": r.state,
+                "district": int(r.district_code),
+                "year": int(r.year),
+                "observed": k,
+                "base": [row[f] for f in BASE_FEATURES],
+                "normals": np.round(cube.normals[di[0]], 6).tolist(),
+                "obs": [[None if np.isnan(v) else float(v) for v in m] for m in obs[0]],
+                "expected": X64[0].tolist(),
+                "prediction": pred,
+                "predictionOnnx": pred_onnx,
+            }
+        )
     FIXTURES.mkdir(parents=True, exist_ok=True)
     (FIXTURES / "yield_golden.json").write_text(json.dumps({"columns": spec.columns, "cases": cases}))
+
+
+def _matrix64(spec: FeatureSpec, frame: pd.DataFrame) -> np.ndarray:
+    X = np.zeros((len(frame), len(spec.columns)), dtype=np.float64)
+    X[:, : len(spec.numeric)] = frame[spec.numeric].to_numpy(dtype=np.float64)
+    off = len(spec.numeric)
+    for vals, col in ((spec.crops, "crop"), (spec.seasons, "season"), (spec.states, "state")):
+        v = frame[col].iloc[0]
+        if v in vals:
+            X[0, off + vals.index(v)] = 1.0
+        off += len(vals)
+    return X
 
 
 def run() -> None:

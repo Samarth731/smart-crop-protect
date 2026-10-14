@@ -58,11 +58,15 @@ h4 {
 
 h1 {
   font-size: var(--text-3xl);
-  font-variation-settings: "opsz" 120, "SOFT" 50;
+  font-variation-settings:
+    "opsz" 120,
+    "SOFT" 50;
 }
 h2 {
   font-size: var(--text-xl);
-  font-variation-settings: "opsz" 48, "SOFT" 30;
+  font-variation-settings:
+    "opsz" 48,
+    "SOFT" 30;
 }
 h3 {
   font-size: var(--text-lg);

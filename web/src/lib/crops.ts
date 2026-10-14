@@ -51,8 +51,14 @@ export interface CropInfo {
   msp?: { price: number; season: string; note?: string };
   /** paddy is grown in standing water: irrigation advice differs */
   flooded?: boolean;
-  /** quintals of produce per tonne reported (1 t = 10 q) */
   unit: "kg/ha";
+  /**
+   * Statistics report rice as milled rice and cotton as lint, but farmers sell paddy and
+   * kapas: multiply reported yield by `factor` to get the marketable produce.
+   */
+  sold?: { factor: number; label: Record<Lang, string> };
+  /** Farmers' share of the retail price (RBI 2024) for crops priced from retail data. */
+  farmGateShare?: number;
 }
 
 const KMS = "Kharif 2026-27";
@@ -75,6 +81,7 @@ export const CROPS: Record<CropId, CropInfo> = {
     msp: { price: 2441, season: KMS, note: "Common paddy; Grade A ₹2,461" },
     flooded: true,
     unit: "kg/ha",
+    sold: { factor: 1 / 0.67, label: { en: "paddy", hi: "धान", gu: "ડાંગર", mr: "भात" } },
   },
   wheat: {
     id: "wheat",
@@ -121,6 +128,10 @@ export const CROPS: Record<CropId, CropInfo> = {
     yieldModel: true,
     msp: { price: 8267, season: KMS, note: "Medium staple kapas; long staple ₹8,667" },
     unit: "kg/ha",
+    sold: {
+      factor: 1 / 0.34,
+      label: { en: "kapas", hi: "कपास (बिनौले सहित)", gu: "કપાસ", mr: "कापूस (सरकी सह)" },
+    },
   },
   groundnut: {
     id: "groundnut",
@@ -293,6 +304,7 @@ export const CROPS: Record<CropId, CropInfo> = {
     yieldModel: true,
     priceKey: "potato",
     unit: "kg/ha",
+    farmGateShare: 0.367,
   },
   onion: {
     id: "onion",
@@ -308,6 +320,7 @@ export const CROPS: Record<CropId, CropInfo> = {
     yieldModel: true,
     priceKey: "onion",
     unit: "kg/ha",
+    farmGateShare: 0.362,
   },
   tomato: {
     id: "tomato",
@@ -323,6 +336,7 @@ export const CROPS: Record<CropId, CropInfo> = {
     yieldModel: false,
     priceKey: "tomato",
     unit: "kg/ha",
+    farmGateShare: 0.335,
   },
 };
 
@@ -334,6 +348,9 @@ export const SEASON_NAMES: Record<Season, Record<Lang, string>> = {
   summer: { en: "Zaid (summer)", hi: "ज़ायद", gu: "ઉનાળુ", mr: "उन्हाळी" },
   annual: { en: "Whole year", hi: "वार्षिक", gu: "વાર્ષિક", mr: "वार्षिक" },
 };
+
+/** Reported yield (kg/ha) -> marketable produce in quintal per acre. */
+export const marketableQAcre = (c: CropInfo, kgHa: number) => (kgHa * (c.sold?.factor ?? 1) * 0.404686) / 100;
 
 export const totalDays = (c: CropInfo) => c.stages.reduce((a, b) => a + b, 0);
 

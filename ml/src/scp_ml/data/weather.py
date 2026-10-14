@@ -33,8 +33,15 @@ def fetch_one(code: int, lat: float, lon: float, retries: int = 4) -> dict:
     path = CACHE / f"{code}.json"
     if path.exists():
         return json.loads(path.read_text())
-    params = {"parameters": ",".join(PARAMS), "community": "AG", "latitude": lat, "longitude": lon,
-              "start": START, "end": END, "format": "JSON"}
+    params = {
+        "parameters": ",".join(PARAMS),
+        "community": "AG",
+        "latitude": lat,
+        "longitude": lon,
+        "start": START,
+        "end": END,
+        "format": "JSON",
+    }
     for attempt in range(retries):
         try:
             r = requests.get(URL, params=params, timeout=90)
@@ -43,7 +50,7 @@ def fetch_one(code: int, lat: float, lon: float, retries: int = 4) -> dict:
             path.write_text(json.dumps(data))
             return data
         except (requests.RequestException, KeyError, ValueError):
-            time.sleep(2 ** attempt * 3)
+            time.sleep(2**attempt * 3)
     raise RuntimeError(f"POWER request failed for district {code}")
 
 
@@ -72,12 +79,12 @@ def to_frame() -> pd.DataFrame:
         p = json.loads(path.read_text())
         keys = [k for k in p[PARAMS[0]] if not k.endswith("13")]  # YYYY13 is the annual mean
         for k in keys:
-            rows.append({"district_code": code, "year": int(k[:4]), "month": int(k[4:]),
-                         **{v: p[v].get(k) for v in PARAMS}})
+            rows.append(
+                {"district_code": code, "year": int(k[:4]), "month": int(k[4:]), **{v: p[v].get(k) for v in PARAMS}}
+            )
     df = pd.DataFrame(rows).replace(-999.0, float("nan"))
     df["rain_mm"] = df.PRECTOTCORR * df.month.map(_days_in_month)
-    df.sort_values(["district_code", "year", "month"]).to_parquet(PROCESSED / "weather_monthly.parquet",
-                                                                 index=False)
+    df.sort_values(["district_code", "year", "month"]).to_parquet(PROCESSED / "weather_monthly.parquet", index=False)
     return df
 
 
