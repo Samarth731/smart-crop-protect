@@ -1,0 +1,753 @@
+district_code,district,state,lat,lon,match,suspect
+1,Anantnag,Jammu And Kashmir,33.8333,75.1667,exact,False
+2,Budgam,Jammu And Kashmir,33.89,74.663,exact,False
+3,Baramulla,Jammu And Kashmir,34.1929,74.3692,exact,False
+4,Doda,Jammu And Kashmir,33.1008,75.6497,exact,False
+5,Jammu,Jammu And Kashmir,32.75,74.8333,exact,False
+6,Kargil,Ladakh,33.9666,76.4844,exact,False
+7,Kathua,Jammu And Kashmir,32.5833,75.5,exact,False
+8,Kupwara,Jammu And Kashmir,34.5319,74.2661,exact,False
+9,Leh Ladakh,Ladakh,34.3333,77.4167,exact,False
+10,Poonch,Jammu And Kashmir,33.7018,74.1992,exact,False
+11,Pulwama,Jammu And Kashmir,33.9329,75.0373,exact,False
+12,Rajouri,Jammu And Kashmir,33.25,74.25,exact,False
+13,Srinagar,Jammu And Kashmir,34.0833,74.8333,exact,False
+14,Udhampur,Jammu And Kashmir,33.0,75.1667,exact,False
+15,Bilaspur,Himachal Pradesh,31.3333,76.75,exact,False
+16,Chamba,Himachal Pradesh,32.5715,76.1023,exact,False
+17,Hamirpur,Himachal Pradesh,31.75,76.5,exact,False
+18,Kangra,Himachal Pradesh,32.1667,76.25,exact,False
+19,Kinnaur,Himachal Pradesh,31.5833,78.4167,exact,False
+20,Kullu,Himachal Pradesh,32.0,77.25,exact,False
+21,Lahaul And Spiti,Himachal Pradesh,32.5,77.8333,exact,False
+22,Mandi,Himachal Pradesh,31.75,77.0,exact,False
+23,Shimla,Himachal Pradesh,31.1667,77.5833,exact,False
+24,Sirmaur,Himachal Pradesh,30.75,77.5,exact,False
+25,Solan,Himachal Pradesh,31.0833,76.8333,exact,False
+26,Una,Himachal Pradesh,31.5837,76.1928,exact,False
+27,Amritsar,Punjab,31.67,74.84,exact,False
+28,Bathinda,Punjab,30.21,75.03,exact,False
+29,Faridkot,Punjab,30.65,74.75,exact,False
+30,Fatehgarh Sahib,Punjab,30.6438,76.3479,exact,False
+31,Ferozepur,Punjab,30.89,74.56,exact,False
+32,Gurdaspur,Punjab,31.92,75.27,exact,False
+33,Hoshiarpur,Punjab,31.66,75.85,exact,False
+34,Jalandhar,Punjab,31.4167,75.6167,exact,False
+35,Kapurthala,Punjab,31.4,75.31,exact,False
+36,Ludhiana,Punjab,30.84,75.82,exact,False
+37,Mansa,Punjab,29.94,75.43,exact,False
+38,Moga,Punjab,30.8038,75.1494,exact,False
+39,Sri Muktsar Sahib,Punjab,30.2873,74.5349,exact,False
+40,Shahid Bhagat Singh Nagar,Punjab,31.1318,76.1333,exact,False
+41,Patiala,Punjab,30.35,76.4,exact,False
+42,Rupnagar,Punjab,31.04,76.52,exact,False
+43,Sangrur,Punjab,30.25,75.85,exact,False
+44,Chandigarh,Chandigarh,30.7301,76.7815,exact,False
+45,Almora,Uttarakhand,29.6922,79.4979,exact,False
+46,Bageshwar,Uttarakhand,29.9732,79.8322,exact,False
+47,Chamoli,Uttarakhand,30.4949,79.5768,exact,False
+48,Champawat,Uttarakhand,29.2876,80.0374,exact,False
+49,Dehradun,Uttarakhand,30.33,78.06,exact,False
+50,Haridwar,Uttarakhand,29.9697,78.0746,exact,False
+51,Nainital,Uttarakhand,29.3169,79.4618,exact,False
+52,Pauri Garhwal,Uttarakhand,29.9637,78.9285,exact,False
+53,Pithoragarh,Uttarakhand,30.1136,80.3454,exact,False
+54,Rudraprayag,Uttarakhand,30.6087,79.0652,exact,False
+55,Tehri Garhwal,Uttarakhand,30.3474,78.4886,exact,False
+56,Udham Singh Nagar,Uttarakhand,29.0275,79.5235,exact,False
+57,Uttarkashi,Uttarakhand,30.9721,78.6068,exact,False
+58,Ambala,Haryana,30.3285,76.9422,exact,False
+59,Bhiwani,Haryana,28.75,76.1667,exact,False
+60,Faridabad,Haryana,28.4629,77.3716,exact,False
+61,Fatehabad,Haryana,29.31,75.27,exact,False
+62,Gurugram,Haryana,28.4389,77.0059,exact,False
+63,Hisar,Haryana,29.1667,75.75,exact,False
+64,Jhajjar,Haryana,28.6047,76.6494,exact,False
+65,Jind,Haryana,29.5,76.25,exact,False
+66,Kaithal,Haryana,29.814,76.4182,exact,False
+67,Karnal,Haryana,29.6667,76.8333,exact,False
+68,Kurukshetra,Haryana,30.0,76.75,exact,False
+69,Mahendragarh,Haryana,28.25,76.1667,exact,False
+70,Panchkula,Haryana,30.7288,76.9472,exact,False
+71,Panipat,Haryana,29.3326,76.9263,exact,False
+72,Rewari,Haryana,28.1961,76.6161,exact,False
+73,Rohtak,Haryana,28.8333,76.6667,exact,False
+74,Sirsa,Haryana,29.5833,75.0833,exact,False
+75,Sonipat,Haryana,29.0,76.9167,exact,False
+76,Yamunanagar,Haryana,30.2364,77.305,exact,False
+86,Ajmer,Rajasthan,26.2859,74.8642,exact,False
+87,Alwar,Rajasthan,27.3788,76.6439,exact,False
+88,Banswara,Rajasthan,23.4759,74.3631,exact,False
+89,Baran,Rajasthan,25.09,76.66,exact,False
+90,Barmer,Rajasthan,25.6678,71.1253,exact,False
+91,Bharatpur,Rajasthan,27.21,77.29,exact,False
+92,Bhilwara,Rajasthan,25.5645,74.7351,exact,False
+93,Bikaner,Rajasthan,28.1667,73.1667,exact,False
+94,Bundi,Rajasthan,25.4844,75.7937,exact,False
+95,Chittorgarh,Rajasthan,24.8169,74.5862,exact,False
+96,Churu,Rajasthan,28.3447,74.6952,exact,False
+97,Dausa,Rajasthan,26.8827,76.5705,exact,False
+98,Dholpur,Rajasthan,26.7118,77.7396,exact,False
+99,Dungarpur,Rajasthan,23.75,73.85,exact,False
+100,Ganganagar,Rajasthan,29.49,73.61,exact,False
+101,Hanumangarh,Rajasthan,29.11,74.6,exact,False
+102,Jaipur,Rajasthan,26.8986,75.6663,exact,False
+103,Jaisalmer,Rajasthan,27.0524,70.8613,exact,False
+104,Jalore,Rajasthan,25.08,72.29,exact,False
+105,Jhalawar,Rajasthan,24.4167,76.25,exact,False
+106,Jhunjhunu,Rajasthan,28.0932,75.5491,exact,False
+107,Jodhpur,Rajasthan,26.4489,73.0064,exact,False
+108,Karauli,Rajasthan,26.58,77.1,exact,False
+109,Kota,Rajasthan,25.1751,75.8441,exact,False
+110,Nagaur,Rajasthan,26.9894,73.8735,exact,False
+111,Pali,Rajasthan,25.5835,73.3837,exact,False
+112,Rajsamand,Rajasthan,25.2382,73.935,exact,False
+113,Sawai Madhopur,Rajasthan,26.18,76.4,exact,False
+114,Sikar,Rajasthan,27.4719,75.3958,exact,False
+115,Sirohi,Rajasthan,24.7618,72.7765,exact,False
+116,Tonk,Rajasthan,26.1483,75.666,exact,False
+117,Udaipur,Rajasthan,24.33,73.77,exact,False
+118,Agra,Uttar Pradesh,27.0833,77.9667,exact,False
+119,Aligarh,Uttar Pradesh,27.9271,78.0646,exact,False
+120,Prayagraj,Uttar Pradesh,25.4201,81.8838,exact,False
+121,Ambedkar Nagar,Uttar Pradesh,26.4054,82.6976,exact,False
+122,Auraiya,Uttar Pradesh,26.6469,79.4286,exact,False
+123,Azamgarh,Uttar Pradesh,26.0448,83.0673,exact,False
+124,Baghpat,Uttar Pradesh,28.95,77.2167,exact,False
+125,Bahraich,Uttar Pradesh,27.8002,81.5186,exact,False
+126,Ballia,Uttar Pradesh,25.8333,84.1667,exact,False
+127,Balrampur,Uttar Pradesh,27.4345,82.4028,exact,False
+128,Banda,Uttar Pradesh,25.4746,80.5554,exact,False
+129,Bara Banki,Uttar Pradesh,26.9386,81.3274,exact,False
+130,Bareilly,Uttar Pradesh,28.4578,79.4323,exact,False
+131,Basti,Uttar Pradesh,26.8282,82.7792,exact,False
+132,Bijnor,Uttar Pradesh,29.3869,78.3899,exact,False
+133,Budaun,Uttar Pradesh,28.0778,79.0417,exact,False
+134,Bulandshahr,Uttar Pradesh,28.358,77.9987,exact,False
+135,Chandauli,Uttar Pradesh,25.2613,83.2641,exact,False
+136,Chitrakoot,Uttar Pradesh,25.2051,81.0896,exact,False
+137,Deoria,Uttar Pradesh,26.4225,83.8337,exact,False
+138,Etah,Uttar Pradesh,27.5157,78.7175,exact,False
+139,Etawah,Uttar Pradesh,26.7634,79.0958,exact,False
+140,Ayodhya,Uttar Pradesh,26.75,82.0,exact,False
+141,Farrukhabad,Uttar Pradesh,27.4311,79.4579,exact,False
+142,Fatehpur,Uttar Pradesh,25.8758,80.8071,exact,False
+143,Firozabad,Uttar Pradesh,27.2007,78.4287,exact,False
+144,Gautam Buddha Nagar,Uttar Pradesh,28.359,77.5508,exact,False
+145,Ghaziabad,Uttar Pradesh,28.6954,77.4582,exact,False
+146,Ghazipur,Uttar Pradesh,25.6241,83.5555,exact,False
+147,Gonda,Uttar Pradesh,27.1858,81.9669,exact,False
+148,Gorakhpur,Uttar Pradesh,26.6558,83.3592,exact,False
+149,Hamirpur,Uttar Pradesh,25.7507,79.865,exact,False
+150,Hardoi,Uttar Pradesh,27.3303,80.162,exact,False
+151,Jalaun,Uttar Pradesh,26.0908,79.3865,exact,False
+152,Jaunpur,Uttar Pradesh,25.746,82.5749,exact,False
+153,Jhansi,Uttar Pradesh,25.5,78.5,exact,False
+154,Amroha,Uttar Pradesh,28.7716,78.3387,exact,False
+155,Kannauj,Uttar Pradesh,27.0177,79.6785,exact,False
+156,Kanpur Dehat,Uttar Pradesh,26.4151,79.9896,exact,False
+157,Kanpur Nagar,Uttar Pradesh,26.3805,80.2158,exact,False
+158,Kaushambi,Uttar Pradesh,25.5307,81.3773,exact,False
+159,Kheri,Uttar Pradesh,28.1211,80.6671,exact,False
+160,Kushinagar,Uttar Pradesh,26.7403,83.8889,exact,False
+161,Lalitpur,Uttar Pradesh,24.6536,78.5622,exact,False
+162,Lucknow,Uttar Pradesh,26.75,81.0,exact,False
+163,Hathras,Uttar Pradesh,27.5776,78.1616,exact,False
+164,Mahrajganj,Uttar Pradesh,27.1695,83.5067,exact,False
+165,Mahoba,Uttar Pradesh,25.2921,79.8724,exact,False
+166,Mainpuri,Uttar Pradesh,27.1822,79.0521,exact,False
+167,Mathura,Uttar Pradesh,27.5972,77.6259,exact,False
+168,Mau,Uttar Pradesh,26.0294,83.5076,exact,False
+169,Meerut,Uttar Pradesh,29.0396,77.7836,exact,False
+170,Mirzapur,Uttar Pradesh,25.1146,82.6089,exact,False
+171,Moradabad,Uttar Pradesh,28.8525,78.797,exact,False
+172,Muzaffarnagar,Uttar Pradesh,29.4175,77.7321,exact,False
+173,Pilibhit,Uttar Pradesh,28.5306,79.9948,exact,False
+174,Pratapgarh,Uttar Pradesh,25.8729,81.8286,exact,False
+175,Rae Bareli,Uttar Pradesh,26.2042,81.1916,exact,False
+176,Rampur,Uttar Pradesh,28.8279,79.1434,exact,False
+177,Saharanpur,Uttar Pradesh,29.9509,77.5463,exact,False
+178,Sant Kabir Nagar,Uttar Pradesh,26.7902,83.0348,exact,False
+179,Bhadohi,Uttar Pradesh,25.3579,82.4308,exact,False
+180,Shahjahanpur,Uttar Pradesh,27.9501,79.8215,exact,False
+181,Shrawasti,Uttar Pradesh,27.5075,82.0047,exact,False
+182,Siddharthnagar,Uttar Pradesh,27.258,83.0147,exact,False
+183,Sitapur,Uttar Pradesh,27.5184,80.8563,exact,False
+184,Sonbhadra,Uttar Pradesh,24.4021,83.0535,exact,False
+185,Sultanpur,Uttar Pradesh,26.2622,82.1944,exact,False
+186,Unnao,Uttar Pradesh,26.6087,80.5621,exact,False
+187,Varanasi,Uttar Pradesh,25.3882,82.9139,exact,False
+188,Araria,Bihar,26.2,87.4,exact,False
+189,Aurangabad,Bihar,24.75,84.5,exact,False
+190,Banka,Bihar,24.8921,86.9843,exact,False
+191,Begusarai,Bihar,25.5,86.25,exact,False
+192,Bhagalpur,Bihar,25.2902,87.0666,exact,False
+193,Bhojpur,Bihar,25.3089,84.445,exact,False
+194,Buxar,Bihar,25.5,84.1,exact,False
+195,Darbhanga,Bihar,26.0,86.0,exact,False
+196,Gaya,Bihar,24.75,85.0,exact,False
+197,Gopalganj,Bihar,26.5,84.3333,exact,False
+198,Jamui,Bihar,24.9208,86.1754,exact,False
+199,Jehanabad,Bihar,25.207,84.9957,exact,False
+200,Kaimur (Bhabua),Bihar,25.0508,83.5826,exact,False
+201,Katihar,Bihar,25.5,87.6,exact,False
+202,Khagaria,Bihar,25.5,86.6,exact,False
+203,Kishanganj,Bihar,26.3,88.0,exact,False
+204,Lakhisarai,Bihar,25.2,86.2,exact,False
+205,Madhepura,Bihar,25.8,87.0,exact,False
+206,Madhubani,Bihar,26.3333,86.0833,exact,False
+207,Munger,Bihar,25.361,86.4651,exact,False
+208,Muzaffarpur,Bihar,26.1667,85.4167,exact,False
+209,Nalanda,Bihar,25.25,85.5833,exact,False
+210,Nawada,Bihar,24.75,85.5,exact,False
+211,Pashchim Champaran,Bihar,27.0,84.5,exact,False
+212,Patna,Bihar,25.4167,85.1667,exact,False
+213,Purbi Champaran,Bihar,26.5833,84.8333,exact,False
+214,Purnia,Bihar,25.8161,87.4071,exact,False
+215,Rohtas,Bihar,24.9794,84.0277,exact,False
+216,Saharsa,Bihar,25.8166,86.5898,exact,False
+217,Samastipur,Bihar,25.75,85.9167,exact,False
+218,Saran,Bihar,25.9167,84.75,exact,False
+219,Sheikhpura,Bihar,25.1307,85.7818,exact,False
+220,Sheohar,Bihar,26.5,85.3,exact,False
+221,Sitamarhi,Bihar,26.6667,85.5,exact,False
+222,Siwan,Bihar,26.1667,84.5,exact,False
+223,Supaul,Bihar,26.25,86.8,exact,False
+224,Vaishali,Bihar,25.75,85.4167,exact,False
+225,Gangtok,Sikkim,27.3333,88.6667,exact,False
+226,Mangan,Sikkim,27.6667,88.5,exact,False
+227,Namchi,Sikkim,27.3112,88.3744,exact,False
+228,Gyalshing,Sikkim,27.3333,88.25,exact,False
+229,Changlang,Arunachal Pradesh,27.3626,96.3452,exact,False
+230,Dibang Valley,Arunachal Pradesh,28.7,95.7,exact,False
+231,East Kameng,Arunachal Pradesh,27.3,93.05,exact,False
+232,East Siang,Arunachal Pradesh,28.0084,95.3045,exact,False
+233,Kurung Kumey,Arunachal Pradesh,27.9998,93.3924,exact,False
+234,Lohit,Arunachal Pradesh,27.9858,96.1755,exact,False
+235,Lower Dibang Valley,Arunachal Pradesh,28.3726,95.8804,exact,False
+236,Lower Subansiri,Arunachal Pradesh,27.5648,93.7943,exact,False
+237,Papum Pare,Arunachal Pradesh,27.2888,93.5969,exact,False
+238,Tawang,Arunachal Pradesh,27.6619,91.9536,exact,False
+239,Tirap,Arunachal Pradesh,27.0192,95.5179,exact,False
+240,Upper Siang,Arunachal Pradesh,28.8335,94.9181,exact,False
+241,Upper Subansiri,Arunachal Pradesh,28.3,94.0,exact,False
+242,West Kameng,Arunachal Pradesh,27.4,92.35,exact,False
+243,West Siang,Arunachal Pradesh,28.142,94.5144,exact,False
+244,Dimapur,Nagaland,25.9017,93.7175,exact,False
+245,Kohima,Nagaland,25.75,94.1667,exact,False
+246,Mokokchung,Nagaland,26.3139,94.5168,exact,False
+247,Mon,Nagaland,26.75,94.8333,exact,False
+248,Phek,Nagaland,25.75,94.5,exact,False
+249,Tuensang,Nagaland,26.25,94.75,exact,False
+250,Wokha,Nagaland,26.1667,94.25,exact,False
+251,Zunheboto,Nagaland,26.0,94.5,exact,False
+252,Bishnupur,Manipur,24.6077,93.78,exact,False
+253,Chandel,Manipur,24.2355,94.0932,exact,False
+254,Churachandpur,Manipur,24.3333,93.6833,exact,False
+255,Imphal East,Manipur,24.8165,93.9421,exact,False
+256,Imphal West,Manipur,24.7905,93.8679,exact,False
+257,Senapati,Manipur,25.2671,94.0224,exact,False
+258,Tamenglong,Manipur,24.9755,93.5156,exact,False
+259,Thoubal,Manipur,24.6221,94.01,exact,False
+260,Ukhrul,Manipur,25.0483,94.3588,exact,False
+261,Aizawl,Mizoram,23.8241,92.7652,exact,False
+262,Champhai,Mizoram,23.4744,93.3256,exact,False
+263,Kolasib,Mizoram,24.2221,92.677,exact,False
+264,Lawngtlai,Mizoram,22.53,92.9,exact,False
+265,Lunglei,Mizoram,22.9,92.75,exact,False
+266,Mamit,Mizoram,23.7849,92.4694,exact,False
+267,Siaha,Mizoram,22.49,92.98,manual,False
+268,Serchhip,Mizoram,23.2817,92.9004,exact,False
+269,Dhalai,Tripura,23.8431,91.9259,exact,False
+270,North Tripura,Tripura,24.3554,92.171,exact,False
+271,South Tripura,Tripura,23.1671,91.6095,exact,False
+272,West Tripura,Tripura,23.8858,91.3996,exact,False
+273,East Garo Hills,Meghalaya,25.6137,90.6243,exact,False
+274,East Khasi Hills,Meghalaya,25.3805,91.7891,exact,False
+275,West Jaintia Hills,Meghalaya,25.5,92.25,exact,False
+276,Ri Bhoi,Meghalaya,25.89,91.8271,exact,False
+277,South Garo Hills,Meghalaya,25.3016,90.5853,exact,False
+278,West Garo Hills,Meghalaya,25.5679,90.2245,exact,False
+279,West Khasi Hills,Meghalaya,25.5478,91.2696,exact,False
+280,Barpeta,Assam,26.308,90.9971,exact,False
+281,Bongaigaon,Assam,26.4603,90.6464,exact,False
+282,Cachar,Assam,24.7821,92.8577,exact,False
+283,Darrang,Assam,26.5119,92.1684,exact,False
+284,Dhemaji,Assam,27.6091,94.7942,exact,False
+285,Dhubri,Assam,26.0675,90.0224,exact,False
+286,Dibrugarh,Assam,27.5,95.0,exact,False
+287,Goalpara,Assam,26.1279,90.6097,exact,False
+288,Golaghat,Assam,26.4092,93.9119,exact,False
+289,Hailakandi,Assam,24.5017,92.6007,exact,False
+290,Jorhat,Assam,26.8,94.26,exact,False
+291,Kamrup,Assam,26.2232,91.6534,exact,False
+292,Karbi Anglong,Assam,26.0,93.5,exact,False
+293,Sribhumi,Assam,24.87,92.36,manual,False
+294,Kokrajhar,Assam,26.6,90.2,exact,False
+295,Lakhimpur,Assam,27.35,94.25,exact,False
+296,Marigaon,Assam,26.2521,92.3424,exact,False
+297,Nagaon,Assam,26.3504,92.6923,exact,False
+298,Nalbari,Assam,26.5,91.4,exact,False
+299,Dima Hasao,Assam,25.5,93.0,exact,False
+300,Sivasagar,Assam,26.9164,94.6555,exact,False
+301,Sonitpur,Assam,26.7675,92.9643,exact,False
+302,Tinsukia,Assam,27.6,95.6,exact,False
+303,North 24 Parganas,West Bengal,22.71,88.7108,exact,False
+304,South 24 Parganas,West Bengal,22.162,88.4317,exact,False
+305,Bankura,West Bengal,23.137,87.1357,exact,False
+306,Purba Bardhaman,West Bengal,23.3592,87.9473,exact,False
+307,Birbhum,West Bengal,23.9536,87.6616,exact,False
+308,Cooch Behar,West Bengal,26.2928,89.3471,exact,False
+309,Darjeeling,West Bengal,26.8503,88.2583,exact,False
+310,Dakshin Dinajpur,West Bengal,25.22,88.76,exact,False
+311,Uttar Dinajpur,West Bengal,25.614,88.126,exact,False
+312,Hooghly,West Bengal,22.8289,88.201,exact,False
+313,Howrah,West Bengal,22.6,88.25,exact,False
+314,Jalpaiguri,West Bengal,26.5197,88.7146,exact,False
+316,Malda,West Bengal,25.1372,88.0899,exact,False
+317,Purba Medinipur,West Bengal,21.9373,87.7763,exact,False
+318,Paschim Medinipur,West Bengal,22.4081,87.3811,exact,False
+319,Murshidabad,West Bengal,24.1,88.25,exact,False
+320,Nadia,West Bengal,23.4786,88.517,exact,False
+321,Purulia,West Bengal,23.2766,86.4214,exact,False
+322,Bokaro,Jharkhand,23.6856,85.9903,exact,False
+323,Chatra,Jharkhand,24.1735,84.8871,exact,False
+324,Deoghar,Jharkhand,24.4438,86.7261,exact,False
+325,Dhanbad,Jharkhand,23.75,86.4167,exact,False
+326,Dumka,Jharkhand,24.3,87.25,exact,False
+327,East Singhbum,Jharkhand,22.5924,86.4834,exact,False
+328,Garhwa,Jharkhand,24.0749,83.7102,exact,False
+329,Giridih,Jharkhand,24.25,85.9167,exact,False
+330,Godda,Jharkhand,24.8333,87.2167,exact,False
+331,Gumla,Jharkhand,23.0805,84.5383,exact,False
+332,Hazaribagh,Jharkhand,24.0,85.25,exact,False
+333,Jamtara,Jharkhand,24.0,86.85,exact,False
+334,Koderma,Jharkhand,24.437,85.5956,exact,False
+335,Latehar,Jharkhand,23.75,84.4,exact,False
+336,Lohardaga,Jharkhand,23.5,84.6,exact,False
+337,Pakur,Jharkhand,24.5706,87.6707,exact,False
+338,Palamu,Jharkhand,23.9167,84.0833,exact,False
+339,Ranchi,Jharkhand,23.3313,85.3708,exact,False
+340,Sahebganj,Jharkhand,24.9935,87.6733,exact,False
+341,Saraikela Kharsawan,Jharkhand,22.8391,85.8959,exact,False
+342,Simdega,Jharkhand,22.6,84.6,exact,False
+343,West Singhbhum,Jharkhand,22.5,85.5,exact,False
+344,Angul,Odisha,20.849,85.0608,exact,False
+345,Balangir,Odisha,20.75,83.25,exact,False
+346,Balasore,Odisha,21.5,86.75,exact,False
+347,Bargarh,Odisha,21.3333,83.6167,exact,False
+348,Bhadrak,Odisha,21.0,86.6,exact,False
+349,Boudh,Odisha,20.833,84.333,exact,False
+350,Cuttack,Odisha,20.5,86.25,exact,False
+351,Deogarh,Odisha,21.4659,84.8037,exact,False
+352,Dhenkanal,Odisha,20.75,85.5,exact,False
+353,Gajapati,Odisha,18.91,84.2,exact,False
+354,Ganjam,Odisha,19.5,84.5,exact,False
+355,Jagatsinghapur,Odisha,20.2,86.3,exact,False
+356,Jajpur,Odisha,20.8415,86.3124,exact,False
+357,Jharsuguda,Odisha,21.85,84.0,exact,False
+358,Kalahandi,Odisha,19.75,83.0,exact,False
+359,Kandhamal,Odisha,20.3,84.0,exact,False
+360,Kendrapara,Odisha,20.5,86.5,exact,False
+361,Keonjhar,Odisha,21.5,85.5,exact,False
+362,Khordha,Odisha,20.2,85.6,exact,False
+363,Koraput,Odisha,19.0,83.0,exact,False
+364,Malkangiri,Odisha,18.25,81.95,exact,False
+365,Mayurbhanj,Odisha,21.75,86.5,exact,False
+366,Nabarangpur,Odisha,19.2333,82.55,exact,False
+367,Nayagarh,Odisha,20.13,85.1,exact,False
+368,Nuapada,Odisha,20.6,82.5,exact,False
+369,Puri,Odisha,19.9,85.6,exact,False
+370,Rayagada,Odisha,19.4,83.5,exact,False
+371,Sambalpur,Odisha,21.4,83.8833,exact,False
+372,Sonepur,Odisha,20.9315,83.8249,exact,False
+373,Sundargarh,Odisha,22.25,84.5,exact,False
+374,Bastar,Chhattisgarh,19.2679,81.7383,exact,False
+375,Bilaspur,Chhattisgarh,22.3833,82.1333,exact,False
+376,Dakshin Bastar Dantewada,Chhattisgarh,18.5,81.3796,exact,False
+377,Dhamtari,Chhattisgarh,20.5,81.8,exact,False
+378,Durg,Chhattisgarh,21.15,81.4,exact,False
+379,Janjgir-Champa,Chhattisgarh,21.9,82.7,exact,False
+380,Jashpur,Chhattisgarh,22.7849,83.8457,exact,False
+381,Uttar Bastar Kanker,Chhattisgarh,20.2,81.1,exact,False
+382,Kabeerdham,Chhattisgarh,22.1,81.2,exact,False
+383,Korba,Chhattisgarh,22.5,82.6,exact,False
+384,Korea,Chhattisgarh,23.4299,82.5178,exact,False
+385,Mahasamund,Chhattisgarh,21.2,82.5,exact,False
+386,Raigarh,Chhattisgarh,22.0858,83.306,exact,False
+387,Raipur,Chhattisgarh,21.2562,81.6902,exact,False
+388,Rajnandgaon,Chhattisgarh,21.1667,81.0,exact,False
+389,Surguja,Chhattisgarh,22.8962,83.0963,exact,False
+390,Anuppur,Madhya Pradesh,23.0567,81.684,exact,False
+391,Ashoknagar,Madhya Pradesh,24.58,77.73,exact,False
+392,Balaghat,Madhya Pradesh,21.9667,80.3333,exact,False
+393,Barwani,Madhya Pradesh,22.0249,74.918,exact,False
+394,Betul,Madhya Pradesh,21.8333,77.8333,exact,False
+395,Bhind,Madhya Pradesh,26.5,78.75,exact,False
+396,Bhopal,Madhya Pradesh,23.5,77.4167,exact,False
+397,Burhanpur,Madhya Pradesh,21.31,76.23,exact,False
+398,Chhatarpur,Madhya Pradesh,24.75,79.75,exact,False
+399,Chhindwara,Madhya Pradesh,22.1167,78.8,exact,False
+400,Damoh,Madhya Pradesh,23.75,79.5833,exact,False
+401,Datia,Madhya Pradesh,25.75,78.5,exact,False
+402,Dewas,Madhya Pradesh,23.0,76.1667,exact,False
+403,Dhar,Madhya Pradesh,22.5,75.25,exact,False
+404,Dindori,Madhya Pradesh,22.8,81.1,exact,False
+405,Khandwa (East Nimar),Madhya Pradesh,21.82,76.35,manual,False
+406,Guna,Madhya Pradesh,24.5546,77.2008,exact,False
+407,Gwalior,Madhya Pradesh,26.2,78.2,exact,False
+408,Harda,Madhya Pradesh,22.2341,76.9643,exact,False
+409,Narmadapuram,Madhya Pradesh,22.5883,77.9889,exact,False
+410,Indore,Madhya Pradesh,22.6667,75.75,exact,False
+411,Jabalpur,Madhya Pradesh,23.16,79.95,exact,False
+412,Jhabua,Madhya Pradesh,22.8906,74.6718,exact,False
+413,Katni,Madhya Pradesh,23.8356,80.3942,exact,False
+414,Khargone (West Nimar),Madhya Pradesh,21.8231,75.6103,exact,False
+415,Mandla,Madhya Pradesh,22.6404,80.5134,exact,False
+416,Mandsaur,Madhya Pradesh,24.1512,75.364,exact,False
+417,Morena,Madhya Pradesh,26.1667,77.5,exact,False
+418,Narsimhapur,Madhya Pradesh,22.9167,79.1667,exact,False
+419,Neemuch,Madhya Pradesh,24.47,74.87,exact,False
+420,Panna,Madhya Pradesh,24.5,80.25,exact,False
+421,Raisen,Madhya Pradesh,23.25,78.0833,exact,False
+422,Rajgarh,Madhya Pradesh,23.8333,76.75,exact,False
+423,Ratlam,Madhya Pradesh,23.5833,75.1667,exact,False
+424,Rewa,Madhya Pradesh,24.75,81.5,exact,False
+425,Sagar,Madhya Pradesh,23.75,78.75,exact,False
+426,Satna,Madhya Pradesh,24.5,81.0,exact,False
+427,Sehore,Madhya Pradesh,22.9911,77.1285,exact,False
+428,Seoni,Madhya Pradesh,22.4167,79.6667,exact,False
+429,Shahdol,Madhya Pradesh,23.5,81.5,exact,False
+430,Shajapur,Madhya Pradesh,23.5,76.25,exact,False
+431,Sheopur,Madhya Pradesh,25.8,77.0,exact,False
+432,Shivpuri,Madhya Pradesh,25.5,78.0,exact,False
+433,Sidhi,Madhya Pradesh,24.25,82.0,exact,False
+434,Tikamgarh,Madhya Pradesh,24.75,79.0,exact,False
+435,Ujjain,Madhya Pradesh,23.4167,75.5,exact,False
+436,Umaria,Madhya Pradesh,23.5287,80.8305,exact,False
+437,Vidisha,Madhya Pradesh,23.9167,78.0,exact,False
+438,Ahmedabad,Gujarat,23.03,72.58,exact,False
+439,Amreli,Gujarat,21.5079,71.1832,exact,False
+440,Anand,Gujarat,22.4,72.75,exact,False
+441,Banas Kantha,Gujarat,24.25,72.5,exact,False
+442,Bharuch,Gujarat,21.75,73.0,exact,False
+443,Bhavnagar,Gujarat,21.6667,71.8333,exact,False
+444,Dangs,Gujarat,20.75,73.75,exact,False
+445,Dahod,Gujarat,22.9,74.0,exact,False
+446,Gandhinagar,Gujarat,23.2148,72.6498,exact,False
+447,Jamnagar,Gujarat,22.25,70.0,exact,False
+448,Junagadh,Gujarat,21.25,70.3333,exact,False
+449,Kachchh,Gujarat,23.5833,70.0,exact,False
+450,Kheda,Gujarat,22.75,72.8333,exact,False
+451,Mahesana,Gujarat,23.6667,72.5,exact,False
+452,Narmada,Gujarat,21.8738,73.4953,exact,False
+453,Navsari,Gujarat,20.95,72.92,exact,False
+454,Panch Mahals,Gujarat,22.75,73.6,exact,False
+455,Patan,Gujarat,23.7,71.8,exact,False
+456,Porbandar,Gujarat,21.6533,69.7781,exact,False
+457,Rajkot,Gujarat,22.3333,70.8333,exact,False
+458,Sabar Kantha,Gujarat,23.6297,73.002,exact,False
+459,Surat,Gujarat,21.178,72.8119,exact,False
+460,Surendranagar,Gujarat,22.75,71.6667,exact,False
+461,Vadodara,Gujarat,22.18,73.12,exact,False
+462,Valsad,Gujarat,20.5,73.0833,exact,False
+463,Daman,The Dadra And Nagar Haveli And Daman And Diu,20.4167,72.8833,exact,False
+464,Diu,The Dadra And Nagar Haveli And Daman And Diu,20.7208,70.9399,exact,False
+465,Dadra And Nagar Haveli,The Dadra And Nagar Haveli And Daman And Diu,20.2065,73.0081,exact,False
+466,Ahilyanagar,Maharashtra,19.0946,74.7384,exact,False
+467,Akola,Maharashtra,20.5,77.1667,exact,False
+468,Amravati,Maharashtra,20.9348,77.7569,exact,False
+469,Chhatrapati Sambhajinagar,Maharashtra,19.8776,75.3423,exact,False
+470,Beed,Maharashtra,18.8333,75.75,exact,False
+471,Bhandara,Maharashtra,21.1833,80.0,exact,True
+472,Buldhana,Maharashtra,20.5833,76.4167,exact,False
+473,Chandrapur,Maharashtra,20.1179,79.4438,exact,False
+474,Dhule,Maharashtra,21.0685,74.5884,exact,False
+475,Gadchiroli,Maharashtra,19.8,80.2,exact,True
+476,Gondia,Maharashtra,21.05,80.25,exact,True
+477,Hingoli,Maharashtra,19.7,77.15,exact,False
+478,Jalgaon,Maharashtra,21.0,75.5,exact,False
+479,Jalna,Maharashtra,19.8,75.9,exact,False
+480,Kolhapur,Maharashtra,16.6901,74.2298,exact,False
+481,Latur,Maharashtra,18.4,76.8,exact,False
+482,Mumbai,Maharashtra,18.9596,72.8496,exact,False
+483,Mumbai Suburban,Maharashtra,19.1264,72.849,exact,False
+484,Nagpur,Maharashtra,21.1491,79.1075,exact,False
+485,Nanded,Maharashtra,18.9167,77.5,exact,False
+486,Nandurbar,Maharashtra,21.37,74.2,exact,False
+487,Nashik,Maharashtra,19.9829,73.7894,exact,False
+488,Dharashiv,Maharashtra,18.1816,76.0389,exact,False
+489,Parbhani,Maharashtra,19.5,76.75,exact,False
+490,Pune,Maharashtra,18.7467,73.7546,exact,False
+491,Raigad,Maharashtra,18.57,73.13,exact,False
+492,Ratnagiri,Maharashtra,17.0,73.5,exact,False
+493,Sangli,Maharashtra,17.112,74.7699,exact,False
+494,Satara,Maharashtra,17.726,74.0643,exact,False
+495,Sindhudurg,Maharashtra,16.17,73.7,exact,False
+496,Solapur,Maharashtra,17.75,75.5,exact,False
+497,Thane,Maharashtra,19.3333,73.25,exact,False
+498,Wardha,Maharashtra,20.8333,78.6,exact,False
+499,Washim,Maharashtra,20.2,77.2,exact,False
+500,Yavatmal,Maharashtra,20.15,78.35,exact,False
+501,Adilabad,Telangana,19.5188,78.5673,exact,False
+502,Ananthapuramu,Andhra Pradesh,14.55,77.4167,fuzzy:ananthapur,False
+503,Chittoor,Andhra Pradesh,13.4167,79.0,exact,False
+504,Y.S.R. Kadapa,Andhra Pradesh,14.4167,78.75,exact,False
+505,East Godavari,Andhra Pradesh,17.0753,81.719,exact,False
+506,Guntur,Andhra Pradesh,16.2715,80.4331,exact,False
+507,Hyderabad,Telangana,17.4016,78.4898,exact,False
+508,Karimnagar,Telangana,18.3384,79.2294,exact,False
+509,Khammam,Telangana,17.2304,80.2134,exact,False
+510,Krishna,Andhra Pradesh,16.3031,80.9957,exact,False
+511,Kurnool,Andhra Pradesh,15.6113,77.6526,exact,False
+512,Mahabubnagar,Telangana,16.7609,77.9959,exact,False
+513,Medak,Telangana,17.9547,78.2617,exact,False
+514,Nalgonda,Telangana,16.8765,79.1929,exact,False
+515,Sri Potti Sriramulu Nellore,Andhra Pradesh,14.7455,79.7053,exact,False
+516,Nizamabad,Telangana,18.75,78.25,exact,False
+517,Prakasam,Andhra Pradesh,15.5,79.5,exact,False
+518,Ranga Reddy,Telangana,17.2788,78.1684,exact,False
+519,Srikakulam,Andhra Pradesh,18.5,84.0,exact,False
+520,Visakhapatnam,Andhra Pradesh,17.7333,83.2667,exact,False
+521,Vizianagaram,Andhra Pradesh,18.411,83.3768,exact,False
+522,Warangal,Telangana,18.0,79.8333,exact,False
+523,West Godavari,Andhra Pradesh,16.531,81.6205,exact,False
+524,Bagalkote,Karnataka,16.18,75.69,fuzzy:bagalkot,False
+525,Bengaluru Urban,Karnataka,13.0,77.5833,exact,False
+526,Bengaluru Rural,Karnataka,13.0,77.5833,exact,False
+527,Belagavi,Karnataka,16.3333,74.75,exact,False
+528,Ballari,Karnataka,15.15,76.55,exact,False
+529,Bidar,Karnataka,18.0833,77.3333,exact,False
+530,Vijayapura,Karnataka,16.6667,75.9167,exact,False
+531,Chamarajanagar,Karnataka,11.96,77.09,exact,False
+532,Chikkamagaluru,Karnataka,13.49,75.73,exact,False
+533,Chitradurga,Karnataka,14.2,76.5,exact,False
+534,Dakshina Kannada,Karnataka,12.84,75.29,exact,False
+535,Davanagere,Karnataka,14.43,75.9,exact,False
+536,Dharwad,Karnataka,15.37,75.14,exact,False
+537,Gadag,Karnataka,15.4984,75.6519,exact,False
+538,Kalaburagi,Karnataka,17.1667,77.0833,exact,False
+539,Hassan,Karnataka,12.95,76.0833,exact,False
+540,Haveri,Karnataka,14.7373,75.4106,exact,False
+541,Kodagu,Karnataka,12.4167,75.75,exact,False
+542,Kolar,Karnataka,13.13,78.23,exact,False
+543,Koppal,Karnataka,15.5,76.2,exact,False
+544,Mandya,Karnataka,12.5833,76.6667,exact,False
+545,Mysuru,Karnataka,12.23,76.42,exact,False
+546,Raichur,Karnataka,16.16,76.91,exact,False
+547,Shivamogga,Karnataka,14.05,75.16,exact,False
+548,Tumakuru,Karnataka,13.5,77.0,exact,False
+549,Udupi,Karnataka,13.5,74.87,exact,False
+550,Uttara Kannada,Karnataka,14.8833,74.5833,exact,False
+551,North Goa,Goa,15.6285,73.8903,exact,False
+552,South Goa,Goa,15.2043,74.1673,exact,False
+554,Alappuzha,Kerala,9.4167,76.5,exact,False
+555,Ernakulam,Kerala,10.0,76.5,exact,False
+556,Idukki,Kerala,10.0,77.0,exact,False
+557,Kannur,Kerala,12.1667,75.3333,exact,False
+558,Kasaragod,Kerala,12.4925,74.9906,exact,False
+559,Kollam,Kerala,8.9569,76.8527,exact,False
+560,Kottayam,Kerala,9.6667,76.6667,exact,False
+561,Kozhikode,Kerala,11.5,76.0,exact,False
+562,Malappuram,Kerala,11.0,76.1667,exact,False
+563,Palakkad,Kerala,10.775,76.651,exact,False
+564,Pathanamthitta,Kerala,9.2807,76.8697,exact,False
+565,Thiruvananthapuram,Kerala,8.604,76.9857,exact,False
+566,Thrissur,Kerala,10.5202,76.2204,exact,False
+567,Wayanad,Kerala,11.605,76.083,exact,False
+568,Chennai,Tamil Nadu,13.0889,80.2648,exact,False
+569,Coimbatore,Tamil Nadu,10.8,77.09,exact,False
+570,Cuddalore,Tamil Nadu,11.52,79.51,exact,False
+571,Dharmapuri,Tamil Nadu,12.13,78.24,exact,False
+572,Dindigul,Tamil Nadu,10.4,77.8,exact,False
+573,Erode,Tamil Nadu,11.34,77.55,exact,False
+574,Kancheepuram,Tamil Nadu,12.8336,79.7823,exact,False
+575,Kanniyakumari,Tamil Nadu,8.32,77.34,exact,False
+576,Karur,Tamil Nadu,10.88,78.19,exact,False
+577,Krishnagiri,Tamil Nadu,12.58,77.96,exact,False
+578,Madurai,Tamil Nadu,9.89,78.03,exact,False
+579,Nagapattinam,Tamil Nadu,10.85,79.74,exact,False
+580,Namakkal,Tamil Nadu,11.3,78.13,exact,False
+581,Perambalur,Tamil Nadu,11.272,78.8738,exact,False
+582,Pudukkottai,Tamil Nadu,10.35,78.9,exact,False
+583,Ramanathapuram,Tamil Nadu,9.37,78.7,exact,False
+584,Salem,Tamil Nadu,11.69,78.29,exact,False
+585,Sivaganga,Tamil Nadu,9.9276,78.5376,exact,False
+586,Thanjavur,Tamil Nadu,10.64,79.22,exact,False
+587,The Nilgiris,Tamil Nadu,11.46,76.64,exact,False
+588,Theni,Tamil Nadu,9.85,77.42,exact,False
+589,Thiruvallur,Tamil Nadu,13.25,80.0,exact,False
+590,Thiruvarur,Tamil Nadu,10.66,79.55,exact,False
+591,Tiruchirappalli,Tamil Nadu,10.97,78.65,exact,False
+592,Tirunelveli,Tamil Nadu,8.7927,77.5741,exact,False
+593,Tiruvannamalai,Tamil Nadu,12.51,79.09,exact,False
+594,Thoothukkudi,Tamil Nadu,8.8375,77.963,exact,False
+595,Vellore,Tamil Nadu,12.86,79.035,exact,False
+596,Viluppuram,Tamil Nadu,11.99,79.37,exact,False
+597,Virudhunagar,Tamil Nadu,9.45,77.92,exact,False
+598,Karaikal,Puducherry,10.9221,79.8335,exact,False
+600,Puducherry,Puducherry,11.9167,79.75,exact,False
+602,South Andamans,Andaman And Nicobar Islands,10.7578,92.5214,exact,False
+603,Nicobars,Andaman And Nicobar Islands,7.03,93.7903,exact,False
+604,Nuh,Haryana,27.9817,77.0466,exact,False
+605,Barnala,Punjab,30.38,75.5,exact,False
+606,Khunti,Jharkhand,22.9977,85.2746,exact,False
+607,Ramgarh,Jharkhand,23.6307,85.5606,exact,False
+608,S.A.S Nagar,Punjab,30.65,76.7,exact,False
+609,Tarn Taran,Punjab,31.3269,74.8164,exact,False
+610,Ariyalur,Tamil Nadu,11.15,79.25,exact,False
+611,Arwal,Bihar,25.1616,84.6904,exact,False
+612,Chirang,Assam,26.5253,90.4907,exact,False
+613,Peren,Nagaland,25.5128,93.7372,exact,False
+614,Kiphire,Nagaland,25.8449,94.8251,exact,False
+615,Longleng,Nagaland,26.5554,94.8003,exact,False
+616,Baksa,Assam,26.698,91.1514,exact,False
+617,Udalguri,Assam,26.7336,92.0921,exact,False
+618,Kamrup Metro,Assam,26.0538,92.0076,exact,False
+619,Palwal,Haryana,28.0475,77.3183,exact,False
+620,Kishtwar,Jammu And Kashmir,33.5296,76.0146,exact,False
+621,Ramban,Jammu And Kashmir,33.323,75.1861,exact,False
+622,Kulgam,Jammu And Kashmir,33.5882,74.8606,exact,False
+623,Bandipora,Jammu And Kashmir,34.504,74.8283,exact,False
+624,Samba,Jammu And Kashmir,32.5752,75.1093,exact,False
+625,Shopian,Jammu And Kashmir,33.7307,74.8187,exact,False
+626,Ganderbal,Jammu And Kashmir,34.2947,75.2,exact,False
+627,Reasi,Jammu And Kashmir,33.2074,74.8223,exact,False
+628,Anjaw,Arunachal Pradesh,28.0655,96.8288,exact,False
+629,Pratapgarh,Rajasthan,24.03,74.78,exact,False
+630,Chikkaballapura,Karnataka,13.55,77.87,exact,False
+631,Bengaluru South,Karnataka,12.72,77.28,manual,False
+632,North And Middle Andaman,Andaman And Nicobar Islands,12.8379,92.8675,exact,False
+633,Kasganj,Uttar Pradesh,27.7772,78.8454,exact,False
+634,Tiruppur,Tamil Nadu,10.8381,77.4054,exact,False
+635,Yadgir,Karnataka,16.73,76.94,exact,False
+636,Bijapur,Chhattisgarh,18.8432,80.7761,exact,False
+637,Narayanpur,Chhattisgarh,19.6043,81.0812,exact,False
+638,Singrauli,Madhya Pradesh,24.2167,82.4207,exact,False
+639,Alirajpur,Madhya Pradesh,22.3138,74.3645,exact,False
+640,Amethi,Uttar Pradesh,26.2081,81.6944,exact,False
+641,Tapi,Gujarat,21.12,73.4,exact,False
+642,Sukma,Chhattisgarh,18.4004,81.6601,exact,False
+643,Kondagaon,Chhattisgarh,19.5952,81.6675,exact,False
+644,Balodabazar-Bhatapara,Chhattisgarh,21.66,82.16,manual,False
+645,Gariyaband,Chhattisgarh,20.6343,82.0588,exact,False
+646,Balod,Chhattisgarh,20.7303,81.2022,exact,False
+647,Mungeli,Chhattisgarh,22.0679,81.6818,exact,False
+648,Surajpur,Chhattisgarh,23.2139,82.8658,exact,False
+649,Balrampur-Ramanujganj,Chhattisgarh,23.61,83.61,manual,False
+650,Bemetara,Chhattisgarh,21.7052,81.5298,exact,False
+651,Fazilka,Punjab,30.3758,74.1169,exact,False
+652,Khowai,Tripura,24.067,91.6051,exact,False
+653,Sepahijala,Tripura,23.6063,91.3433,exact,False
+654,Gomati,Tripura,23.534,91.4812,exact,False
+655,Unakoti,Tripura,24.3278,92.0038,exact,False
+656,North Garo Hills,Meghalaya,25.8968,90.616,exact,False
+657,East Jaintia Hills,Meghalaya,25.3598,92.3668,exact,False
+658,South West Khasi Hills,Meghalaya,25.3215,91.2946,exact,False
+659,Sambhal,Uttar Pradesh,28.5839,78.5697,exact,False
+660,Shamli,Uttar Pradesh,29.4638,77.2658,exact,False
+661,Hapur,Uttar Pradesh,28.7313,77.773,exact,False
+662,Pathankot,Punjab,32.33,75.64,exact,False
+663,South West Garo Hills,Meghalaya,25.4724,89.934,exact,False
+664,Alipurduar,West Bengal,26.4914,89.528,exact,False
+665,Palghar,Maharashtra,19.6927,72.7667,exact,False
+666,Longding,Arunachal Pradesh,26.8042,95.3229,exact,False
+667,Agar-Malwa,Madhya Pradesh,23.7159,76.0098,exact,False
+668,Chhotaudepur,Gujarat,22.3133,74.0152,exact,False
+669,Mahisagar,Gujarat,23.1306,73.6085,exact,False
+672,Arvalli,Gujarat,23.462,73.3919,exact,False
+673,Morbi,Gujarat,22.8147,70.8229,exact,False
+674,Devbhumi Dwarka,Gujarat,22.2025,69.655,exact,False
+675,Gir Somnath,Gujarat,20.9129,70.3671,exact,False
+676,Botad,Gujarat,22.1736,71.6678,exact,False
+677,Kra Daadi,Arunachal Pradesh,27.6949,93.6337,exact,False
+678,Namsai,Arunachal Pradesh,27.6673,95.8618,exact,False
+679,Siang,Arunachal Pradesh,28.2121,94.9924,exact,False
+680,Nirmal,Telangana,19.0991,78.341,exact,False
+681,Jagitial,Telangana,18.7938,78.9135,exact,False
+682,Peddapalli,Telangana,18.6163,79.3825,exact,False
+683,Rajanna Sircilla,Telangana,18.3863,78.8156,exact,False
+684,Mancherial,Telangana,19.0736,79.4897,exact,False
+685,Kamareddy,Telangana,18.3257,78.3342,exact,False
+686,Hanumakonda,Telangana,18.0101,79.5694,exact,False
+687,Jayashankar Bhupalapally,Telangana,18.4376,79.892,exact,False
+688,Mahabubabad,Telangana,17.6004,80.0054,exact,False
+689,Jangoan,Telangana,17.7294,79.161,exact,False
+690,Bhadradri Kothagudem,Telangana,17.5546,80.6198,exact,False
+691,Sangareddy,Telangana,17.6289,78.0847,exact,False
+692,Siddipet,Telangana,18.1014,78.8508,exact,False
+693,Wanaparthy,Telangana,16.3602,78.0642,exact,False
+694,Nagarkurnool,Telangana,16.4839,78.3295,exact,False
+695,Jogulamba Gadwal,Telangana,16.234,77.8056,exact,False
+696,Suryapet,Telangana,17.1416,79.6225,exact,False
+697,Yadadri Bhuvanagiri,Telangana,17.5129,78.8854,exact,False
+698,Vikarabad,Telangana,17.3354,77.9045,exact,False
+699,Kumuram Bheem Asifabad,Telangana,19.3565,79.2868,exact,False
+700,Medchal Malkajgiri,Telangana,17.6064,78.5401,exact,False
+701,Charkhi Dadri,Haryana,28.5917,76.2716,exact,False
+702,Kalimpong,West Bengal,27.0591,88.4695,exact,False
+703,Jhargram,West Bengal,22.4518,86.9945,exact,False
+704,Paschim Bardhaman,West Bengal,23.6813,86.9785,exact,False
+705,Biswanath,Assam,26.7246,93.1453,exact,False
+706,Majuli,Assam,27.001,94.2619,exact,False
+707,South Salmara Mancachar,Assam,25.7089,89.8887,exact,False
+708,Charaideo,Assam,27.056,95.0325,exact,False
+709,Hojai,Assam,26.0013,92.8609,exact,False
+710,West Karbi Anglong,Assam,25.8899,92.8388,exact,False
+718,Kamle,Arunachal Pradesh,27.7297,94.0909,exact,False
+719,Lower Siang,Arunachal Pradesh,27.7283,94.5829,exact,False
+720,Mulugu,Telangana,18.2891,80.3374,exact,False
+721,Narayanpet,Telangana,16.6433,77.5803,exact,False
+722,Niwari,Madhya Pradesh,25.285,78.7489,exact,False
+723,Pakke Kessang,Arunachal Pradesh,27.1053,93.0357,exact,False
+724,Leparada,Arunachal Pradesh,27.9264,94.7329,exact,False
+725,Shi Yomi,Arunachal Pradesh,28.6786,94.2592,exact,False
+726,Hnahthial,Mizoram,22.9764,92.9655,exact,False
+727,Saitual,Mizoram,23.8486,93.0914,exact,False
+728,Khawzawl,Mizoram,23.4908,93.1415,exact,False
+729,Kallakurichi,Tamil Nadu,11.7,78.9644,exact,False
+730,Chengalpattu,Tamil Nadu,12.6831,79.977,exact,False
+731,Ranipet,Tamil Nadu,12.9278,79.3326,exact,False
+732,Tirupathur,Tamil Nadu,12.4947,78.5645,fuzzy:tirupattur,False
+733,Tenkasi,Tamil Nadu,8.9537,77.3171,exact,False
+734,Gaurela-Pendra-Marwahi,Chhattisgarh,22.8311,81.9588,fuzzy:gaurellapendramarvahi,False
+735,Mayiladuthurai,Tamil Nadu,11.0962,79.636,exact,False
+736,Noklak,Nagaland,26.1005,95.0194,exact,False
+737,Malerkotla,Punjab,30.5338,75.9082,exact,False
+738,Vijayanagara,Karnataka,14.9425,76.0441,fuzzy:vijayanagar,False
+740,Eastern West Khasi Hills,Meghalaya,25.6073,91.5737,exact,False
+741,Pakyong,Sikkim,27.225,88.6492,exact,False
+742,Soreng,Sikkim,27.1899,88.2019,exact,False
+743,Parvathipuram Manyam,Andhra Pradesh,18.7504,83.5405,exact,False
+744,Anakapalli,Andhra Pradesh,17.678,82.7911,exact,False
+745,Alluri Sitharama Raju,Andhra Pradesh,17.8866,82.2135,exact,False
+746,Kakinada,Andhra Pradesh,17.1192,82.19,exact,False
+747,Dr. B.R. Ambedkar Konaseema,Andhra Pradesh,16.58,82.01,manual,False
+748,Eluru,Andhra Pradesh,17.0131,81.0842,exact,False
+749,Ntr,Andhra Pradesh,16.8205,80.2472,exact,False
+750,Bapatla,Andhra Pradesh,15.9328,80.3865,exact,False
+751,Palnadu,Andhra Pradesh,16.3233,79.6961,exact,False
+752,Tirupati,Andhra Pradesh,13.7805,79.835,exact,False
+753,Annamayya,Andhra Pradesh,13.9095,78.6482,exact,False
+754,Sri Sathya Sai,Andhra Pradesh,14.1682,77.9641,exact,False
+755,Nandyal,Andhra Pradesh,15.5246,78.4133,exact,False
+757,Tseminyu,Nagaland,25.9416,94.1601,exact,False
+758,Chumoukedima,Nagaland,25.8094,93.7147,exact,False
+759,Khairagarh-Chhuikhadan-Gandai,Chhattisgarh,21.5295,80.9483,fuzzy:khairgarhchhuikhadangandai,False
+760,Manendragarh-Chirmiri-Bharatpur(M C B),Chhattisgarh,23.4316,82.1789,fuzzy:manendragarhchirimiribharatpur,False
+761,Mohla-Manpur-Ambagarh Chouki,Chhattisgarh,20.4947,80.7997,exact,False
+762,Sakti,Chhattisgarh,21.9269,82.9651,exact,False
+763,Sarangarh-Bilaigarh,Chhattisgarh,21.5429,83.1266,exact,False
+764,Niuland,Nagaland,25.9076,93.9877,exact,False
+765,Shamator,Nagaland,26.05,94.92,manual,False
+766,Mauganj,Madhya Pradesh,24.6672,81.8734,exact,False
+767,Deeg,Rajasthan,27.4719,77.3256,exact,False
+768,Didwana-Kuchaman,Rajasthan,27.4,74.57,manual,False
+770,Khairthal-Tijara,Rajasthan,27.8,76.64,manual,False
+772,Phalodi,Rajasthan,27.131,72.3683,exact,False
+774,Beawar,Rajasthan,26.1012,74.3203,exact,False
+775,Balotra,Rajasthan,25.8324,72.24,exact,False
+777,Salumbar,Rajasthan,24.1352,74.0444,exact,False
+782,Kotputli-Behror,Rajasthan,27.7,76.2,manual,False
+784,Maihar,Madhya Pradesh,24.2659,80.7606,exact,False
+785,Pandhurna,Madhya Pradesh,21.5956,78.5263,exact,False
