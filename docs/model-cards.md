@@ -115,10 +115,73 @@ are not predictable from price history.
 
 ## Leaf disease classifier
 
-See `ml/reports/leaf_metrics.json` once trained (`make train-leaf`). The model is a MobileNetV3-Large fine-tuned
-with PyTorch on Project-AgML mirrors of: Indian rice leaf diseases, cotton leaf diseases, groundnut leaf diseases
-and PlantVillage (maize, potato, tomato, pepper), with PlantDoc field photographs held out to measure real-world
-accuracy. It is exported to ONNX, temperature-scaled for calibrated confidence, and abstains below 45 %.
+| | |
+|---|---|
+| **Task** | Name the disease (or "healthy", or "not a leaf") from one photo of a leaf |
+| **Model** | MobileNetV3-Large (ImageNet weights) fine-tuned with PyTorch; 37 classes |
+| **Classes** | rice 7 · tomato 10 · cotton 5 · groundnut 5 · maize 4 · potato 3 · bell pepper 2 · not-a-leaf 1 |
+| **Training data** | Project-AgML mirrors: PlantVillage (maize, potato, tomato, pepper; capped at 1,200 images per class), Indian rice leaf diseases, rice leaf diseases, cotton leaf diseases, groundnut leaf diseases; plus half of the PlantDoc field photos, up-weighted 3× |
+| **Images** | 25,866 lab training · 3,232 validation · 3,247 test · 732 field training · 740 field test |
+| **Runtime** | browser, ONNX Runtime Web (WebAssembly), int8: **4.75 MB**, ~100 ms per photo on a laptop |
+
+### Training
+* Epoch 1 trains only the new classifier on frozen ImageNet features; epochs 2–8 also fine-tune the
+  backbone from block 7 onwards (the stem and 112/56/28 px blocks stay frozen) with AdamW and a cosine
+  learning rate, label smoothing 0.1 and a class-balanced sampler.
+* Augmentation: random resized crops (35–100 % of the image), flips, ±20° rotation, colour jitter, blur.
+* Selection: the epoch with the best lab-validation accuracy (98.0 %, epoch 8).
+* Calibration: one temperature (T = 0.58) fitted on lab validation; ECE falls from 10.1 % to 0.6 %.
+* Built to train on an 8 GB laptop: images are decoded by a thread pool rather than worker processes,
+  frozen early blocks keep no activations, and every epoch is checkpointed (`--resume`).
+
+### Results (the shipped int8 model)
+
+| | Lab test, n = 3,247 | **Field photos (PlantDoc), n = 740** |
+|---|---|---|
+| Accuracy | **97.5 %** | 53.4 % |
+| … with the farmer's crop as a prior (as in the app) | 97.5 % | **59.1 %** |
+| Top-3 accuracy (crop known) | 99.9 % | 87.6 % |
+| Macro F1 (crop known) | 0.970 | 0.596 |
+| Calibration error (ECE) | 0.9 % | 22.1 % |
+| Answers when ≥ 50 % sure (crop known) | 99.5 % of photos, 97.7 % correct | 86 % of photos, 63 % correct |
+
+| Crop | Lab test | Field, crop known |
+|---|---|---|
+| Rice | 98.9 % | not in PlantDoc |
+| Cotton | 95.7 % | not in PlantDoc |
+| Groundnut | 87.9 % | not in PlantDoc |
+| Maize | 99.2 % | 72.3 % |
+| Tomato | 97.9 % | 52.9 % |
+| Potato | 100 % | 52.3 % |
+| Bell pepper | 99.5 % | 67.2 % |
+
+Field photos, trading coverage for accuracy (raw classifier):
+
+| Answer only when confidence ≥ | 30 % | 50 % | 70 % | 90 % |
+|---|---|---|---|---|
+| Share of photos answered | 95 % | 81 % | 62 % | 39 % |
+| Accuracy of those answers | 55 % | 61 % | 66 % | 73 % |
+
+### Quantisation
+Static QDQ int8 (per-channel weights, uint8 activations) shrinks the model from 17.0 MB to 4.75 MB. Activation
+ranges are calibrated on 300 images, half lab validation and half field training photos, with 99.999th
+percentile clipping. MobileNetV3's hard-swish and squeeze-excite layers have outlier activations: min/max and
+entropy calibration collapsed to 34 % validation accuracy, dynamic quantisation reached 85 %, and keeping the
+first convolution and classifier in float doubled the size for no gain. int8 ships only if it loses ≤ 1.5
+points on the selection sets (it lost 0.7). Test-set numbers were not used for any choice. The full-precision
+network scores 98.0 % on lab test and 59.3 % on field photos with the crop known.
+
+### Limitations
+* **Field photos are the honest number.** Lab images (PlantVillage especially) have plain backgrounds and one
+  centred leaf; accuracy falls from ~98 % to ~59 % on cluttered field photos.
+* PlantDoc is web-scraped: some photos carry watermarks or are mislabelled, so the field figure is somewhat
+  pessimistic. It has no rice, cotton or groundnut photos, so those crops are only tested on lab images.
+* Calibration holds on lab images only; on field photos the model is over-confident (ECE 22 %). The app
+  shows a top-3 list and asks the farmer to check the visible signs before spraying.
+* No wheat, mustard or pulse classes in the training data; the symptom checker covers those crops.
+* Groundnut is the weakest lab crop (88 %), and its errors are the costly kind: 28 of 37 are early leaf spot
+  called *healthy*, whose first lesions are only a few pixels at 256 px. Early and late leaf spot are rarely
+  confused with each other (2 errors) and share one "tikka" advisory anyway.
 
 ---
 

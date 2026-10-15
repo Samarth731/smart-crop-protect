@@ -171,11 +171,15 @@ async def classify_leaf(image: Annotated[UploadFile, File()], crop: str | None =
     z = logits / meta.get("temperature", 1.0)
     p = np.exp(z - z.max())
     p /= p.sum()
-    if crop:
-        p = p * np.array([1.0 if c["crop"] == crop else 0.15 for c in meta["classes"]])
+    ids = [c["id"] for c in meta["classes"]]
+    reject = ids.index(meta["rejectClass"]) if meta.get("rejectClass") in ids else -1
+    not_leaf = reject >= 0 and p[reject] >= 0.5
+    if crop and any(c["crop"] == crop for c in meta["classes"]):
+        p = p * np.array([1.0 if c["crop"] == crop or i == reject else 0.15 for i, c in enumerate(meta["classes"])])
         p /= p.sum()
     top = np.argsort(-p)[:3]
     return {
         "predictions": [{**meta["classes"][i], "probability": float(p[i])} for i in top],
-        "unsure": bool(p[top[0]] < meta.get("unsureBelow", 0.45)),
+        "unsure": bool(not_leaf or p[top[0]] < meta.get("unsureBelow", 0.45)),
+        "not_leaf": bool(not_leaf),
     }

@@ -27,3 +27,7 @@ web/.claude/
 
 # Python build metadata
 *.egg-info/
+
+# decoded leaf images (rebuilt by `python -m scp_ml.data.leaves`); keep the split summary
+ml/data/processed/leaves/*
+!ml/data/processed/leaves/summary.json

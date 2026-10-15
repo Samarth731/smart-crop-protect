@@ -222,6 +222,7 @@ export const en = {
     photoTab: "Photo",
     symptomsTab: "Symptoms",
     take: "Take or choose a photo",
+    trySample: "No leaf at hand? Try a sample photo:",
     tips: "Fill the frame with one affected leaf, in daylight, in focus.",
     analyze: "Analyse photo",
     analyzing: "Analysing…",
@@ -232,7 +233,12 @@ export const en = {
     possible: "Also possible",
     confidence: (p: number) => `${p}% confidence`,
     unsure: "Not sure. Try a closer, clearer photo of one leaf.",
+    notLeaf: "This doesn't look like a leaf. Fill the frame with one affected leaf and try again.",
+    cropNotCovered:
+      "The photo model covers rice, maize, cotton, groundnut, potato and tomato. For this crop, the Symptoms tab is more reliable.",
     healthy: "Looks healthy",
+    verify:
+      "Field photos are harder than lab photos: check that the signs below match your leaf before you spray.",
     otherCrop: (c: string) => `This looks like ${c}, not your selected crop.`,
     severity: "Damaged leaf area",
     severityNote: "Estimated from leaf colour. Brown and yellow areas are marked.",

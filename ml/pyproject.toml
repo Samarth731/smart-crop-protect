@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-vision = ["torch>=2.4", "torchvision>=0.19", "pillow>=10"]
+vision = ["torch>=2.4", "torchvision>=0.19", "pillow>=10", "onnxscript>=0.1"]
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [build-system]

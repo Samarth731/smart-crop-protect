@@ -15,6 +15,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, Meter, Seg, Skeleton, Status, useToast } from "@/components/ui";
 import { useFmt, useLang, useT } from "@/i18n";
 import { diagnose } from "@/lib/agro/diagnose";
+import { asset } from "@/lib/api/http";
+import type { CropId } from "@/lib/crops";
 import { CROPS } from "@/lib/crops";
 import { SYMPTOM_LIST, type Symptom, threatById } from "@/lib/knowledge";
 import { classifyLeaf, type LeafPrediction, leafModelMeta } from "@/lib/ml/leafModel";
@@ -22,6 +24,16 @@ import { analyzeLeaf, type Severity, thumbnail } from "@/lib/ml/leafSeverity";
 import { useProfile } from "@/state/profile";
 import { useFieldModel } from "@/state/queries";
 import { ThreatDetail } from "../shared/ThreatDetail";
+
+/** Held-out test images (never used in training) for visitors without a diseased leaf at hand. */
+const SAMPLES: { file: string; crop: CropId }[] = [
+  { file: "samples/rice.jpg", crop: "rice" },
+  { file: "samples/cotton.jpg", crop: "cotton" },
+  { file: "samples/maize.jpg", crop: "maize" },
+  { file: "samples/groundnut.jpg", crop: "groundnut" },
+  { file: "samples/tomato.jpg", crop: "tomato" },
+  { file: "samples/potato.jpg", crop: "potato" },
+];
 
 interface LogEntry {
   at: number;
@@ -81,7 +93,10 @@ function PhotoScan({ onSave }: { onSave: (e: LogEntry) => void }) {
   const t = useT();
   const lang = useLang();
   const toast = useToast();
-  const { crop } = useProfile();
+  const { crop: profileCrop } = useProfile();
+  // A sample photo carries its own crop; the user's own photos are of their profile crop.
+  const [sampleCrop, setSampleCrop] = useState<CropId | null>(null);
+  const crop = sampleCrop ?? profileCrop;
   const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -96,8 +111,9 @@ function PhotoScan({ onSave }: { onSave: (e: LogEntry) => void }) {
 
   useEffect(() => () => (url ? URL.revokeObjectURL(url) : undefined), [url]);
 
-  const pick = (f: File | undefined) => {
+  const pick = (f: File | undefined, fromSample: CropId | null = null) => {
     if (!f?.type.startsWith("image/")) return;
+    setSampleCrop(fromSample);
     setFile(f);
     setUrl(URL.createObjectURL(f));
     setSev(null);
@@ -128,6 +144,28 @@ function PhotoScan({ onSave }: { onSave: (e: LogEntry) => void }) {
   return (
     <div className="grid grid-2">
       <Card title={t.scan.take} sub={t.scan.tips} icon={Camera}>
+        <div className="samples">
+          <span className="muted" style={{ fontSize: "var(--text-xs)" }}>
+            {t.scan.trySample}
+          </span>
+          <div className="row" style={{ gap: 8 }}>
+            {SAMPLES.map((smp) => (
+              <button
+                key={smp.file}
+                type="button"
+                className="sample"
+                aria-label={CROPS[smp.crop].name[lang]}
+                title={CROPS[smp.crop].name[lang]}
+                onClick={async () => {
+                  const blob = await fetch(asset(smp.file)).then((r) => r.blob());
+                  pick(new File([blob], smp.file.split("/").pop()!, { type: "image/jpeg" }), smp.crop);
+                }}
+              >
+                <img src={asset(smp.file)} alt="" width={44} height={44} />
+              </button>
+            ))}
+          </div>
+        </div>
         <label className="dropzone" data-has={!!url}>
           <input
             type="file"
@@ -168,6 +206,11 @@ function PhotoScan({ onSave }: { onSave: (e: LogEntry) => void }) {
             </button>
           )}
         </div>
+        {model.data && !model.data.classes.some((c) => c.crop === crop) && (
+          <p className="note" style={{ marginTop: 10 }}>
+            {t.scan.cropNotCovered}
+          </p>
+        )}
         {model.isFetched && !model.data && (
           <p className="muted" style={{ fontSize: "var(--text-sm)", marginTop: 10 }}>
             {t.scan.modelUnavailable}
@@ -184,7 +227,7 @@ function PhotoScan({ onSave }: { onSave: (e: LogEntry) => void }) {
               <div className="stack" style={{ gap: 10 }}>
                 {pred.unsure ? (
                   <div className="alert" data-level="warning">
-                    <p style={{ color: "var(--ink)" }}>{t.scan.unsure}</p>
+                    <p style={{ color: "var(--ink)" }}>{pred.notLeaf ? t.scan.notLeaf : t.scan.unsure}</p>
                   </div>
                 ) : (
                   <div className="diag-top" data-speak>
@@ -196,6 +239,11 @@ function PhotoScan({ onSave }: { onSave: (e: LogEntry) => void }) {
                     {top.cls.crop !== crop && CROPS[top.cls.crop as keyof typeof CROPS] && (
                       <p className="muted">
                         {t.scan.otherCrop(CROPS[top.cls.crop as keyof typeof CROPS].name[lang])}
+                      </p>
+                    )}
+                    {!top.cls.healthy && (
+                      <p className="muted" style={{ fontSize: "var(--text-xs)" }}>
+                        {t.scan.verify}
                       </p>
                     )}
                   </div>
