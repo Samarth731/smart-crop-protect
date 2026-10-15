@@ -1,0 +1,315 @@
+{
+ "arch": "MobileNetV3-Large",
+ "classes": 37,
+ "images": 32345,
+ "fieldTraining": false,
+ "temperature": 0.6113321781158447,
+ "history": [
+  {
+   "epoch": 0,
+   "loss": 1.3315500959311382,
+   "train_acc": 0.7696859529702971,
+   "val_acc": 0.8431311881188119,
+   "seconds": 388
+  },
+  {
+   "epoch": 1,
+   "loss": 1.0600228508805285,
+   "train_acc": 0.8787515470297029,
+   "val_acc": 0.9439975247524752,
+   "seconds": 664
+  },
+  {
+   "epoch": 2,
+   "loss": 0.9043595203668764,
+   "train_acc": 0.9325881806930693,
+   "val_acc": 0.9508044554455446,
+   "seconds": 522
+  },
+  {
+   "epoch": 3,
+   "loss": 0.8513217060872824,
+   "train_acc": 0.9501469678217822,
+   "val_acc": 0.963490099009901,
+   "seconds": 523
+  },
+  {
+   "epoch": 4,
+   "loss": 0.8139421644039674,
+   "train_acc": 0.9610148514851485,
+   "val_acc": 0.9721534653465347,
+   "seconds": 527
+  },
+  {
+   "epoch": 5,
+   "loss": 0.787687493137794,
+   "train_acc": 0.969794245049505,
+   "val_acc": 0.9783415841584159,
+   "seconds": 555
+  },
+  {
+   "epoch": 6,
+   "loss": 0.7688491313469292,
+   "train_acc": 0.9756729579207921,
+   "val_acc": 0.979269801980198,
+   "seconds": 882
+  },
+  {
+   "epoch": 7,
+   "loss": 0.7614717878917656,
+   "train_acc": 0.977916150990099,
+   "val_acc": 0.9798886138613861,
+   "seconds": 988
+  }
+ ],
+ "test": {
+  "n": 3247,
+  "accuracy": 0.9796735448105944,
+  "macroF1": 0.9727439278676517,
+  "top3": 0.9996920234062211,
+  "selective": {
+   "threshold": 0.5,
+   "coverage": 0.9987680936248845,
+   "accuracy": 0.9802651865556583
+  },
+  "selectiveCurve": [
+   {
+    "threshold": 0.3,
+    "coverage": 1.0,
+    "accuracy": 0.9796735448105944
+   },
+   {
+    "threshold": 0.4,
+    "coverage": 1.0,
+    "accuracy": 0.9796735448105944
+   },
+   {
+    "threshold": 0.5,
+    "coverage": 0.9987680936248845,
+    "accuracy": 0.9802651865556583
+   },
+   {
+    "threshold": 0.6,
+    "coverage": 0.9923005851555282,
+    "accuracy": 0.9835505896958411
+   },
+   {
+    "threshold": 0.7,
+    "coverage": 0.9861410532799507,
+    "accuracy": 0.9850093691442848
+   },
+   {
+    "threshold": 0.8,
+    "coverage": 0.973206036341238,
+    "accuracy": 0.9889240506329114
+   },
+   {
+    "threshold": 0.9,
+    "coverage": 0.9599630428087466,
+    "accuracy": 0.9913378248315688
+   }
+  ],
+  "ece": 0.005204094972542908,
+  "byCrop": [
+   {
+    "crop": "cotton",
+    "accuracy": 0.9428571428571428,
+    "n": 140
+   },
+   {
+    "crop": "groundnut",
+    "accuracy": 0.8892508143322475,
+    "n": 307
+   },
+   {
+    "crop": "maize",
+    "accuracy": 0.9948453608247423,
+    "n": 388
+   },
+   {
+    "crop": "none",
+    "accuracy": 0.9826086956521739,
+    "n": 115
+   },
+   {
+    "crop": "pepper",
+    "accuracy": 1.0,
+    "n": 220
+   },
+   {
+    "crop": "potato",
+    "accuracy": 1.0,
+    "n": 216
+   },
+   {
+    "crop": "rice",
+    "accuracy": 0.9911054637865311,
+    "n": 787
+   },
+   {
+    "crop": "tomato",
+    "accuracy": 0.9878957169459963,
+    "n": 1074
+   }
+  ],
+  "withCropPrior": {
+   "accuracy": 0.9796735448105944,
+   "macroF1": 0.9727439278676517,
+   "top3": 0.9996920234062211,
+   "selective": {
+    "threshold": 0.5,
+    "coverage": 0.9993840468124423,
+    "accuracy": 0.9802773497688752
+   },
+   "byCrop": [
+    {
+     "crop": "cotton",
+     "accuracy": 0.9428571428571428,
+     "n": 140
+    },
+    {
+     "crop": "groundnut",
+     "accuracy": 0.8892508143322475,
+     "n": 307
+    },
+    {
+     "crop": "maize",
+     "accuracy": 0.9948453608247423,
+     "n": 388
+    },
+    {
+     "crop": "none",
+     "accuracy": 0.9826086956521739,
+     "n": 115
+    },
+    {
+     "crop": "pepper",
+     "accuracy": 1.0,
+     "n": 220
+    },
+    {
+     "crop": "potato",
+     "accuracy": 1.0,
+     "n": 216
+    },
+    {
+     "crop": "rice",
+     "accuracy": 0.9911054637865311,
+     "n": 787
+    },
+    {
+     "crop": "tomato",
+     "accuracy": 0.9878957169459963,
+     "n": 1074
+    }
+   ]
+  }
+ },
+ "fieldResult": {
+  "n": 740,
+  "accuracy": 0.12702702702702703,
+  "macroF1": 0.1407728470883046,
+  "top3": 0.31216216216216214,
+  "selective": {
+   "threshold": 0.5,
+   "coverage": 0.6472972972972973,
+   "accuracy": 0.15657620041753653
+  },
+  "selectiveCurve": [
+   {
+    "threshold": 0.3,
+    "coverage": 0.9108108108108108,
+    "accuracy": 0.13204747774480713
+   },
+   {
+    "threshold": 0.4,
+    "coverage": 0.7783783783783784,
+    "accuracy": 0.1423611111111111
+   },
+   {
+    "threshold": 0.5,
+    "coverage": 0.6472972972972973,
+    "accuracy": 0.15657620041753653
+   },
+   {
+    "threshold": 0.6,
+    "coverage": 0.5216216216216216,
+    "accuracy": 0.16580310880829016
+   },
+   {
+    "threshold": 0.7,
+    "coverage": 0.4135135135135135,
+    "accuracy": 0.18627450980392157
+   },
+   {
+    "threshold": 0.8,
+    "coverage": 0.30405405405405406,
+    "accuracy": 0.19555555555555557
+   },
+   {
+    "threshold": 0.9,
+    "coverage": 0.16891891891891891,
+    "accuracy": 0.232
+   }
+  ],
+  "ece": 0.4978621937737272,
+  "byCrop": [
+   {
+    "crop": "maize",
+    "accuracy": 0.20212765957446807,
+    "n": 188
+   },
+   {
+    "crop": "pepper",
+    "accuracy": 0.04477611940298507,
+    "n": 67
+   },
+   {
+    "crop": "potato",
+    "accuracy": 0.21621621621621623,
+    "n": 111
+   },
+   {
+    "crop": "tomato",
+    "accuracy": 0.07754010695187166,
+    "n": 374
+   }
+  ],
+  "withCropPrior": {
+   "accuracy": 0.20540540540540542,
+   "macroF1": 0.2145170279112676,
+   "top3": 0.4864864864864865,
+   "selective": {
+    "threshold": 0.5,
+    "coverage": 0.6513513513513514,
+    "accuracy": 0.23858921161825727
+   },
+   "byCrop": [
+    {
+     "crop": "maize",
+     "accuracy": 0.2712765957446808,
+     "n": 188
+    },
+    {
+     "crop": "pepper",
+     "accuracy": 0.16417910447761194,
+     "n": 67
+    },
+    {
+     "crop": "potato",
+     "accuracy": 0.2882882882882883,
+     "n": 111
+    },
+    {
+     "crop": "tomato",
+     "accuracy": 0.15508021390374332,
+     "n": 374
+    }
+   ]
+  }
+ },
+ "calibration": {
+  "eceBefore": 0.09529549147620205,
+  "eceAfter": 0.005656602137749686
+ }
+}
