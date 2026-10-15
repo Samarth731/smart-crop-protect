@@ -171,9 +171,31 @@ first convolution and classifier in float doubled the size for no gain. int8 shi
 points on the selection sets (it lost 0.7). Test-set numbers were not used for any choice. The full-precision
 network scores 98.0 % on lab test and 59.3 % on field photos with the crop known.
 
+### Ablation: what the PlantDoc training half buys
+The same recipe (8 epochs, same splits, same selection rule) retrained on lab images only
+(`python -m scp_ml.train.leaf_model --no-field`, 86 min on the 8 GB M1). Both rows are the full-precision
+network, since the lab-only run is not quantised; the shipped int8 model is 0.3–1.9 points lower (table above).
+
+| fp32, same 740 held-out field photos | Lab images only | Lab + half of PlantDoc (3×) |
+|---|---|---|
+| Lab test accuracy (n = 3,247) | 98.0 % | 98.0 % |
+| Field accuracy | 12.7 % | **55.3 %** |
+| … crop known | 20.5 % | **59.3 %** |
+| Top-3, crop known | 48.6 % | 88.8 % |
+| Macro F1, crop known | 0.215 | 0.596 |
+| Field calibration error (ECE) | 49.8 % | 24.6 % |
+| Answers when ≥ 50 % sure (crop known) | 65 % of photos, 24 % correct | 91 % of photos, 63 % correct |
+| Field, crop known: maize · tomato · potato · pepper | 27 · 16 · 29 · 16 % | 74 · 54 · 51 · 64 % |
+
+Lab accuracy is identical, so lab validation cannot see the domain gap at all: a lab-only model selected on lab
+data looks as good as the shipped one while getting four in five field photos wrong, and it is confidently wrong
+(65 % of field photos clear the 50 % bar, and three in four of those answers are wrong). 732 field photos,
+under 3 % of the training images, are worth 43 points of field accuracy (39 with the crop known).
+
 ### Limitations
 * **Field photos are the honest number.** Lab images (PlantVillage especially) have plain backgrounds and one
-  centred leaf; accuracy falls from ~98 % to ~59 % on cluttered field photos.
+  centred leaf; accuracy falls from ~98 % to ~59 % on cluttered field photos, and to ~21 % without field
+  photos in training (see the ablation above).
 * PlantDoc is web-scraped: some photos carry watermarks or are mislabelled, so the field figure is somewhat
   pessimistic. It has no rice, cotton or groundnut photos, so those crops are only tested on lab images.
 * Calibration holds on lab images only; on field photos the model is over-confident (ECE 22 %). The app

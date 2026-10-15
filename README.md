@@ -120,6 +120,9 @@ ONNX model (~100 ms per photo), so photos never leave the phone.
 
 * **The field number is the honest one**, and it is reported next to the lab number everywhere, including in
   the app. Half of PlantDoc is held out entirely; the other half is added to training at 3× weight.
+* **Ablation: those 732 field photos are most of the real-world accuracy.** Retrained on lab images only, the
+  same network scores the same 98.0 % on lab test but **12.7 %** on the held-out field photos (20.5 % with the
+  crop known), against **55.3 %** (59.3 %) with them; both compared at full precision, before int8.
 * **int8 static quantisation** (17 MB → 4.75 MB) with percentile calibration on lab + field photos. Min/max and
   entropy calibration collapsed to 34 % on MobileNetV3's hard-swish outliers; the shipping rule (≤ 1.5 point
   loss on selection sets) never looks at the test sets.

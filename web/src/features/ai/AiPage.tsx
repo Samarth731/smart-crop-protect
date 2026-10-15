@@ -58,6 +58,7 @@ interface Metrics {
       n: number;
       note: string;
       labOnlyAccuracy: number | null;
+      withFieldAccuracy: number | null;
       selective: { threshold: number; coverage: number; accuracy: number };
       ece: number;
       cropKnown: {
@@ -65,6 +66,7 @@ interface Metrics {
         top3: number;
         selective: { threshold: number; coverage: number; accuracy: number };
         labOnlyAccuracy: number | null;
+        withFieldAccuracy: number | null;
       };
     };
     byCrop: { crop: string; accuracy: number; n: number }[];
@@ -406,13 +408,20 @@ export default function AiPage() {
                       Lab photos (plain backgrounds) overstate real-world accuracy. Half of the PlantDoc field
                       photos are held out entirely: they are the honest number.
                     </li>
-                    {m.leaf.field.labOnlyAccuracy !== null && (
-                      <li>
-                        Adding the other half of the field photos to training (weighted 3×) raised field
-                        accuracy from <b>{pct(m.leaf.field.labOnlyAccuracy)}</b> to{" "}
-                        <b>{pct(m.leaf.field.accuracy)}</b>.
-                      </li>
-                    )}
+                    {m.leaf.field.labOnlyAccuracy !== null &&
+                      m.leaf.field.withFieldAccuracy !== null &&
+                      m.leaf.field.cropKnown.labOnlyAccuracy !== null &&
+                      m.leaf.field.cropKnown.withFieldAccuracy !== null && (
+                        <li>
+                          Field photos in training are what make it work outdoors. Trained on lab images
+                          alone, the same network scores <b>{pct(m.leaf.field.labOnlyAccuracy)}</b> on the
+                          held-out field photos; adding the other half of PlantDoc (weighted 3×) raises that
+                          to <b>{pct(m.leaf.field.withFieldAccuracy)}</b> (
+                          {pct(m.leaf.field.cropKnown.labOnlyAccuracy)} →{" "}
+                          {pct(m.leaf.field.cropKnown.withFieldAccuracy)} when the crop is known), while lab
+                          accuracy is unchanged. Both runs are compared before int8 quantisation.
+                        </li>
+                      )}
                     <li>
                       Knowing your crop matters: it is used as a prior (other crops' diseases are
                       down-weighted, not removed), which lifts field accuracy from{" "}

@@ -91,6 +91,8 @@ def price_card(r: dict) -> dict:
 
 def leaf_card(r: dict, lab_only: dict | None) -> dict:
     q = r.get("quantization", {})
+    # the lab-only ablation is evaluated unquantised: pair it with the fp32 with-field run, not the shipped int8
+    ref = r.get("fp32", r)["fieldResult"]
     return {
         "arch": r["arch"] + (" · int8" if q.get("shipped") == "int8" else ""),
         "classes": r["classes"],
@@ -102,6 +104,7 @@ def leaf_card(r: dict, lab_only: dict | None) -> dict:
             "n": r["fieldResult"]["n"],
             "note": "PlantDoc field photos never seen in training",
             "labOnlyAccuracy": _r(lab_only["fieldResult"]["accuracy"]) if lab_only else None,
+            "withFieldAccuracy": _r(ref["accuracy"]) if lab_only else None,
             "selective": r["fieldResult"]["selective"],
             "ece": _r(r["fieldResult"]["ece"]),
             # as deployed: the app knows the farmer's crop and uses it as a prior
@@ -110,6 +113,7 @@ def leaf_card(r: dict, lab_only: dict | None) -> dict:
                 "top3": _r(r["fieldResult"]["withCropPrior"]["top3"]),
                 "selective": r["fieldResult"]["withCropPrior"]["selective"],
                 "labOnlyAccuracy": _r(lab_only["fieldResult"]["withCropPrior"]["accuracy"]) if lab_only else None,
+                "withFieldAccuracy": _r(ref["withCropPrior"]["accuracy"]) if lab_only else None,
             },
             "selectiveCurve": r["fieldResult"]["selectiveCurve"],
         },
