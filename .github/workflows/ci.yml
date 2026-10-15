@@ -48,6 +48,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+      # int8 kernels differ by x86 CPU (VNNI or not): log which one ran the model tests
+      - name: Runner CPU
+        run: |
+          lscpu | grep -E '^Model name'
+          echo "int8 flags: $(grep -owE 'avx2|avx512f|avx512_vnni|avx_vnni' /proc/cpuinfo | sort -u | xargs)"
       - run: uv venv && uv pip install -e ".[dev]"
       - run: .venv/bin/ruff check app tests
       - run: .venv/bin/python -m pytest -q

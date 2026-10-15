@@ -9,7 +9,7 @@ dependencies = [
   "scikit-learn>=1.5,<1.7",
   "skl2onnx>=1.17",
   "onnx>=1.16,<1.18",
-  "onnxruntime>=1.18",
+  "onnxruntime>=1.27",  # quantize_static(calibration_cache_path=...)
   "requests>=2.32",
   "matplotlib>=3.9",
   "pyarrow>=16",
