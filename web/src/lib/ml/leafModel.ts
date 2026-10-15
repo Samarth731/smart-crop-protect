@@ -18,11 +18,13 @@ interface LeafMeta {
   input: { size: number; mean: [number, number, number]; std: [number, number, number] };
   temperature?: number;
   unsureBelow?: number;
+  rejectClass?: string;
 }
 
 export interface LeafPrediction {
   top: { cls: LeafClass; p: number }[];
   unsure: boolean;
+  notLeaf: boolean;
 }
 
 type Ort = typeof import("onnxruntime-web/wasm");
@@ -87,9 +89,11 @@ export async function classifyLeaf(file: Blob, cropHint?: string): Promise<LeafP
   const exps = Array.from(logits, (l) => Math.exp((l - mx) / T));
   const z = exps.reduce((a, b) => a + b, 0);
   let probs = exps.map((e) => e / z);
+  const reject = meta.classes.findIndex((c) => c.id === meta.rejectClass);
+  const notLeaf = reject >= 0 && probs[reject]! >= 0.5;
   // Prior from the user's crop: classes of other crops are down-weighted, not removed.
-  if (cropHint) {
-    probs = probs.map((p, i) => p * (meta.classes[i]!.crop === cropHint ? 1 : 0.15));
+  if (cropHint && meta.classes.some((c) => c.crop === cropHint)) {
+    probs = probs.map((p, i) => p * (meta.classes[i]!.crop === cropHint || i === reject ? 1 : 0.15));
     const s = probs.reduce((a, b) => a + b, 0);
     probs = probs.map((p) => p / s);
   }
@@ -97,5 +101,5 @@ export async function classifyLeaf(file: Blob, cropHint?: string): Promise<LeafP
     .map((p, i) => ({ cls: meta.classes[i]!, p }))
     .sort((a, b) => b.p - a.p)
     .slice(0, 3);
-  return { top, unsure: top[0]!.p < (meta.unsureBelow ?? 0.45) };
+  return { top, unsure: notLeaf || top[0]!.p < (meta.unsureBelow ?? 0.45), notLeaf };
 }

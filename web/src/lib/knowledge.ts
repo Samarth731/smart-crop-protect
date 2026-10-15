@@ -225,6 +225,32 @@ export const THREATS: Threat[] = [
     symptoms: { "dead-heart": 0.9, holes: 0.2, wilting: 0.3 },
     prior: 1,
   }),
+  T({
+    id: "rice-leaf-scald",
+    kind: "fungal",
+    crops: ["rice"],
+    name: {
+      en: "Leaf scald",
+      hi: "पत्ती झुलसा (लीफ स्काल्ड)",
+      gu: "પાનનો દાહ (લીફ સ્કાલ્ડ)",
+      mr: "पान करपा (लीफ स्काल्ड)",
+    },
+    act: {
+      en: "Avoid excess nitrogen and spray a recommended fungicide (e.g. propiconazole) if banded lesions spread.",
+      hi: "अधिक नाइट्रोजन न दें; पट्टीदार धब्बे फैलें तो अनुशंसित फफूंदनाशी (जैसे प्रोपिकोनाज़ोल) छिड़कें।",
+      gu: "વધારે નાઈટ્રોજન ન આપો; પટ્ટાવાળા ડાઘ ફેલાય તો ભલામણ કરેલ ફૂગનાશક (જેમ કે પ્રોપીકોનાઝોલ) છાંટો.",
+      mr: "जास्त नत्र टाळा; पट्टेदार डाग पसरल्यास शिफारस केलेले बुरशीनाशक (उदा. प्रोपिकोनाझोल) फवारा.",
+    },
+    signs:
+      "Zoned, wavy-banded lesions starting at leaf tips or edges, light brown with darker bands; tips look scalded.",
+    favours: "Wet weather, dense crops and high nitrogen during late tillering and booting.",
+    manage: {
+      cultural: ["Balanced nitrogen", "Wider spacing in wet seasons", "Clean seed"],
+      chemical: ["Propiconazole or carbendazim + mancozeb as per label"],
+    },
+    symptoms: { "leaf-tip-dry": 0.7, spots: 0.5, "concentric-rings": 0.3 },
+    prior: 0.4,
+  }),
   // ---------------- Wheat ----------------
   T({
     id: "wheat-yellow-rust",
@@ -956,6 +982,32 @@ export const THREATS: Threat[] = [
     favours: "Humidity above 85 %, especially in protected cultivation.",
     manage: { cultural: ["Ventilation", "Avoid wetting leaves"], chemical: ["Chlorothalonil or mancozeb"] },
     symptoms: { yellowing: 0.6, "white-mould-under": 0.6, spots: 0.4 },
+    prior: 0.5,
+  }),
+  T({
+    id: "tomato-target-spot",
+    kind: "fungal",
+    crops: ["tomato"],
+    name: {
+      en: "Target spot",
+      hi: "टारगेट स्पॉट (लक्ष्य धब्बा)",
+      gu: "ટાર્ગેટ સ્પોટ",
+      mr: "टार्गेट स्पॉट (लक्ष्य ठिपका)",
+    },
+    act: {
+      en: "Remove lower infected leaves, improve air flow and spray chlorothalonil or azoxystrobin.",
+      hi: "नीचे की रोगी पत्तियां हटाएं, हवा का प्रवाह बढ़ाएं और क्लोरोथालोनिल या एज़ोक्सीस्ट्रोबिन छिड़कें।",
+      gu: "નીચેના રોગિષ્ઠ પાન દૂર કરો, હવા ઉજાસ વધારો અને ક્લોરોથેલોનીલ અથવા એઝોક્સીસ્ટ્રોબિન છાંટો.",
+      mr: "खालची रोगट पाने काढा, हवा खेळती ठेवा व क्लोरोथॅलोनिल किंवा अॅझोक्सिस्ट्रोबिन फवारा.",
+    },
+    signs:
+      "Brown spots with light centres and concentric rings on leaves, stems and fruit; leaves yellow and drop.",
+    favours: "Warm (20-28 °C), humid weather with long leaf wetness; dense canopies.",
+    manage: {
+      cultural: ["Prune lower leaves and stake plants", "Rotation; remove crop debris"],
+      chemical: ["Chlorothalonil, azoxystrobin or difenoconazole as per label"],
+    },
+    symptoms: { "concentric-rings": 0.8, spots: 0.8, yellowing: 0.3 },
     prior: 0.5,
   }),
   T({

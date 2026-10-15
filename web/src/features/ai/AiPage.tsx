@@ -13,7 +13,7 @@ import { HBarChart } from "@/components/charts";
 import { Card, Skeleton } from "@/components/ui";
 import { useLang } from "@/i18n";
 import { asset, fetchJson } from "@/lib/api/http";
-import { CROPS, type CropId } from "@/lib/crops";
+import { CROPS, type CropId, type Lang } from "@/lib/crops";
 
 interface Metrics {
   generated: string;
@@ -51,15 +51,42 @@ interface Metrics {
   leaf?: {
     classes: number;
     images: number;
-    test: { accuracy: number; macroF1: number; n: number };
-    field?: { accuracy: number; n: number; note: string };
-    byCrop?: { crop: string; accuracy: number; n: number }[];
+    test: { accuracy: number; macroF1: number; n: number; top3: number };
+    field: {
+      accuracy: number;
+      top3: number;
+      n: number;
+      note: string;
+      labOnlyAccuracy: number | null;
+      selective: { threshold: number; coverage: number; accuracy: number };
+      ece: number;
+      cropKnown: {
+        accuracy: number;
+        top3: number;
+        selective: { threshold: number; coverage: number; accuracy: number };
+        labOnlyAccuracy: number | null;
+      };
+    };
+    byCrop: { crop: string; accuracy: number; n: number }[];
+    fieldByCrop: { crop: string; accuracy: number; n: number }[];
+    calibration: { eceBefore: number; eceAfter: number };
     sizeMb: number;
     arch: string;
+    quantization: {
+      shipped: string;
+      fp32Mb: number | null;
+      int8Mb: number | null;
+      fp32TestAccuracy: number | null;
+      fp32FieldCropKnown: number | null;
+    };
   };
 }
 
 const pct = (v: number, d = 1) => `${(v * 100).toFixed(d)}%`;
+
+/** Leaf-model crops include a few the app does not plan for (bell pepper). */
+const leafCropName = (crop: string, lang: Lang) =>
+  CROPS[crop as CropId]?.name[lang] ?? (crop === "pepper" ? "Bell pepper" : crop);
 
 const FEATURE_LABEL: Record<string, string> = {
   base_cv: "Year-to-year variability",
@@ -316,40 +343,106 @@ export default function AiPage() {
               <>
                 <div className="grid grid-4 tiles">
                   <Tile
-                    label="Held-out accuracy"
+                    label="Held-out lab images"
                     value={pct(m.leaf.test.accuracy)}
-                    sub={`${m.leaf.test.n.toLocaleString("en-IN")} test images`}
+                    sub={`${m.leaf.test.n.toLocaleString("en-IN")} images · macro F1 ${m.leaf.test.macroF1.toFixed(3)}`}
                   />
                   <Tile
-                    label="Macro F1"
-                    value={m.leaf.test.macroF1.toFixed(3)}
-                    sub={`${m.leaf.classes} classes`}
+                    label="Real field photos, crop known"
+                    value={pct(m.leaf.field.cropKnown.accuracy)}
+                    sub={`${pct(m.leaf.field.accuracy, 0)} without the crop · top-3 ${pct(m.leaf.field.cropKnown.top3, 0)} · ${m.leaf.field.n} unseen PlantDoc photos`}
                   />
-                  {m.leaf.field && (
-                    <Tile
-                      label="Real field photos"
-                      value={pct(m.leaf.field.accuracy)}
-                      sub={m.leaf.field.note}
-                    />
-                  )}
-                  <Tile label="Model size" value={`${m.leaf.sizeMb.toFixed(1)} MB`} sub={m.leaf.arch} />
+                  <Tile
+                    label="Calibration error (ECE)"
+                    value={pct(m.leaf.calibration.eceAfter)}
+                    sub={`${pct(m.leaf.calibration.eceBefore)} before temperature scaling`}
+                  />
+                  <Tile
+                    label="Model download"
+                    value={`${m.leaf.sizeMb.toFixed(1)} MB`}
+                    sub={`${m.leaf.arch} · ${m.leaf.classes} classes`}
+                  />
                 </div>
-                {m.leaf.byCrop && (
-                  <div style={{ marginTop: 20 }}>
-                    <h3 className="chart-title">Accuracy by crop</h3>
-                    <HBarChart
-                      label="Leaf accuracy by crop"
-                      tableHead={["Crop", "Accuracy"]}
-                      domainMax={1}
-                      valueFmt={(v) => `${(v * 100).toFixed(0)}%`}
-                      data={m.leaf.byCrop.map((c) => ({
-                        key: c.crop,
-                        label: CROPS[c.crop as CropId]?.name[lang] ?? c.crop,
-                        value: c.accuracy,
-                      }))}
-                    />
+                <div className="grid grid-2" style={{ marginTop: 20 }}>
+                  <div className="stack">
+                    <div>
+                      <h3 className="chart-title">Accuracy by crop: held-out lab images</h3>
+                      <HBarChart
+                        label="Leaf accuracy by crop on lab images"
+                        tableHead={["Crop", "Accuracy"]}
+                        domainMax={1}
+                        valueFmt={(v) => `${(v * 100).toFixed(0)}%`}
+                        data={m.leaf.byCrop
+                          .filter((c) => c.crop !== "none")
+                          .map((c) => ({
+                            key: c.crop,
+                            label: leafCropName(c.crop, lang),
+                            value: c.accuracy,
+                          }))}
+                      />
+                    </div>
+                    <div>
+                      <h3 className="chart-title">Real field photos, crop known</h3>
+                      <HBarChart
+                        label="Leaf accuracy by crop on field photos"
+                        tableHead={["Crop", "Accuracy"]}
+                        domainMax={1}
+                        color="var(--series-2)"
+                        valueFmt={(v) => `${(v * 100).toFixed(0)}%`}
+                        data={m.leaf.fieldByCrop.map((c) => ({
+                          key: c.crop,
+                          label: leafCropName(c.crop, lang),
+                          value: c.accuracy,
+                        }))}
+                      />
+                      <p className="muted" style={{ fontSize: "var(--text-xs)", marginTop: 6 }}>
+                        PlantDoc has no rice, cotton or groundnut photos, so those crops are tested on lab
+                        images only.
+                      </p>
+                    </div>
                   </div>
-                )}
+                  <ul className="bullets">
+                    <li>
+                      Lab photos (plain backgrounds) overstate real-world accuracy. Half of the PlantDoc field
+                      photos are held out entirely: they are the honest number.
+                    </li>
+                    {m.leaf.field.labOnlyAccuracy !== null && (
+                      <li>
+                        Adding the other half of the field photos to training (weighted 3×) raised field
+                        accuracy from <b>{pct(m.leaf.field.labOnlyAccuracy)}</b> to{" "}
+                        <b>{pct(m.leaf.field.accuracy)}</b>.
+                      </li>
+                    )}
+                    <li>
+                      Knowing your crop matters: it is used as a prior (other crops' diseases are
+                      down-weighted, not removed), which lifts field accuracy from{" "}
+                      {pct(m.leaf.field.accuracy)} to <b>{pct(m.leaf.field.cropKnown.accuracy)}</b>.
+                    </li>
+                    <li>
+                      The app abstains below {pct(m.leaf.field.cropKnown.selective.threshold, 0)} confidence:
+                      on field photos it answers {pct(m.leaf.field.cropKnown.selective.coverage, 0)} of the
+                      time and is right {pct(m.leaf.field.cropKnown.selective.accuracy, 0)} of those times. A
+                      "not a leaf" class rejects soil, hands and sky.
+                    </li>
+                    <li>
+                      Temperature scaling makes confidence honest on lab images (calibration error{" "}
+                      {pct(m.leaf.calibration.eceAfter)}); on field photos it is {pct(m.leaf.field.ece)}, so
+                      percentages there are optimistic and shown with a top-3 list.
+                    </li>
+                    {m.leaf.quantization.shipped === "int8" &&
+                      m.leaf.quantization.fp32Mb !== null &&
+                      m.leaf.quantization.fp32TestAccuracy !== null &&
+                      m.leaf.quantization.fp32FieldCropKnown !== null && (
+                        <li>
+                          int8 quantisation shrinks the download from {m.leaf.quantization.fp32Mb.toFixed(1)}{" "}
+                          MB to <b>{m.leaf.sizeMb.toFixed(1)} MB</b>. Every number here is for the int8 model
+                          you download; the full-precision network scores{" "}
+                          {pct(m.leaf.quantization.fp32TestAccuracy)} on lab images and{" "}
+                          {pct(m.leaf.quantization.fp32FieldCropKnown)} on field photos.
+                        </li>
+                      )}
+                  </ul>
+                </div>
               </>
             ) : (
               <p className="ink-2">

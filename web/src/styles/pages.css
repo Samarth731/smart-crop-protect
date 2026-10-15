@@ -832,3 +832,27 @@ code {
   border-radius: 5px;
   background: var(--surface-3);
 }
+
+.samples {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.sample {
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: none;
+  transition:
+    border-color var(--dur),
+    transform 120ms var(--ease);
+}
+.sample:hover {
+  border-color: var(--brand-2);
+  transform: translateY(-1px);
+}
+.sample img {
+  display: block;
+  object-fit: cover;
+}

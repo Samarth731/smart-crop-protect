@@ -18,8 +18,11 @@ train:            ## train + evaluate the yield and price models (writes ml/repo
 	cd ml && $(UV) run python -m scp_ml.train.yield_model
 	cd ml && $(UV) run python -m scp_ml.train.price_model
 
-train-leaf:       ## fine-tune the leaf disease CNN (needs the vision extra and ~3 GB free disk)
-	cd ml && $(UV) sync --extra vision && $(UV) run python -m scp_ml.train.leaf_model
+train-leaf:       ## build the leaf image dataset and fine-tune the CNN (vision extra, ~3 GB free disk)
+	cd ml && $(UV) sync --extra dev --extra vision
+	cd ml && $(UV) run python -m scp_ml.data.leaves
+	cd ml && $(UV) run python -m scp_ml.train.leaf_model
+	cd ml && $(UV) run python -m scp_ml.export.metrics
 
 export:           ## write web data shards, golden test fixtures and model-card metrics
 	cd ml && $(UV) run python -m scp_ml.export.web_data

@@ -108,9 +108,28 @@ month is not updated; those carry-forwards are detected and removed. Retail pric
 farm-gate with the RBI (2024) farmers' share of the consumer rupee where no MSP exists.
 
 ### 3 · Leaf disease classifier
-MobileNetV3 fine-tuned with PyTorch on Indian rice, cotton and groundnut leaf datasets plus PlantVillage
-(maize, potato, tomato, pepper), exported to ONNX and run in the browser. Evaluated on held-out images **and on
-real field photos (PlantDoc)**. See the [model card](docs/model-cards.md#leaf-disease-classifier).
+MobileNetV3-Large fine-tuned with PyTorch on Indian rice, cotton and groundnut leaf datasets plus PlantVillage
+(maize, potato, tomato, pepper): 37 classes including "not a leaf". It runs **in the browser** as a 4.75 MB int8
+ONNX model (~100 ms per photo), so photos never leave the phone.
+
+| Shipped int8 model | Lab test (3,247) | **Real field photos, PlantDoc (740)** |
+|---|---|---|
+| Accuracy | **97.5 %** | 53.4 % |
+| … with the farmer's crop as a prior, as in the app | 97.5 % | **59.1 %** (top-3 87.6 %) |
+| Calibration error after temperature scaling | 0.9 % | 22 % |
+
+* **The field number is the honest one**, and it is reported next to the lab number everywhere, including in
+  the app. Half of PlantDoc is held out entirely; the other half is added to training at 3× weight.
+* **int8 static quantisation** (17 MB → 4.75 MB) with percentile calibration on lab + field photos. Min/max and
+  entropy calibration collapsed to 34 % on MobileNetV3's hard-swish outliers; the shipping rule (≤ 1.5 point
+  loss on selection sets) never looks at the test sets.
+* **Trained on an 8 GB laptop**: a thread-pool loader instead of worker processes, frozen high-resolution
+  blocks, and per-epoch checkpoints. The first attempt, with DataLoader workers, swapped for 30 minutes
+  without finishing an epoch.
+* Known weak spot, found by error analysis: groundnut early leaf spot is often called healthy (28 of 37
+  groundnut errors). See the [model card](docs/model-cards.md#leaf-disease-classifier).
+
+<img src="docs/screenshots/scan-desktop.png" alt="Crop doctor: the on-device CNN names rice blast on a held-out test photo, with alternatives, the damaged-area map and what to do" width="100%" />
 
 ### Agronomic engines (physics and published plant pathology, not black boxes)
 * **Irrigation**: FAO-56 single crop-coefficient curves by growth stage, SCS curve-number runoff, water-stress coefficient,
@@ -182,7 +201,7 @@ Rebuild everything from the raw data:
 make data      # download APY/UPAG, WFP, GeoNames; geocode 752 districts; fetch NASA POWER
 make train     # yield + price models, evaluation reports
 make export    # web data shards, golden fixtures, model-card metrics
-make train-leaf  # optional: leaf CNN (PyTorch, ~45 min on an M1)
+make train-leaf  # optional: leaf CNN (PyTorch, ~1 h on an 8 GB M1)
 ```
 
 Model API: `make api`, then `POST /v1/yield/forecast {"district_code": 500, "crop": "cotton"}`.

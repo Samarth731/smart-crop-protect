@@ -6,7 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.features import feature_row
-from app.main import app, yield_model
+from app.main import app, leaf_model, yield_model
 
 ROOT = Path(__file__).resolve().parents[2]
 GOLDEN = json.loads((ROOT / "web/src/lib/ml/__fixtures__/yield_golden.json").read_text())
@@ -62,3 +62,30 @@ def test_price_outlook():
     assert r.status_code == 200
     fc = r.json()["forecast"]
     assert all(f["p10"] <= f["p50"] <= f["p90"] for f in fc)
+
+
+SAMPLES = sorted((ROOT / "web/public/samples").glob("*.jpg"))
+needs_leaf = pytest.mark.skipif(leaf_model() is None, reason="leaf model not exported")
+
+
+@needs_leaf
+@pytest.mark.parametrize("sample", SAMPLES, ids=lambda p: p.stem)
+def test_leaf_classifier_names_the_sample_crop(sample):
+    """Sample photos come from held-out test splits; the top answer must be a class of that crop."""
+    r = client.post("/v1/leaf/classify", files={"image": (sample.name, sample.read_bytes(), "image/jpeg")})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["predictions"][0]["crop"] == sample.stem
+    assert not body["unsure"]
+
+
+@needs_leaf
+def test_leaf_classifier_rejects_a_blank_image():
+    import io
+
+    from PIL import Image
+
+    buf = io.BytesIO()
+    Image.new("RGB", (320, 240), (128, 128, 128)).save(buf, format="JPEG")
+    body = client.post("/v1/leaf/classify", files={"image": ("grey.jpg", buf.getvalue(), "image/jpeg")}).json()
+    assert body["unsure"]

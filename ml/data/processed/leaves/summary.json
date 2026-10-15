@@ -1,0 +1,388 @@
+{
+ "classes": {
+  "maize_gray_leaf_spot": {
+   "crop": "maize",
+   "name": "Grey leaf spot",
+   "threat": "maize-gls",
+   "healthy": false
+  },
+  "maize_common_rust": {
+   "crop": "maize",
+   "name": "Common rust",
+   "threat": "maize-rust",
+   "healthy": false
+  },
+  "maize_northern_leaf_blight": {
+   "crop": "maize",
+   "name": "Turcicum leaf blight",
+   "threat": "maize-nlb",
+   "healthy": false
+  },
+  "maize_healthy": {
+   "crop": "maize",
+   "name": "Healthy maize",
+   "threat": null,
+   "healthy": true
+  },
+  "potato_early_blight": {
+   "crop": "potato",
+   "name": "Early blight",
+   "threat": "early-blight",
+   "healthy": false
+  },
+  "potato_late_blight": {
+   "crop": "potato",
+   "name": "Late blight",
+   "threat": "late-blight",
+   "healthy": false
+  },
+  "potato_healthy": {
+   "crop": "potato",
+   "name": "Healthy potato",
+   "threat": null,
+   "healthy": true
+  },
+  "tomato_bacterial_spot": {
+   "crop": "tomato",
+   "name": "Bacterial spot",
+   "threat": "tomato-bacterial-spot",
+   "healthy": false
+  },
+  "tomato_early_blight": {
+   "crop": "tomato",
+   "name": "Early blight",
+   "threat": "early-blight",
+   "healthy": false
+  },
+  "tomato_late_blight": {
+   "crop": "tomato",
+   "name": "Late blight",
+   "threat": "late-blight",
+   "healthy": false
+  },
+  "tomato_leaf_mold": {
+   "crop": "tomato",
+   "name": "Leaf mould",
+   "threat": "tomato-leaf-mold",
+   "healthy": false
+  },
+  "tomato_septoria": {
+   "crop": "tomato",
+   "name": "Septoria leaf spot",
+   "threat": "tomato-septoria",
+   "healthy": false
+  },
+  "tomato_spider_mites": {
+   "crop": "tomato",
+   "name": "Spider mites",
+   "threat": "spider-mites",
+   "healthy": false
+  },
+  "tomato_target_spot": {
+   "crop": "tomato",
+   "name": "Target spot",
+   "threat": "tomato-target-spot",
+   "healthy": false
+  },
+  "tomato_yellow_leaf_curl": {
+   "crop": "tomato",
+   "name": "Yellow leaf curl virus",
+   "threat": "leaf-curl-virus",
+   "healthy": false
+  },
+  "tomato_mosaic": {
+   "crop": "tomato",
+   "name": "Mosaic virus",
+   "threat": "tomato-mosaic",
+   "healthy": false
+  },
+  "tomato_healthy": {
+   "crop": "tomato",
+   "name": "Healthy tomato",
+   "threat": null,
+   "healthy": true
+  },
+  "pepper_bacterial_spot": {
+   "crop": "pepper",
+   "name": "Bacterial spot (pepper)",
+   "threat": "tomato-bacterial-spot",
+   "healthy": false
+  },
+  "pepper_healthy": {
+   "crop": "pepper",
+   "name": "Healthy pepper",
+   "threat": null,
+   "healthy": true
+  },
+  "rice_bacterial_blight": {
+   "crop": "rice",
+   "name": "Bacterial leaf blight",
+   "threat": "rice-blb",
+   "healthy": false
+  },
+  "rice_blast": {
+   "crop": "rice",
+   "name": "Blast",
+   "threat": "rice-blast",
+   "healthy": false
+  },
+  "rice_brown_spot": {
+   "crop": "rice",
+   "name": "Brown spot",
+   "threat": "rice-brown-spot",
+   "healthy": false
+  },
+  "rice_tungro": {
+   "crop": "rice",
+   "name": "Tungro",
+   "threat": "rice-tungro",
+   "healthy": false
+  },
+  "rice_sheath_blight": {
+   "crop": "rice",
+   "name": "Sheath blight",
+   "threat": "rice-sheath-blight",
+   "healthy": false
+  },
+  "rice_leaf_scald": {
+   "crop": "rice",
+   "name": "Leaf scald",
+   "threat": "rice-leaf-scald",
+   "healthy": false
+  },
+  "rice_healthy": {
+   "crop": "rice",
+   "name": "Healthy rice",
+   "threat": null,
+   "healthy": true
+  },
+  "cotton_alternaria": {
+   "crop": "cotton",
+   "name": "Alternaria leaf spot",
+   "threat": "cotton-alternaria",
+   "healthy": false
+  },
+  "cotton_bacterial_blight": {
+   "crop": "cotton",
+   "name": "Bacterial blight",
+   "threat": "cotton-bacterial-blight",
+   "healthy": false
+  },
+  "cotton_fusarium_wilt": {
+   "crop": "cotton",
+   "name": "Fusarium wilt",
+   "threat": "wilt",
+   "healthy": false
+  },
+  "cotton_verticillium_wilt": {
+   "crop": "cotton",
+   "name": "Verticillium wilt",
+   "threat": "wilt",
+   "healthy": false
+  },
+  "cotton_healthy": {
+   "crop": "cotton",
+   "name": "Healthy cotton",
+   "threat": null,
+   "healthy": true
+  },
+  "groundnut_early_leaf_spot": {
+   "crop": "groundnut",
+   "name": "Early leaf spot",
+   "threat": "groundnut-leaf-spot",
+   "healthy": false
+  },
+  "groundnut_late_leaf_spot": {
+   "crop": "groundnut",
+   "name": "Late leaf spot (tikka)",
+   "threat": "groundnut-leaf-spot",
+   "healthy": false
+  },
+  "groundnut_rust": {
+   "crop": "groundnut",
+   "name": "Rust",
+   "threat": "groundnut-rust",
+   "healthy": false
+  },
+  "groundnut_nutrient_deficiency": {
+   "crop": "groundnut",
+   "name": "Nutrient deficiency",
+   "threat": "nutrient",
+   "healthy": false
+  },
+  "groundnut_healthy": {
+   "crop": "groundnut",
+   "name": "Healthy groundnut",
+   "threat": null,
+   "healthy": true
+  },
+  "background": {
+   "crop": "none",
+   "name": "Not a leaf",
+   "threat": null,
+   "healthy": false
+  }
+ },
+ "splits": {
+  "train": {
+   "background": 914,
+   "cotton_alternaria": 138,
+   "cotton_bacterial_blight": 174,
+   "cotton_fusarium_wilt": 269,
+   "cotton_healthy": 266,
+   "cotton_verticillium_wilt": 249,
+   "groundnut_early_leaf_spot": 708,
+   "groundnut_healthy": 743,
+   "groundnut_late_leaf_spot": 551,
+   "groundnut_nutrient_deficiency": 263,
+   "groundnut_rust": 180,
+   "maize_common_rust": 953,
+   "maize_gray_leaf_spot": 410,
+   "maize_healthy": 929,
+   "maize_northern_leaf_blight": 788,
+   "pepper_bacterial_spot": 797,
+   "pepper_healthy": 960,
+   "potato_early_blight": 800,
+   "potato_healthy": 121,
+   "potato_late_blight": 800,
+   "rice_bacterial_blight": 1267,
+   "rice_blast": 1152,
+   "rice_brown_spot": 1280,
+   "rice_healthy": 522,
+   "rice_leaf_scald": 502,
+   "rice_sheath_blight": 505,
+   "rice_tungro": 1046,
+   "tomato_bacterial_spot": 960,
+   "tomato_early_blight": 800,
+   "tomato_healthy": 960,
+   "tomato_late_blight": 960,
+   "tomato_leaf_mold": 761,
+   "tomato_mosaic": 298,
+   "tomato_septoria": 960,
+   "tomato_spider_mites": 960,
+   "tomato_target_spot": 960,
+   "tomato_yellow_leaf_curl": 960
+  },
+  "val": {
+   "background": 114,
+   "cotton_alternaria": 17,
+   "cotton_bacterial_blight": 22,
+   "cotton_fusarium_wilt": 34,
+   "cotton_healthy": 33,
+   "cotton_verticillium_wilt": 31,
+   "groundnut_early_leaf_spot": 88,
+   "groundnut_healthy": 93,
+   "groundnut_late_leaf_spot": 69,
+   "groundnut_nutrient_deficiency": 33,
+   "groundnut_rust": 23,
+   "maize_common_rust": 119,
+   "maize_gray_leaf_spot": 51,
+   "maize_healthy": 116,
+   "maize_northern_leaf_blight": 98,
+   "pepper_bacterial_spot": 100,
+   "pepper_healthy": 120,
+   "potato_early_blight": 100,
+   "potato_healthy": 15,
+   "potato_late_blight": 100,
+   "rice_bacterial_blight": 158,
+   "rice_blast": 144,
+   "rice_brown_spot": 160,
+   "rice_healthy": 65,
+   "rice_leaf_scald": 63,
+   "rice_sheath_blight": 63,
+   "rice_tungro": 131,
+   "tomato_bacterial_spot": 120,
+   "tomato_early_blight": 100,
+   "tomato_healthy": 120,
+   "tomato_late_blight": 120,
+   "tomato_leaf_mold": 95,
+   "tomato_mosaic": 37,
+   "tomato_septoria": 120,
+   "tomato_spider_mites": 120,
+   "tomato_target_spot": 120,
+   "tomato_yellow_leaf_curl": 120
+  },
+  "test": {
+   "background": 115,
+   "cotton_alternaria": 18,
+   "cotton_bacterial_blight": 22,
+   "cotton_fusarium_wilt": 34,
+   "cotton_healthy": 34,
+   "cotton_verticillium_wilt": 32,
+   "groundnut_early_leaf_spot": 89,
+   "groundnut_healthy": 93,
+   "groundnut_late_leaf_spot": 69,
+   "groundnut_nutrient_deficiency": 33,
+   "groundnut_rust": 23,
+   "maize_common_rust": 120,
+   "maize_gray_leaf_spot": 52,
+   "maize_healthy": 117,
+   "maize_northern_leaf_blight": 99,
+   "pepper_bacterial_spot": 100,
+   "pepper_healthy": 120,
+   "potato_early_blight": 100,
+   "potato_healthy": 16,
+   "potato_late_blight": 100,
+   "rice_bacterial_blight": 159,
+   "rice_blast": 144,
+   "rice_brown_spot": 160,
+   "rice_healthy": 66,
+   "rice_leaf_scald": 63,
+   "rice_sheath_blight": 64,
+   "rice_tungro": 131,
+   "tomato_bacterial_spot": 120,
+   "tomato_early_blight": 100,
+   "tomato_healthy": 120,
+   "tomato_late_blight": 120,
+   "tomato_leaf_mold": 96,
+   "tomato_mosaic": 38,
+   "tomato_septoria": 120,
+   "tomato_spider_mites": 120,
+   "tomato_target_spot": 120,
+   "tomato_yellow_leaf_curl": 120
+  },
+  "field_train": {
+   "maize_common_rust": 58,
+   "maize_gray_leaf_spot": 34,
+   "maize_northern_leaf_blight": 95,
+   "pepper_bacterial_spot": 35,
+   "pepper_healthy": 30,
+   "potato_early_blight": 58,
+   "potato_late_blight": 52,
+   "tomato_bacterial_spot": 55,
+   "tomato_early_blight": 44,
+   "tomato_healthy": 31,
+   "tomato_late_blight": 55,
+   "tomato_leaf_mold": 45,
+   "tomato_mosaic": 27,
+   "tomato_septoria": 75,
+   "tomato_spider_mites": 1,
+   "tomato_yellow_leaf_curl": 37
+  },
+  "field_test": {
+   "maize_common_rust": 58,
+   "maize_gray_leaf_spot": 34,
+   "maize_northern_leaf_blight": 96,
+   "pepper_bacterial_spot": 36,
+   "pepper_healthy": 31,
+   "potato_early_blight": 58,
+   "potato_late_blight": 53,
+   "tomato_bacterial_spot": 55,
+   "tomato_early_blight": 44,
+   "tomato_healthy": 32,
+   "tomato_late_blight": 56,
+   "tomato_leaf_mold": 46,
+   "tomato_mosaic": 27,
+   "tomato_septoria": 75,
+   "tomato_spider_mites": 1,
+   "tomato_yellow_leaf_curl": 38
+  }
+ },
+ "totals": {
+  "train": 25866,
+  "val": 3232,
+  "test": 3247,
+  "field_train": 732,
+  "field_test": 740
+ }
+}
