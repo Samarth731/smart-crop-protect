@@ -138,43 +138,56 @@ are not predictable from price history.
 
 | | Lab test, n = 3,247 | **Field photos (PlantDoc), n = 740** |
 |---|---|---|
-| Accuracy | **97.5 %** | 53.4 % |
-| … with the farmer's crop as a prior (as in the app) | 97.5 % | **59.1 %** |
-| Top-3 accuracy (crop known) | 99.9 % | 87.6 % |
-| Macro F1 (crop known) | 0.970 | 0.596 |
-| Calibration error (ECE) | 0.9 % | 22.1 % |
-| Answers when ≥ 50 % sure (crop known) | 99.5 % of photos, 97.7 % correct | 86 % of photos, 63 % correct |
+| Accuracy | **96.9 %** | 53.2 % |
+| … with the farmer's crop as a prior (as in the app) | 97.0 % | **59.7 %** |
+| Top-3 accuracy (crop known) | 99.9 % | 88.1 % |
+| Macro F1 (crop known) | 0.959 | 0.590 |
+| Calibration error (ECE) | 0.9 % | 21.1 % |
+| Answers when ≥ 50 % sure (crop known) | 99.5 % of photos, 97.3 % correct | 85 % of photos, 64 % correct |
 
 | Crop | Lab test | Field, crop known |
 |---|---|---|
-| Rice | 98.9 % | not in PlantDoc |
-| Cotton | 95.7 % | not in PlantDoc |
-| Groundnut | 87.9 % | not in PlantDoc |
-| Maize | 99.2 % | 72.3 % |
-| Tomato | 97.9 % | 52.9 % |
-| Potato | 100 % | 52.3 % |
-| Bell pepper | 99.5 % | 67.2 % |
+| Rice | 99.1 % | not in PlantDoc |
+| Cotton | 92.9 % | not in PlantDoc |
+| Groundnut | 86.0 % | not in PlantDoc |
+| Maize | 99.5 % | 74.5 % |
+| Tomato | 97.0 % | 54.0 % |
+| Potato | 98.1 % | 48.6 % |
+| Bell pepper | 99.1 % | 68.7 % |
 
 Field photos, trading coverage for accuracy (raw classifier):
 
 | Answer only when confidence ≥ | 30 % | 50 % | 70 % | 90 % |
 |---|---|---|---|---|
-| Share of photos answered | 95 % | 81 % | 62 % | 39 % |
-| Accuracy of those answers | 55 % | 61 % | 66 % | 73 % |
+| Share of photos answered | 96 % | 80 % | 60 % | 38 % |
+| Accuracy of those answers | 55 % | 59 % | 67 % | 75 % |
 
 ### Quantisation
-Static QDQ int8 (per-channel weights, uint8 activations) shrinks the model from 17.0 MB to 4.75 MB. Activation
-ranges are calibrated on 300 images, half lab validation and half field training photos, with 99.999th
-percentile clipping. MobileNetV3's hard-swish and squeeze-excite layers have outlier activations: min/max and
+Static QDQ int8 (per-channel 7-bit weights, uint8 activations) shrinks the model from 17.0 MB to 4.75 MB.
+Activation ranges are calibrated on 300 images, half lab validation and half field training photos, with
+99.999th percentile clipping. ONNX Runtime's percentile calibrator holds every activation of all 300 images in
+memory (13 GB); the pipeline builds the same histograms in two streaming passes (1 GB) and reproduces its
+model bit for bit. MobileNetV3's hard-swish and squeeze-excite layers have outlier activations: min/max and
 entropy calibration collapsed to 34 % validation accuracy, dynamic quantisation reached 85 %, and keeping the
 first convolution and classifier in float doubled the size for no gain. int8 ships only if it loses ≤ 1.5
-points on the selection sets (it lost 0.7). Test-set numbers were not used for any choice. The full-precision
+points on the selection sets (it lost 1.05). Test-set numbers were not used for any choice. The full-precision
 network scores 98.0 % on lab test and 59.3 % on field photos with the crop known.
+
+**Why 7-bit weights: the same answer on every CPU.** x86 CPUs without VNNI instructions (AVX2, or AVX-512
+without VNNI, such as the AMD EPYC 7763 behind many GitHub runners) multiply uint8 activations by int8 weights
+with `VPMADDUBSW`, which saturates each pair of products at 16 bits: 2 × 255 × 127 overflows, 2 × 255 × 64 does
+not. The first release used 8-bit weights. On those CPUs, the API read the rice sample photo as sheath blight at
+49 % instead of blast at 75 % and failed its test on about half of the CI runs. Over 23 CI jobs on five CPU
+models, 8-bit weights moved the logits by up to 2.1 on every CPU without VNNI. With 7-bit weights the logits
+match an Apple M1 bit for bit on all 12 runners tested, with or without VNNI, and in ONNX Runtime Web. The
+browser was never affected: WebAssembly's integer SIMD is exact on any CPU. uint8 weights avoid the overflow
+too, but lost 1.64 points on the selection sets (over the 1.5-point bar); 8-bit int8 weights lost 0.74. A CI
+test checks that the shipped weights stay within ±64.
 
 ### Ablation: what the PlantDoc training half buys
 The same recipe (8 epochs, same splits, same selection rule) retrained on lab images only
 (`python -m scp_ml.train.leaf_model --no-field`, 86 min on the 8 GB M1). Both rows are the full-precision
-network, since the lab-only run is not quantised; the shipped int8 model is 0.3–1.9 points lower (table above).
+network, since the lab-only run is not quantised; the shipped int8 model is within 2.1 points of it (table above).
 
 | fp32, same 740 held-out field photos | Lab images only | Lab + half of PlantDoc (3×) |
 |---|---|---|
@@ -194,16 +207,16 @@ under 3 % of the training images, are worth 43 points of field accuracy (39 with
 
 ### Limitations
 * **Field photos are the honest number.** Lab images (PlantVillage especially) have plain backgrounds and one
-  centred leaf; accuracy falls from ~98 % to ~59 % on cluttered field photos, and to ~21 % without field
+  centred leaf; accuracy falls from ~97 % to ~60 % on cluttered field photos, and to ~21 % without field
   photos in training (see the ablation above).
 * PlantDoc is web-scraped: some photos carry watermarks or are mislabelled, so the field figure is somewhat
   pessimistic. It has no rice, cotton or groundnut photos, so those crops are only tested on lab images.
-* Calibration holds on lab images only; on field photos the model is over-confident (ECE 22 %). The app
+* Calibration holds on lab images only; on field photos the model is over-confident (ECE 21 %). The app
   shows a top-3 list and asks the farmer to check the visible signs before spraying.
 * No wheat, mustard or pulse classes in the training data; the symptom checker covers those crops.
-* Groundnut is the weakest lab crop (88 %), and its errors are the costly kind: 28 of 37 are early leaf spot
+* Groundnut is the weakest lab crop (86 %), and its errors are the costly kind: 28 of 43 are early leaf spot
   called *healthy*, whose first lesions are only a few pixels at 256 px. Early and late leaf spot are rarely
-  confused with each other (2 errors) and share one "tikka" advisory anyway.
+  confused with each other (4 errors) and share one "tikka" advisory anyway.
 
 ---
 

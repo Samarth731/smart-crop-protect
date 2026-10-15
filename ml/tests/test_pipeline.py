@@ -1,7 +1,12 @@
 """Fast tests that need no downloaded data (they run in CI)."""
 
+from pathlib import Path
+
 import numpy as np
+import onnx
 import pandas as pd
+import pytest
+from onnx import numpy_helper
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 from scp_ml.data.apy import canonical_season
@@ -83,3 +88,24 @@ def test_price_seasonal_feature_has_no_lookahead():
         same_month_before = [k for k in range(t - 12, -1, -12)]
         realised = [lp.iloc[k + 3] - lp.iloc[k] for k in same_month_before if k + 3 < len(lp)]
         assert np.isclose(f.seas.iloc[t], np.mean(realised))
+
+
+LEAF_ONNX = Path(__file__).resolve().parents[2] / "web/public/models/leaf.onnx"
+
+
+@pytest.mark.skipif(not LEAF_ONNX.exists(), reason="leaf model not exported")
+def test_shipped_leaf_model_gives_the_same_answer_on_every_cpu():
+    """x86 CPUs without VNNI saturate pairs of uint8 x int8 products at int16 (VPMADDUBSW). With weights
+    within +-64 a pair cannot overflow, so the int8 model's output does not depend on the CPU (see
+    quantize() in scp_ml/train/leaf_model.py)."""
+    graph = onnx.load(LEAF_ONNX).graph
+    inits = {i.name: i for i in graph.initializer}
+    weights = [
+        numpy_helper.to_array(inits[n.input[0]])
+        for n in graph.node
+        if n.op_type == "DequantizeLinear" and n.input[0] in inits
+    ]
+    int8 = [w for w in weights if w.dtype == np.int8]
+    if not int8:
+        pytest.skip("the shipped leaf model is not int8")
+    assert max(int(np.abs(w.astype(np.int16)).max()) for w in int8) <= 64

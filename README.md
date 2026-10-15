@@ -114,9 +114,9 @@ ONNX model (~100 ms per photo), so photos never leave the phone.
 
 | Shipped int8 model | Lab test (3,247) | **Real field photos, PlantDoc (740)** |
 |---|---|---|
-| Accuracy | **97.5 %** | 53.4 % |
-| … with the farmer's crop as a prior, as in the app | 97.5 % | **59.1 %** (top-3 87.6 %) |
-| Calibration error after temperature scaling | 0.9 % | 22 % |
+| Accuracy | **96.9 %** | 53.2 % |
+| … with the farmer's crop as a prior, as in the app | 97.0 % | **59.7 %** (top-3 88.1 %) |
+| Calibration error after temperature scaling | 0.9 % | 21 % |
 
 * **The field number is the honest one**, and it is reported next to the lab number everywhere, including in
   the app. Half of PlantDoc is held out entirely; the other half is added to training at 3× weight.
@@ -126,10 +126,14 @@ ONNX model (~100 ms per photo), so photos never leave the phone.
 * **int8 static quantisation** (17 MB → 4.75 MB) with percentile calibration on lab + field photos. Min/max and
   entropy calibration collapsed to 34 % on MobileNetV3's hard-swish outliers; the shipping rule (≤ 1.5 point
   loss on selection sets) never looks at the test sets.
+* **Same answer on every CPU.** With 8-bit weights the API test on the rice sample failed on about half of the CI
+  runs: x86 CPUs without VNNI (e.g. AMD EPYC 7763) saturate uint8 × int8 products at 16 bits, which moved logits
+  by up to 2.1. With 7-bit weights the logits match an Apple M1 bit for bit on all 12 CI runners tested, VNNI or
+  not, and in ONNX Runtime Web. The browser was never affected, because WebAssembly integer maths is exact.
 * **Trained on an 8 GB laptop**: a thread-pool loader instead of worker processes, frozen high-resolution
   blocks, and per-epoch checkpoints. The first attempt, with DataLoader workers, swapped for 30 minutes
   without finishing an epoch.
-* Known weak spot, found by error analysis: groundnut early leaf spot is often called healthy (28 of 37
+* Known weak spot, found by error analysis: groundnut early leaf spot is often called healthy (28 of 43
   groundnut errors). See the [model card](docs/model-cards.md#leaf-disease-classifier).
 
 <img src="docs/screenshots/scan-desktop.png" alt="Crop doctor: the on-device CNN names rice blast on a held-out test photo, with alternatives, the damaged-area map and what to do" width="100%" />

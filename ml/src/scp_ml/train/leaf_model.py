@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import tempfile
 import time
 from collections import Counter, deque
 from concurrent.futures import ThreadPoolExecutor
@@ -275,6 +276,59 @@ class CalibReader:
         return next(self.batches, None)
 
 
+def calibrate(pre: Path, reader: CalibReader, cache: Path) -> None:
+    """Percentile activation ranges from ORT's own calibrator, written as an ORT calibration cache.
+
+    ORT's percentile calibrator keeps every activation of every calibration image in memory before it
+    builds histograms: ~44 MB per image for this network, 13 GB for 300 images. This builds the same
+    histograms in two streaming passes, each tensor's range first and then bin counts over that range.
+    It fits on an 8 GB laptop and gives a bit-identical model."""
+    from onnxruntime.quantization import CalibrationMethod
+    from onnxruntime.quantization.calibrate import HistogramCollector, create_calibrator, save_tensors_data
+    from onnxruntime.quantization.registry import QDQRegistry, QLinearOpsRegistry
+
+    inputs = list(iter(reader.get_next, None))
+    with tempfile.TemporaryDirectory() as tmp:
+        cal = create_calibrator(
+            pre,
+            list(set(QLinearOpsRegistry) | set(QDQRegistry)),  # what quantize_static calibrates by default
+            augmented_model_path=str(Path(tmp) / "augmented.onnx"),
+            calibrate_method=CalibrationMethod.Percentile,
+        )
+        names = [o.name for o in cal.infer_session.get_outputs()]
+        wanted = [(i, n) for i, n in enumerate(names) if n in cal.tensors_to_calibrate]
+
+        def activations():
+            for x in inputs:
+                out = cal.infer_session.run(None, x)
+                yield [(n, out[i]) for i, n in wanted]
+
+        lo, hi, abs_lo, abs_hi = {}, {}, {}, {}
+        for acts in activations():
+            for n, a in acts:
+                mag = np.abs(a)
+                pairs = ((lo, np.nanmin(a), min), (hi, np.nanmax(a), max))
+                pairs += ((abs_lo, mag.min(), min), (abs_hi, mag.max(), max))
+                for d, v, pick in pairs:
+                    d[n] = v if n not in d else pick(d[n], v)
+        hist, edges = {}, {}
+        for acts in activations():
+            for n, a in acts:
+                # the float32 range np.histogram derives itself when given all the data at once
+                h, edges[n] = np.histogram(np.abs(a), bins=cal.num_bins, range=(abs_lo[n], abs_hi[n]))
+                hist[n] = hist.get(n, 0) + h
+        cal.collector = HistogramCollector(
+            method=cal.method,
+            symmetric=cal.symmetric,
+            num_bins=cal.num_bins,
+            num_quantized_bins=cal.num_quantized_bins,
+            percentile=cal.percentile,
+            scenario=cal.scenario,
+        )
+        cal.collector.histogram_dict = {n: (hist[n], edges[n].astype(np.float32), lo[n], hi[n]) for n in hist}
+        save_tensors_data(cal.compute_data(), cache)
+
+
 def onnx_logits(path: Path, ds: LeafSet, batch: int = 64) -> tuple[np.ndarray, np.ndarray]:
     sess = ort.InferenceSession(str(path))
     out, ys = [], []
@@ -380,9 +434,17 @@ def train_model(use_field: bool, epochs: int, batch: int, resume: bool, device) 
 
 
 def quantize(fp32: Path) -> dict:
-    """int8 static quantisation (QDQ, per-channel weights). Activation ranges use 99.999th-percentile
+    """int8 static quantisation (QDQ, per-channel 7-bit weights). Activation ranges use 99.999th-percentile
     clipping: MobileNetV3's hard-swish and squeeze-excite layers have outliers that make min/max (and, in
     our runs, entropy) calibration collapse to ~34 % accuracy; dynamic quantisation reached 85 %.
+
+    Weights use 7 bits (reduce_range) so that every CPU gives the same answer. x86 CPUs without VNNI
+    (AVX2, or AVX-512 without VNNI, e.g. the AMD EPYC 7763 behind many GitHub runners) multiply uint8
+    activations by int8 weights with VPMADDUBSW, which saturates each pair of products at int16:
+    2 x 255 x 127 overflows, 2 x 255 x 64 does not. With 8-bit weights, those CPUs read the rice sample
+    photo as sheath blight at 0.49 instead of blast at 0.75. ARM, VNNI CPUs and the browser's WebAssembly
+    accumulate exactly. uint8 weights avoid the overflow too, but lost 1.6 points on the selection sets
+    against 1.05 for 7 bits.
 
     The int8 model ships if it loses at most 1.5 points on the selection sets (lab validation and the
     training half of the field photos). Test-set drops are reported, never used to decide."""
@@ -392,18 +454,23 @@ def quantize(fp32: Path) -> dict:
     pre, int8 = MODELS / "leaf_pre.onnx", MODELS / "leaf_int8.onnx"
     quant_pre_process(str(fp32), str(pre))
     val, field_train = LeafSet(["val"], EVAL_TF), LeafSet(["field_train"], EVAL_TF)
-    quantize_static(
-        str(pre),
-        str(int8),
+    with tempfile.TemporaryDirectory() as tmp:
+        cache = Path(tmp) / "calibration.json"
         # ranges from both lab and field-style photos: the app sees the latter (worst-case selection drop
-        # 0.7 points vs 0.9 when calibrating on lab images alone)
-        CalibReader([val, field_train]),
-        quant_format=QuantFormat.QDQ,
-        per_channel=True,
-        weight_type=QuantType.QInt8,
-        activation_type=QuantType.QUInt8,
-        calibrate_method=CalibrationMethod.Percentile,
-    )
+        # 0.7 points vs 0.9 when calibrating on lab images alone, measured with 8-bit weights)
+        calibrate(pre, CalibReader([val, field_train]), cache)
+        quantize_static(
+            str(pre),
+            str(int8),
+            None,
+            calibration_cache_path=str(cache),
+            quant_format=QuantFormat.QDQ,
+            per_channel=True,
+            reduce_range=True,
+            weight_type=QuantType.QInt8,
+            activation_type=QuantType.QUInt8,
+            calibrate_method=CalibrationMethod.Percentile,
+        )
 
     def acc(path: Path, ds: LeafSet) -> float:
         lg, y = onnx_logits(path, ds)
@@ -411,7 +478,7 @@ def quantize(fp32: Path) -> dict:
 
     selection_drop = max(acc(fp32, ds) - acc(int8, ds) for ds in (val, field_train))
     return {
-        "method": "static QDQ, per-channel int8 weights, uint8 activations, percentile calibration",
+        "method": "static QDQ, per-channel 7-bit int8 weights, uint8 activations, percentile calibration",
         "selectionDrop": selection_drop,
         "fp32Mb": fp32.stat().st_size / 1e6,
         "int8Mb": int8.stat().st_size / 1e6,

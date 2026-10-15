@@ -64,66 +64,66 @@
  ],
  "test": {
   "n": 3247,
-  "accuracy": 0.9753618724976901,
-  "macroF1": 0.9695515524163998,
-  "top3": 0.9993840468124423,
+  "accuracy": 0.9688943640283338,
+  "macroF1": 0.9569192268239527,
+  "top3": 0.9990760702186634,
   "selective": {
    "threshold": 0.5,
-   "coverage": 0.9932245149368648,
-   "accuracy": 0.9770542635658914
+   "coverage": 0.992608561749307,
+   "accuracy": 0.973316785603475
   },
   "selectiveCurve": [
    {
     "threshold": 0.3,
     "coverage": 0.9996920234062211,
-    "accuracy": 0.9753542821934689
+    "accuracy": 0.9691928527418361
    },
    {
     "threshold": 0.4,
-    "coverage": 0.997536187249769,
-    "accuracy": 0.9762272306267367
+    "coverage": 0.9996920234062211,
+    "accuracy": 0.9691928527418361
    },
    {
     "threshold": 0.5,
-    "coverage": 0.9932245149368648,
-    "accuracy": 0.9770542635658914
+    "coverage": 0.992608561749307,
+    "accuracy": 0.973316785603475
    },
    {
     "threshold": 0.6,
-    "coverage": 0.980597474591931,
-    "accuracy": 0.980213567839196
+    "coverage": 0.9799815214043732,
+    "accuracy": 0.9798868636077939
    },
    {
     "threshold": 0.7,
-    "coverage": 0.9710502001847859,
-    "accuracy": 0.9819219790675547
+    "coverage": 0.9648906683092086,
+    "accuracy": 0.9849984040855411
    },
    {
     "threshold": 0.8,
-    "coverage": 0.9568832768709578,
-    "accuracy": 0.9851947215963952
+    "coverage": 0.9494918386202649,
+    "accuracy": 0.9870256243918262
    },
    {
     "threshold": 0.9,
-    "coverage": 0.9245457345241762,
-    "accuracy": 0.9906728847435043
+    "coverage": 0.9196181090237142,
+    "accuracy": 0.9912926992632284
    }
   ],
-  "ece": 0.009079508618791535,
+  "ece": 0.008605882796207377,
   "byCrop": [
    {
     "crop": "cotton",
-    "accuracy": 0.9571428571428572,
+    "accuracy": 0.9285714285714286,
     "n": 140
    },
    {
     "crop": "groundnut",
-    "accuracy": 0.8794788273615635,
+    "accuracy": 0.8599348534201955,
     "n": 307
    },
    {
     "crop": "maize",
-    "accuracy": 0.9922680412371134,
+    "accuracy": 0.9948453608247423,
     "n": 388
    },
    {
@@ -133,48 +133,48 @@
    },
    {
     "crop": "pepper",
-    "accuracy": 0.9954545454545455,
+    "accuracy": 0.990909090909091,
     "n": 220
    },
    {
     "crop": "potato",
-    "accuracy": 1.0,
+    "accuracy": 0.9814814814814815,
     "n": 216
    },
    {
     "crop": "rice",
-    "accuracy": 0.98856416772554,
+    "accuracy": 0.9911054637865311,
     "n": 787
    },
    {
     "crop": "tomato",
-    "accuracy": 0.978584729981378,
+    "accuracy": 0.9702048417132216,
     "n": 1074
    }
   ],
   "withCropPrior": {
-   "accuracy": 0.9753618724976901,
-   "macroF1": 0.9695515524163998,
-   "top3": 0.9993840468124423,
+   "accuracy": 0.9701262704034493,
+   "macroF1": 0.9592711415908718,
+   "top3": 0.9990760702186634,
    "selective": {
     "threshold": 0.5,
-    "coverage": 0.9947643979057592,
-    "accuracy": 0.9770897832817338
+    "coverage": 0.9953803510933169,
+    "accuracy": 0.9733910891089109
    },
    "byCrop": [
     {
      "crop": "cotton",
-     "accuracy": 0.9571428571428572,
+     "accuracy": 0.9285714285714286,
      "n": 140
     },
     {
      "crop": "groundnut",
-     "accuracy": 0.8794788273615635,
+     "accuracy": 0.8631921824104235,
      "n": 307
     },
     {
      "crop": "maize",
-     "accuracy": 0.9922680412371134,
+     "accuracy": 0.9948453608247423,
      "n": 388
     },
     {
@@ -184,22 +184,22 @@
     },
     {
      "crop": "pepper",
-     "accuracy": 0.9954545454545455,
+     "accuracy": 0.990909090909091,
      "n": 220
     },
     {
      "crop": "potato",
-     "accuracy": 1.0,
+     "accuracy": 0.9953703703703703,
      "n": 216
     },
     {
      "crop": "rice",
-     "accuracy": 0.98856416772554,
+     "accuracy": 0.9911054637865311,
      "n": 787
     },
     {
      "crop": "tomato",
-     "accuracy": 0.978584729981378,
+     "accuracy": 0.9702048417132216,
      "n": 1074
     }
    ]
@@ -207,102 +207,102 @@
  },
  "fieldResult": {
   "n": 740,
-  "accuracy": 0.5337837837837838,
-  "macroF1": 0.5443502341783242,
-  "top3": 0.8121621621621622,
+  "accuracy": 0.5324324324324324,
+  "macroF1": 0.5492121470402631,
+  "top3": 0.8202702702702702,
   "selective": {
    "threshold": 0.5,
-   "coverage": 0.8067567567567567,
-   "accuracy": 0.6063651591289783
+   "coverage": 0.8013513513513514,
+   "accuracy": 0.5935919055649241
   },
   "selectiveCurve": [
    {
     "threshold": 0.3,
-    "coverage": 0.95,
-    "accuracy": 0.5533428165007113
+    "coverage": 0.9581081081081081,
+    "accuracy": 0.5458392101551481
    },
    {
     "threshold": 0.4,
-    "coverage": 0.9013513513513514,
-    "accuracy": 0.5697151424287856
+    "coverage": 0.8797297297297297,
+    "accuracy": 0.5714285714285714
    },
    {
     "threshold": 0.5,
-    "coverage": 0.8067567567567567,
-    "accuracy": 0.6063651591289783
+    "coverage": 0.8013513513513514,
+    "accuracy": 0.5935919055649241
    },
    {
     "threshold": 0.6,
-    "coverage": 0.7135135135135136,
-    "accuracy": 0.6325757575757576
+    "coverage": 0.6972972972972973,
+    "accuracy": 0.6337209302325582
    },
    {
     "threshold": 0.7,
-    "coverage": 0.6229729729729729,
-    "accuracy": 0.6550976138828634
+    "coverage": 0.6027027027027027,
+    "accuracy": 0.6704035874439462
    },
    {
     "threshold": 0.8,
-    "coverage": 0.5391891891891892,
-    "accuracy": 0.6716791979949874
+    "coverage": 0.5135135135135135,
+    "accuracy": 0.6894736842105263
    },
    {
     "threshold": 0.9,
-    "coverage": 0.38513513513513514,
-    "accuracy": 0.7333333333333333
+    "coverage": 0.3837837837837838,
+    "accuracy": 0.75
    }
   ],
-  "ece": 0.2207339783576695,
+  "ece": 0.2105517579695663,
   "byCrop": [
    {
     "crop": "maize",
-    "accuracy": 0.7127659574468085,
+    "accuracy": 0.7446808510638298,
     "n": 188
    },
    {
     "crop": "pepper",
-    "accuracy": 0.4626865671641791,
+    "accuracy": 0.4925373134328358,
     "n": 67
    },
    {
     "crop": "potato",
-    "accuracy": 0.4594594594594595,
+    "accuracy": 0.40540540540540543,
     "n": 111
    },
    {
     "crop": "tomato",
-    "accuracy": 0.4786096256684492,
+    "accuracy": 0.47058823529411764,
     "n": 374
    }
   ],
   "withCropPrior": {
-   "accuracy": 0.5905405405405405,
-   "macroF1": 0.5963603628247135,
-   "top3": 0.8756756756756757,
+   "accuracy": 0.5972972972972973,
+   "macroF1": 0.5900305466670304,
+   "top3": 0.8810810810810811,
    "selective": {
     "threshold": 0.5,
-    "coverage": 0.8608108108108108,
-    "accuracy": 0.6342229199372057
+    "coverage": 0.8513513513513513,
+    "accuracy": 0.6365079365079365
    },
    "byCrop": [
     {
      "crop": "maize",
-     "accuracy": 0.723404255319149,
+     "accuracy": 0.7446808510638298,
      "n": 188
     },
     {
      "crop": "pepper",
-     "accuracy": 0.6716417910447762,
+     "accuracy": 0.6865671641791045,
      "n": 67
     },
     {
      "crop": "potato",
-     "accuracy": 0.5225225225225225,
+     "accuracy": 0.4864864864864865,
      "n": 111
     },
     {
      "crop": "tomato",
-     "accuracy": 0.5294117647058824,
+     "accuracy": 0.5401069518716578,
      "n": 374
     }
    ]
@@ -313,8 +313,8 @@
   "eceAfter": 0.0061170694206168445
  },
  "quantization": {
-  "method": "static QDQ, per-channel int8 weights, uint8 activations, percentile calibration",
-  "selectionDrop": 0.007425742574257432,
+  "method": "static QDQ, per-channel 7-bit int8 weights, uint8 activations, percentile calibration",
+  "selectionDrop": 0.010519801980198085,
   "fp32Mb": 16.987728,
   "int8Mb": 4.755,
   "shipped": "int8"
