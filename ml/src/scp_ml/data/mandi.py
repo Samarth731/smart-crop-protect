@@ -4,8 +4,11 @@
 
 Resource 9ef84268-d588-465a-a308-a864a43d0070: "Current daily price of various commodities from
 various markets (Mandi)". Writes web/public/data/mandi.json with the latest modal price per market
-for each app commodity. Runs daily from GitHub Actions once the repository secret
-DATA_GOV_IN_API_KEY is set (free key: https://data.gov.in/user/register).
+for each app commodity (free key: https://data.gov.in/user/register).
+
+api.data.gov.in refuses connections from outside India, including GitHub's hosted runners, so run
+`make mandi` from a machine in India; it fetches, commits and pushes, and the push redeploys the site.
+The scheduled Action still tries daily and skips quietly when the API is unreachable.
 """
 
 from __future__ import annotations
@@ -67,6 +70,26 @@ def run() -> None:
     if not key:
         print("DATA_GOV_IN_API_KEY not set; skipping live mandi prices")
         sys.exit(0)
+    try:
+        out = fetch_all(key)
+    except (requests.ConnectionError, requests.Timeout) as e:
+        print(
+            f"api.data.gov.in unreachable ({type(e).__name__}): it refuses connections from outside India, "
+            "e.g. GitHub's runners. Run `make mandi` from a machine in India instead. Skipping."
+        )
+        sys.exit(0)
+    payload = {
+        "generated": datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC"),
+        "source": "Agmarknet via data.gov.in (OGD Platform India)",
+        "unit": "₹/quintal",
+        "crops": out,
+    }
+    WEB_DATA.mkdir(parents=True, exist_ok=True)
+    (WEB_DATA / "mandi.json").write_text(json.dumps(payload, separators=(",", ":"), ensure_ascii=False))
+    print(f"wrote {WEB_DATA / 'mandi.json'}: {sum(map(len, out.values())):,} market quotes")
+
+
+def fetch_all(key: str) -> dict[str, list[dict]]:
     out: dict[str, list[dict]] = {}
     for crop, names in COMMODITIES.items():
         markets = []
@@ -89,14 +112,7 @@ def run() -> None:
                     continue
         out[crop] = sorted(markets, key=lambda m: (m["state"], m["district"], m["market"]))
         print(f"{crop}: {len(markets)} market quotes")
-    payload = {
-        "generated": datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC"),
-        "source": "Agmarknet via data.gov.in (OGD Platform India)",
-        "unit": "₹/quintal",
-        "crops": out,
-    }
-    WEB_DATA.mkdir(parents=True, exist_ok=True)
-    (WEB_DATA / "mandi.json").write_text(json.dumps(payload, separators=(",", ":"), ensure_ascii=False))
+    return out
 
 
 if __name__ == "__main__":

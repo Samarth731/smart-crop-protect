@@ -1,6 +1,8 @@
 name: Refresh market data
 
-# Daily: live mandi prices (needs the DATA_GOV_IN_API_KEY repository secret).
+# Daily: live mandi prices (needs the DATA_GOV_IN_API_KEY secret). api.data.gov.in refuses
+# connections from outside India, so on GitHub's runners this step usually skips; `make mandi`
+# publishes them from a machine in India.
 # Monthly: re-download WFP prices, retrain and backtest the price forecaster.
 on:
   schedule:

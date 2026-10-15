@@ -1,7 +1,7 @@
 # Smart Crop Protect: reproduce the data, models and app from scratch.
 UV ?= uv
 
-.PHONY: setup data train export web dev test api clean
+.PHONY: setup data train export mandi web dev test api clean
 
 setup:            ## install Python (ml, api) and Node dependencies
 	cd ml && $(UV) sync --extra dev
@@ -23,6 +23,12 @@ train-leaf:       ## build the leaf image dataset and fine-tune the CNN (vision 
 	cd ml && $(UV) run python -m scp_ml.data.leaves
 	cd ml && $(UV) run python -m scp_ml.train.leaf_model
 	cd ml && $(UV) run python -m scp_ml.export.metrics
+
+mandi:            ## fetch live mandi prices (data.gov.in only answers from India) and publish them
+	@test -n "$$DATA_GOV_IN_API_KEY" || { echo 'First run:  read -s DATA_GOV_IN_API_KEY && export DATA_GOV_IN_API_KEY'; exit 1; }
+	cd ml && $(UV) run python -m scp_ml.data.mandi
+	git add web/public/data/mandi.json
+	git diff --cached --quiet -- web/public/data/mandi.json || { git commit -m "data: live mandi prices ($$(date +%Y-%m-%d))" -- web/public/data/mandi.json && git push; }
 
 export:           ## write web data shards, golden test fixtures and model-card metrics
 	cd ml && $(UV) run python -m scp_ml.export.web_data

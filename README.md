@@ -213,9 +213,16 @@ make train-leaf  # optional: leaf CNN (PyTorch, ~1 h on an 8 GB M1)
 
 Model API: `make api`, then `POST /v1/yield/forecast {"district_code": 500, "crop": "cotton"}`.
 
-**Live mandi prices.** Add a free [data.gov.in API key](https://data.gov.in/user/register) as the repository
-secret `DATA_GOV_IN_API_KEY`; the *Refresh market data* workflow then publishes Agmarknet prices daily and the
-app shows them automatically.
+**Live mandi prices.** Get a free [data.gov.in API key](https://data.gov.in/user/register). The API only
+answers from Indian IP addresses (GitHub's runners are refused), so publish prices from a machine in India:
+
+```bash
+read -s DATA_GOV_IN_API_KEY && export DATA_GOV_IN_API_KEY
+make mandi   # fetch Agmarknet prices, commit web/public/data/mandi.json, push → site redeploys
+```
+
+The app shows them automatically. With the key also stored as the repository secret `DATA_GOV_IN_API_KEY`, the
+*Refresh market data* workflow tries daily and skips quietly when the API refuses it.
 
 ## Design
 
